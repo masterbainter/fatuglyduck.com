@@ -3,64 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navigating Your Digital Reputation</title>
+    <title>The Fat Ugly Duck Syndrome</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #FAFAD2; /* LightGoldenrodYellow - like pale duck fat */
+            color: #3D2B1F; /* Dark Brown - for body text */
         }
         .hero-bg {
-            background-color: #1a202c; /* Dark background for hero */
+            background-color: #5A5A29; /* Dark Olive Green - murky pond water */
+            color: #F0E68C; /* Khaki - for text on dark backgrounds */
         }
         .section-title {
-            @apply text-3xl font-bold text-gray-800 mb-6 text-center;
+            @apply text-3xl font-bold mb-6 text-center;
+            color: #8B4513; /* SaddleBrown - main accent */
         }
         .card {
-            @apply bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300;
+            background-color: #F5F5DC; /* Beige - slightly off-white */
+            border-left: 4px solid #B08D57; /* Dark Khaki/Muddy - for card accents */
+            @apply rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300;
         }
         .nav-link {
-            @apply px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-colors;
+            @apply px-3 py-2 rounded-md text-sm font-medium transition-colors;
+            color: #F0E68C; /* Khaki text for nav links */
+            border: 1px solid transparent; /* Add border for active state */
+        }
+        .nav-link:hover {
+            background-color: #4B4B24; /* Darker Olive for hover */
+            color: #FFF8DC; /* Cornsilk - lighter for hover text */
         }
         .nav-link-active {
-            @apply bg-gray-900 text-white;
+            background-color: #8B4513; /* SaddleBrown for active link */
+            color: #FFFFFF !important; /* White text for active link */
+            border-color: #B08D57;
+        }
+        .footer-bg {
+            background-color: #5A5A29; /* Dark Olive Green for footer */
         }
         .footer-link {
-            @apply text-gray-400 hover:text-gray-200 transition-colors;
+            color: #F0E68C; /* Khaki for footer links */
         }
-        /* Custom gradient for hero button */
-        .btn-gradient {
-            background-image: linear-gradient(to right, #4f46e5, #7c3aed);
+        .footer-link:hover {
+            color: #FFF8DC; /* Cornsilk for hover */
         }
-        .btn-gradient:hover {
-            background-image: linear-gradient(to right, #4338ca, #6d28d9);
+        .btn-custom-gradient {
+            background-image: linear-gradient(to right, #8B4513, #A0522D); /* Brown gradient */
+            color: #FFFFFF;
         }
+        .btn-custom-gradient:hover {
+            background-image: linear-gradient(to right, #A0522D, #8B4513); /* Reverse gradient on hover */
+        }
+        .pitfall-section {
+            background-color: #FFF0F0; /* Very light pink/red for pitfall background */
+        }
+        .pitfall-title {
+            color: #800000; /* Maroon for pitfall titles */
+        }
+        .pitfall-card {
+            border-left-color: #800000; /* Maroon border for pitfall cards */
+            background-color: #FFE5E5; /* Lighter red for pitfall cards */
+        }
+        .ethical-section {
+            background-color: #F0FFF0; /* Very light green for ethical background */
+        }
+        .ethical-title {
+            color: #2E8B57; /* SeaGreen for ethical titles */
+        }
+        .ethical-card {
+            border-left-color: #2E8B57; /* SeaGreen border for ethical cards */
+            background-color: #E0FFE0; /* Lighter green for ethical cards */
+        }
+
     </style>
 </head>
-<body class="bg-gray-100">
+<body>
 
-    <nav class="bg-gray-800 sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="sticky top-0 z-50 shadow-md hero-bg"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <svg class="h-8 w-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m0 0A8.001 8.001 0 004 9.75M12 17.747A8.001 8.001 0 0120 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        <svg class="h-10 w-10 text-[#B08D57]" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12zm0-4a2 2 0 11-4 0 2 2 0 014 0zm0 0a2 2 0 104 0 2 2 0 00-4 0zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /> </svg>
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-4">
                             <a href="#home" class="nav-link nav-link-active">Home</a>
-                            <a href="#footprint" class="nav-link">Digital Footprint</a>
-                            <a href="#pitfalls" class="nav-link">Pitfalls & Penalties</a>
-                            <a href="#monitoring" class="nav-link">Monitoring Tools</a>
-                            <a href="#reputation" class="nav-link">Reputation Mgmt</a>
-                            <a href="#ethics" class="nav-link">Ethical Paths</a>
-                            </div>
+                            <a href="#becoming-the-duck" class="nav-link">Becoming the Duck</a>
+                            <a href="#ducks-shadow" class="nav-link">The Duck's Shadow</a>
+                            <a href="#ducks-downfall" class="nav-link">Duck's Downfall</a>
+                            <a href="#slimming-down" class="nav-link">Slimming Down</a>
+                        </div>
                     </div>
                 </div>
                 <div class="-mr-2 flex md:hidden">
-                    <button type="button" id="mobile-menu-button" class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md hover:bg-[#4B4B24] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
                         <span class="sr-only">Open main menu</span>
                         <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -75,235 +112,190 @@
         <div class="md:hidden hidden" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#home" class="nav-link block nav-link-active">Home</a>
-                <a href="#footprint" class="nav-link block">Digital Footprint</a>
-                <a href="#pitfalls" class="nav-link block">Pitfalls & Penalties</a>
-                <a href="#monitoring" class="nav-link block">Monitoring Tools</a>
-                <a href="#reputation" class="nav-link block">Reputation Mgmt</a>
-                <a href="#ethics" class="nav-link block">Ethical Paths</a>
+                <a href="#becoming-the-duck" class="nav-link block">Becoming the Duck</a>
+                <a href="#ducks-shadow" class="nav-link block">The Duck's Shadow</a>
+                <a href="#ducks-downfall" class="nav-link block">Duck's Downfall</a>
+                <a href="#slimming-down" class="nav-link block">Slimming Down</a>
             </div>
         </div>
     </nav>
 
-    <header id="home" class="hero-bg text-white py-20 sm:py-32">
+    <header id="home" class="hero-bg py-20 sm:py-32">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">
-                Is Your Company's Digital Shadow <span class="block text-indigo-400 xl:inline">Working Against You?</span>
+                The Rise of the <span class="block text-[#B08D57] xl:inline">Fat Ugly Duck</span>
             </h1>
-            <p class="mt-6 max-w-3xl mx-auto text-lg sm:text-xl text-gray-300">
-                Understand how online actions, intended or not, shape your company's visibility and reputation. Learn to navigate the digital landscape effectively.
+            <p class="mt-6 max-w-3xl mx-auto text-lg sm:text-xl">
+                Is your company ignoring the pond for the ocean? Focusing on "big fish" while neglecting the "little guys" can turn you into a bloated, unattractive entity.
             </p>
             <div class="mt-10">
-                <a href="#footprint" class="inline-block btn-gradient text-white font-semibold py-3 px-8 rounded-lg shadow-md text-lg hover:shadow-xl transition-transform transform hover:scale-105">
-                    Discover Your Impact
+                <a href="#becoming-the-duck" class="inline-block btn-custom-gradient font-semibold py-3 px-8 rounded-lg shadow-md text-lg hover:shadow-xl transition-transform transform hover:scale-105">
+                    See the Symptoms
                 </a>
             </div>
         </div>
     </header>
 
     <main class="py-16">
-        <section id="not-playing-nice" class="py-12 bg-white">
+        <section id="becoming-the-duck" class="py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="section-title">The Unseen Ripples: What "Not Playing Nice" Means Online</h2>
-                <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">
-                    In the digital world, "not playing nice" isn't just about overt malicious acts. It encompasses a range of practices that can harm your brand's reputation, search engine rankings, and customer trust, often unintentionally.
+                <h2 class="section-title">Waddling into Trouble: How Companies Become Fat Ugly Ducks</h2>
+                <p class="text-center mb-10 max-w-3xl mx-auto">
+                    It doesn't happen overnight. A gradual shift in focus, a taste for easy wins, and a disregard for the broader customer base can lead to this unfortunate transformation.
                 </p>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Aggressive SEO & "Black Hat" Tactics</h3>
-                        <p class="text-gray-600">Keyword stuffing, link schemes, cloaking, or creating doorway pages. These aim to manipulate search rankings but often lead to penalties.</p>
+                        <h3 class="text-xl font-semibold text-[#8B4513] mb-3">Chasing Only "Big Fish"</h3>
+                        <p>Prioritizing large clients or high-value transactions exclusively, while providing subpar service or outright ignoring smaller customers and their needs.</p>
                     </div>
                     <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Misleading Content & False Advertising</h3>
-                        <p class="text-gray-600">Exaggerated claims, fake testimonials, or unclear pricing. This erodes trust and can attract regulatory scrutiny.</p>
+                        <h3 class="text-xl font-semibold text-[#8B4513] mb-3">Complacent & Bloated Processes</h3>
+                        <p>Internal systems become slow and inefficient, designed for large-scale operations but crushing for individual user experience. Innovation stagnates.</p>
                     </div>
                     <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Poor Customer Experience & Neglected Feedback</h3>
-                        <p class="text-gray-600">Ignoring complaints, difficult return processes, or unresponsive support. Negative reviews spread quickly and damage reputation.</p>
+                        <h3 class="text-xl font-semibold text-[#8B4513] mb-3">Ignoring Feedback from the "Pond"</h3>
+                        <p>Dismissing complaints from smaller clients as insignificant. Negative reviews pile up, creating a toxic online reputation among the masses.</p>
                     </div>
                     <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Spammy Outreach & Unsolicited Communication</h3>
-                        <p class="text-gray-600">Aggressive email marketing without consent or irrelevant social media tagging. This annoys users and can harm deliverability.</p>
+                        <h3 class="text-xl font-semibold text-[#8B4513] mb-3">Deceptive "Value" Propositions</h3>
+                        <p>Marketing that promises much to all but only delivers to a select few, leaving many feeling cheated and unheard. Fine print hides the real cost for the "little guys."</p>
                     </div>
                     <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Ignoring Web Standards & Accessibility</h3>
-                        <p class="text-gray-600">Websites that are hard to navigate, slow, or not accessible to users with disabilities. This frustrates users and impacts SEO.</p>
+                        <h3 class="text-xl font-semibold text-[#8B4513] mb-3">Outdated, Clunky Digital Presence</h3>
+                        <p>Websites and apps that are difficult to use, slow, and not user-friendly, especially for those not bringing in "big bucks." Accessibility is an afterthought.</p>
                     </div>
                     <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Negative PR & Crisis Mismanagement</h3>
-                        <p class="text-gray-600">Failing to address public concerns transparently or attempting to suppress negative information unethically.</p>
+                        <h3 class="text-xl font-semibold text-[#8B4513] mb-3">Arrogance & Lack of Empathy</h3>
+                        <p>A corporate culture that views smaller customers as a nuisance rather than the foundation of a healthy business ecosystem.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="footprint" class="py-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="section-title">Understanding Your Digital Footprint</h2>
-                <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">
-                    Your company's "page" isn't just your website. It's the sum of all online mentions, reviews, listings, and content associated with your brand. Search engines and users piece this together to form an impression.
+        <section id="ducks-shadow" class="py-12 bg-[#F5F5DC]"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">The Duck's Shadow: How the World Sees Your Bloated Business</h2>
+                <p class="text-center mb-10 max-w-3xl mx-auto">
+                    Your company's "page" isn't just your glossy corporate site. It's the murky reflection of how you treat everyone, especially those you deem "small fry."
                 </p>
                 <div class="space-y-8">
                     <div class="card md:flex items-center">
                         <div class="md:w-1/3 mb-4 md:mb-0 md:mr-6">
-                            <img src="https://placehold.co/600x400/E2E8F0/4A5568?text=Search+Engine+Crawling" alt="Search Engine Crawling" class="rounded-lg shadow-md w-full h-auto object-cover">
+                            <img src="https://placehold.co/600x400/B08D57/3D2B1F?text=Ignoring+Small+Clients" alt="Ignoring Small Clients" class="rounded-lg shadow-md w-full h-auto object-cover">
                         </div>
                         <div class="md:w-2/3">
-                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Search Engine Algorithms</h3>
-                            <p class="text-gray-600">Search engines like Google use complex algorithms to crawl, index, and rank web pages. They analyze hundreds of factors, including content quality, site authority (E-E-A-T: Experience, Expertise, Authoritativeness, Trustworthiness), user experience, backlinks, and technical SEO. Practices deemed manipulative can lead to demotion or de-indexing.</p>
+                            <h3 class="text-2xl font-semibold text-[#8B4513] mb-2">Search Engines See Neglect</h3>
+                            <p>Widespread negative reviews from smaller users, poor engagement metrics on pages not catering to "big fish," and a lack of diverse, positive sentiment can drag down your overall visibility, even for the clients you covet.</p>
                         </div>
                     </div>
                     <div class="card md:flex items-center">
                          <div class="md:w-2/3 md:order-2">
-                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">User-Generated Content & Reviews</h3>
-                            <p class="text-gray-600">Review sites (Yelp, Google Reviews, Trustpilot), social media comments, forum discussions, and blog posts significantly influence public perception and can even impact search rankings. Negative sentiment can spread rapidly if unaddressed.</p>
+                            <h3 class="text-2xl font-semibold text-[#8B4513] mb-2">The "Little Guys" Talk... Loudly</h3>
+                            <p>Review sites, forums, and social media become breeding grounds for discontent. A thousand small cuts from ignored customers can be more damaging than one big blow.</p>
                         </div>
                         <div class="md:w-1/3 mb-4 md:mb-0 md:ml-6 md:order-1">
-                             <img src="https://placehold.co/600x400/E2E8F0/4A5568?text=Online+Reviews" alt="Online Reviews" class="rounded-lg shadow-md w-full h-auto object-cover">
+                             <img src="https://placehold.co/600x400/B08D57/3D2B1F?text=Angry+Reviews" alt="Angry Reviews" class="rounded-lg shadow-md w-full h-auto object-cover">
                         </div>
                     </div>
                     <div class="card md:flex items-center">
                         <div class="md:w-1/3 mb-4 md:mb-0 md:mr-6">
-                            <img src="https://placehold.co/600x400/E2E8F0/4A5568?text=Social+Media+Signals" alt="Social Media Signals" class="rounded-lg shadow-md w-full h-auto object-cover">
+                            <img src="https://placehold.co/600x400/B08D57/3D2B1F?text=Damaged+Reputation" alt="Damaged Reputation" class="rounded-lg shadow-md w-full h-auto object-cover">
                         </div>
                         <div class="md:w-2/3">
-                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">Social Signals & Brand Mentions</h3>
-                            <p class="text-gray-600">How your brand is discussed on social media, the engagement it receives, and unlinked brand mentions across the web contribute to its overall online authority and perception.</p>
+                            <h3 class="text-2xl font-semibold text-[#8B4513] mb-2">Brand Becomes a Punchline</h3>
+                            <p>Your company might become known as the "one that doesn't care," the "expensive and unhelpful" option, or the "Fat Ugly Duck" of the industry. This taints perceptions even among potential large clients.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="pitfalls" class="py-12 bg-red-50">
+        <section id="ducks-downfall" class="py-12 pitfall-section">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="section-title text-red-700">The Price of "Cutting Corners": Pitfalls & Penalties</h2>
-                <p class="text-center text-red-600 mb-10 max-w-3xl mx-auto">
-                    Engaging in unethical or manipulative practices carries significant risks. Understanding these potential consequences is crucial.
+                <h2 class="section-title pitfall-title">Plucked and Cooked: The Downfall of the Fat Ugly Duck</h2>
+                <p class="text-center text-[#800000] mb-10 max-w-3xl mx-auto">
+                    Ignoring the many for the few isn't just bad ethics; it's bad business. The consequences can be severe and hard to stomach.
                 </p>
                 <div class="grid md:grid-cols-2 gap-8">
-                    <div class="card border-l-4 border-red-500">
-                        <h3 class="text-xl font-semibold text-red-700 mb-3">Search Engine Penalties</h3>
-                        <p class="text-gray-600">Manual actions or algorithmic devaluations from search engines, leading to drastic drops in rankings or complete removal from search results. Recovering can be a long and arduous process.</p>
+                    <div class="card pitfall-card">
+                        <h3 class="text-xl font-semibold text-[#800000] mb-3">Market Share Erosion</h3>
+                        <p>While you're chasing whales, nimbler competitors who value all customers start eating your lunch, one small bite at a time. The "pond" dries up.</p>
                     </div>
-                    <div class="card border-l-4 border-red-500">
-                        <h3 class="text-xl font-semibold text-red-700 mb-3">Reputation Damage</h3>
-                        <p class="text-gray-600">Loss of customer trust, negative public perception, and difficulty attracting new business. A damaged reputation can take years to repair, if ever fully.</p>
+                    <div class="card pitfall-card">
+                        <h3 class="text-xl font-semibold text-[#800000] mb-3">Reputation Collapse</h3>
+                        <p>Once labeled as uncaring or exploitative, it's incredibly hard to shake. "Big fish" might also become wary of associating with a brand known for mistreating others.</p>
                     </div>
-                    <div class="card border-l-4 border-red-500">
-                        <h3 class="text-xl font-semibold text-red-700 mb-3">Legal & Regulatory Action</h3>
-                        <p class="text-gray-600">Fines, lawsuits, or sanctions from regulatory bodies for deceptive marketing, privacy violations, or other unethical business practices.</p>
+                    <div class="card pitfall-card">
+                        <h3 class="text-xl font-semibold text-[#800000] mb-3">Talent Repulsion</h3>
+                        <p>Top talent wants to work for respected, ethical companies. A "Fat Ugly Duck" reputation makes it hard to attract and retain good employees.</p>
                     </div>
-                    <div class="card border-l-4 border-red-500">
-                        <h3 class="text-xl font-semibold text-red-700 mb-3">Decreased Conversions & ROI</h3>
-                        <p class="text-gray-600">Even if tactics temporarily boost traffic, a poor reputation or user experience will lead to lower conversion rates and a diminished return on investment for marketing efforts.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="monitoring" class="py-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="section-title">Keeping an Eye on Your Online Self: Monitoring Tools</h2>
-                <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">
-                    Proactively monitoring your online presence is key to understanding how your company is perceived and identifying potential issues early.
-                </p>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Google Search Console</h3>
-                        <p class="text-gray-600">Essential for understanding how Google sees your site. Provides insights on indexing, crawl errors, manual actions, and search performance.</p>
-                    </div>
-                    <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Web Analytics (e.g., Google Analytics)</h3>
-                        <p class="text-gray-600">Track website traffic, user behavior, and conversion rates. Identify underperforming pages or problematic user journeys.</p>
-                    </div>
-                    <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Brand Monitoring Tools</h3>
-                        <p class="text-gray-600">Services like Brandwatch, Talkwalker, or Google Alerts can track mentions of your brand, competitors, and relevant keywords across the web and social media.</p>
-                    </div>
-                    <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Social Listening Platforms</h3>
-                        <p class="text-gray-600">Tools like Sprout Social or Hootsuite help monitor social media conversations, sentiment, and engagement related to your brand.</p>
-                    </div>
-                    <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">Review Site Monitoring</h3>
-                        <p class="text-gray-600">Regularly check and respond to reviews on Google My Business, Yelp, Trustpilot, and industry-specific review sites.</p>
-                    </div>
-                    <div class="card">
-                        <h3 class="text-xl font-semibold text-indigo-600 mb-3">SEO Audit Tools</h3>
-                        <p class="text-gray-600">Platforms like Ahrefs, SEMrush, or Moz can help identify technical SEO issues, backlink profiles (including potentially harmful links), and keyword rankings.</p>
+                    <div class="card pitfall-card">
+                        <h3 class="text-xl font-semibold text-[#800000] mb-3">Regulatory Scrutiny & Fines</h3>
+                        <p>Consistently poor treatment of a large segment of customers can attract the attention of consumer protection agencies, leading to costly investigations and penalties.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="ethics" class="py-12 bg-green-50">
+        <section id="slimming-down" class="py-12 ethical-section">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="section-title text-green-700">The Ethical Path: Building a Sustainable Digital Presence</h2>
-                 <p class="text-center text-green-600 mb-10 max-w-3xl mx-auto">
-                    Instead of "tricks," focus on long-term strategies that build genuine trust, authority, and a positive online reputation. This is how sustainable success is achieved.
+                <h2 class="section-title ethical-title">Shedding the Fat: A Path to Better Business</h2>
+                 <p class="text-center text-[#2E8B57] mb-10 max-w-3xl mx-auto">
+                    It's possible to change course. Focusing on genuine value for ALL customers, not just the biggest ones, is the key to a healthier, more sustainable future.
                 </p>
                 <ul class="space-y-6">
-                    <li class="card border-l-4 border-green-500">
-                        <h3 class="text-xl font-semibold text-green-700 mb-2">Focus on High-Quality, User-Centric Content</h3>
-                        <p class="text-gray-600">Create valuable, informative, and engaging content that genuinely helps your audience. Answer their questions, solve their problems.</p>
+                    <li class="card ethical-card">
+                        <h3 class="text-xl font-semibold text-[#2E8B57] mb-2">Value Every Customer</h3>
+                        <p>Develop systems and a culture that treat every customer with respect and provide them with genuine value, regardless of their size.</p>
                     </li>
-                    <li class="card border-l-4 border-green-500">
-                        <h3 class="text-xl font-semibold text-green-700 mb-2">Prioritize Technical SEO & User Experience (UX)</h3>
-                        <p class="text-gray-600">Ensure your website is fast, mobile-friendly, easy to navigate, and technically sound. Make it accessible to all users.</p>
+                    <li class="card ethical-card">
+                        <h3 class="text-xl font-semibold text-[#2E8B57] mb-2">Streamline for All, Not Just the Few</h3>
+                        <p>Invest in efficient, user-friendly processes and technology that benefit everyone. A good experience for a small customer is a good experience, period.</p>
                     </li>
-                    <li class="card border-l-4 border-green-500">
-                        <h3 class="text-xl font-semibold text-green-700 mb-2">Build Authentic Relationships & Engage Your Audience</h3>
-                        <p class="text-gray-600">Interact genuinely on social media, respond to reviews (both positive and negative) professionally, and foster a community around your brand.</p>
+                    <li class="card ethical-card">
+                        <h3 class="text-xl font-semibold text-[#2E8B57] mb-2">Listen to the Whole Pond</h3>
+                        <p>Actively solicit and act upon feedback from all segments of your customer base. Use it to improve and innovate.</p>
                     </li>
-                    <li class="card border-l-4 border-green-500">
-                        <h3 class="text-xl font-semibold text-green-700 mb-2">Earn High-Quality Backlinks Naturally</h3>
-                        <p class="text-gray-600">Create link-worthy content and build relationships with other reputable sites in your industry. Avoid buying or exchanging links manipulatively.</p>
+                    <li class="card ethical-card">
+                        <h3 class="text-xl font-semibold text-[#2E8B57] mb-2">Transparency and Fairness in All Dealings</h3>
+                        <p>Be clear, honest, and fair in your pricing, terms, and marketing. Don't hide costs or overpromise and underdeliver to any group.</p>
                     </li>
-                    <li class="card border-l-4 border-green-500">
-                        <h3 class="text-xl font-semibold text-green-700 mb-2">Be Transparent & Honest</h3>
-                        <p class="text-gray-600">Clearly state your policies, pricing, and business practices. If mistakes happen, own them and communicate openly.</p>
+                    <li class="card ethical-card">
+                        <h3 class="text-xl font-semibold text-[#2E8B57] mb-2">Build a Reputation for Inclusivity</h3>
+                        <p>Strive to be known as a company that serves its entire market well, fostering loyalty and positive word-of-mouth from customers big and small.</p>
                     </li>
                 </ul>
             </div>
         </section>
-
-        <section id="reputation" class="py-12 bg-white hidden"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="section-title">Proactive Reputation Management</h2>
-                <p class="text-center text-gray-600 mb-10">This section will detail strategies for actively managing and improving online reputation. (Content to be added)</p>
-                </div>
-        </section>
-
     </main>
 
-    <footer class="bg-gray-800 text-gray-300 py-12">
+    <footer class="footer-bg text-gray-300 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="text-lg font-semibold text-white mb-4">About Us</h3>
-                    <p class="text-sm">Providing insights for better digital citizenship and responsible online practices.</p>
-                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-4">About This Site</h3>
+                    <p class="text-sm">A critical look at how focusing only on "big fish" can turn companies into "Fat Ugly Ducks."</p>
+                </div>
                 <div>
-                    <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                    <h3 class="text-lg font-semibold text-white mb-4">Navigate the Slime</h3>
                     <ul class="space-y-2">
                         <li><a href="#home" class="footer-link text-sm">Home</a></li>
-                        <li><a href="#footprint" class="footer-link text-sm">Digital Footprint</a></li>
-                        <li><a href="#pitfalls" class="footer-link text-sm">Pitfalls & Penalties</a></li>
-                        <li><a href="#monitoring" class="footer-link text-sm">Monitoring</a></li>
-                        <li><a href="#ethics" class="footer-link text-sm">Ethical Practices</a></li>
+                        <li><a href="#becoming-the-duck" class="footer-link text-sm">Becoming the Duck</a></li>
+                        <li><a href="#ducks-shadow" class="footer-link text-sm">The Duck's Shadow</a></li>
+                        <li><a href="#ducks-downfall" class="footer-link text-sm">The Duck's Downfall</a></li>
+                        <li><a href="#slimming-down" class="footer-link text-sm">Slimming Down</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold text-white mb-4">Future Pages (Examples)</h3>
+                    <h3 class="text-lg font-semibold text-white mb-4">Further Reading (Ideas)</h3>
                     <ul class="space-y-2">
-                        <li><span class="footer-link text-sm">Advanced Monitoring Techniques (Coming Soon)</span></li>
-                        <li><span class="footer-link text-sm">Legal Implications of Dark Patterns (Coming Soon)</span></li>
-                        <li><span class="footer-link text-sm">Case Studies: Redemption Road (Coming Soon)</span></li>
-                        <li><span class="footer-link text-sm">Contact for Consultation (Coming Soon)</span></li>
+                        <li><span class="footer-link text-sm">Case Studies: Famous Fat Ducks (Coming Soon)</span></li>
+                        <li><span class="footer-link text-sm">The Psychology of Corporate Greed (Coming Soon)</span></li>
+                        <li><span class="footer-link text-sm">How Little Guys Can Fight Back (Coming Soon)</span></li>
                     </ul>
                 </div>
             </div>
-            <div class="mt-8 border-t border-gray-700 pt-8 text-center">
-                <p class="text-sm">&copy; <span id="currentYear"></span> Your Company Name. All rights reserved. For informational purposes only.</p>
+            <div class="mt-8 border-t border-[#4B4B24] pt-8 text-center">
+                <p class="text-sm">&copy; <span id="currentYear"></span> Fat Ugly Duck Watch. Quack responsibly.</p>
             </div>
         </div>
     </footer>
@@ -312,15 +304,17 @@
         // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
+        const svgs = mobileMenuButton.querySelectorAll('svg');
+
         mobileMenuButton.addEventListener('click', () => {
             const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
             mobileMenuButton.setAttribute('aria-expanded', !expanded);
             mobileMenu.classList.toggle('hidden');
-            // Toggle icons
-            mobileMenuButton.querySelectorAll('svg').forEach(icon => icon.classList.toggle('hidden'));
+            svgs[0].classList.toggle('hidden'); // Toggle burger icon
+            svgs[1].classList.toggle('hidden'); // Toggle close icon
         });
 
-        // Smooth scroll for navigation links
+        // Smooth scroll for navigation links & active link update
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -333,7 +327,7 @@
                 }
                 // Close mobile menu if open
                 if (!mobileMenu.classList.contains('hidden')) {
-                    mobileMenuButton.click();
+                    mobileMenuButton.click(); // Simulate click to close and toggle icons
                 }
             });
         });
@@ -341,31 +335,43 @@
         // Set current year in footer
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Active navigation link highlighting (simple version based on scroll)
-        const sections = document.querySelectorAll('section[id]');
+        // Active navigation link highlighting on scroll
+        const sections = document.querySelectorAll('main section[id]');
         const navLinks = document.querySelectorAll('nav a.nav-link');
+        const mobileNavLinks = document.querySelectorAll('#mobile-menu a.nav-link');
 
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 70) { // 70 is approx nav height + buffer
-                    current = section.getAttribute('id');
-                }
-            });
-
+        const setActiveLink = (currentId) => {
             navLinks.forEach(link => {
                 link.classList.remove('nav-link-active');
-                if (link.getAttribute('href') === `#${current}`) {
+                if (link.getAttribute('href') === `#${currentId}`) {
                     link.classList.add('nav-link-active');
                 }
             });
-            // Ensure home is active if at top
-            if (pageYOffset < sections[0].offsetTop - 70) {
-                 navLinks.forEach(link => link.classList.remove('nav-link-active'));
-                 document.querySelector('nav a[href="#home"]').classList.add('nav-link-active');
+            mobileNavLinks.forEach(link => {
+                link.classList.remove('nav-link-active');
+                if (link.getAttribute('href') === `#${currentId}`) {
+                    link.classList.add('nav-link-active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', () => {
+            let current = 'home'; // Default to home
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 80) { // 80 is approx nav height + buffer
+                    current = section.getAttribute('id');
+                }
+            });
+             // If at the very top, ensure 'home' is active, overriding section logic if needed.
+            if (pageYOffset < sections[0].offsetTop - 80) {
+                 current = 'home';
             }
+            setActiveLink(current);
         });
+        // Set initial active link on load
+        setActiveLink('home');
+
 
     </script>
 
