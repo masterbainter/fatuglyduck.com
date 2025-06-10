@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, onSnapshot } from 'firebase/firestore';
 
 // --- Data ---
 // Manually parsed and cleaned data from the user's input.
@@ -71,69 +71,98 @@ const rummageSalesData = [
 
 
 // --- Firebase Configuration ---
-// These variables are provided by the environment.
 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-rummage-app';
+
+// --- Helper Functions ---
+const isSaleOpenToday = (sale) => {
+    const dayMap = { 0: 'sunday', 1: 'monday', 2: 'tuesday', 3: 'wednesday', 4: 'thursday', 5: 'friday', 6: 'saturday' };
+    const today = new Date();
+    // In a real scenario, you might adjust the date for testing.
+    // For example: const today = new Date('2025-06-12T10:00:00'); // A Thursday
+    const todayName = dayMap[today.getDay()];
+
+    const saleDays = sale.days.toLowerCase();
+    
+    // Check main sale days
+    if (saleDays.includes(todayName)) return true;
+
+    // Check additional days
+    const additional = (sale.additionalDays || '').toLowerCase();
+    if (additional.includes(todayName)) return true;
+
+    return false;
+};
 
 // --- Components ---
 
 const LocationCard = ({ location, isCompleted, onToggleComplete }) => {
     const { id, address, days, thursday, friday, saturday, additionalDays, items } = location;
+    const isOpen = isSaleOpenToday(location);
 
     return (
-        <div className={`relative bg-gray-800 border border-gray-700 rounded-lg p-5 transition-all duration-300 ${isCompleted ? 'opacity-50' : 'opacity-100'}`}>
-            <div className="absolute top-4 right-4">
+        <div className={`relative bg-gray-800 border border-gray-700 rounded-lg p-4 transition-all duration-300 flex flex-col ${isCompleted ? 'opacity-50' : 'opacity-100'}`}>
+            <div className="absolute top-3 right-3">
                 <button
                     onClick={() => onToggleComplete(id)}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-700 hover:bg-green-600 text-gray-400'}`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 z-10 ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-700 hover:bg-green-600 text-gray-400'}`}
                     aria-label={`Mark ${address} as visited`}
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                 </button>
             </div>
             
-            <h3 className={`font-bold text-xl mb-2 text-green-400 ${isCompleted ? 'line-through' : ''}`}>
-                {address}
-            </h3>
+            <div className="flex-grow">
+                 <h3 className={`font-bold text-lg mb-2 text-green-400 pr-10 ${isCompleted ? 'line-through' : ''}`}>
+                    {address}
+                </h3>
             
-            <p className="text-gray-400 text-sm mb-3"><strong>Sale Days:</strong> {days}</p>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-center mb-4 text-sm">
-                <div className="bg-gray-700/50 p-2 rounded-md">
-                    <p className="font-semibold text-gray-300">Thursday</p>
-                    <p className="text-gray-400">{thursday}</p>
+                {isOpen && (
+                     <div className="absolute top-3 left-3 bg-yellow-500 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">
+                         OPEN TODAY
+                     </div>
+                )}
+                
+                <p className="text-gray-400 text-sm mb-3"><strong>Sale Days:</strong> {days}</p>
+                
+                <div className="grid grid-cols-3 gap-2 text-center mb-4 text-xs sm:text-sm">
+                    <div className="bg-gray-700/50 p-2 rounded-md">
+                        <p className="font-semibold text-gray-300">Thursday</p>
+                        <p className="text-gray-400">{thursday}</p>
+                    </div>
+                    <div className="bg-gray-700/50 p-2 rounded-md">
+                        <p className="font-semibold text-gray-300">Friday</p>
+                        <p className="text-gray-400">{friday}</p>
+                    </div>
+                    <div className="bg-gray-700/50 p-2 rounded-md">
+                        <p className="font-semibold text-gray-300">Saturday</p>
+                        <p className="text-gray-400">{saturday}</p>
+                    </div>
                 </div>
-                <div className="bg-gray-700/50 p-2 rounded-md">
-                    <p className="font-semibold text-gray-300">Friday</p>
-                    <p className="text-gray-400">{friday}</p>
-                </div>
-                <div className="bg-gray-700/50 p-2 rounded-md">
-                    <p className="font-semibold text-gray-300">Saturday</p>
-                    <p className="text-gray-400">{saturday}</p>
-                </div>
-            </div>
-            
-            {additionalDays && !['na', 'n/a'].includes(additionalDays.toLowerCase()) && (
-                <p className="text-sm text-yellow-400 mb-3"><strong>Extra Days:</strong> {additionalDays}</p>
-            )}
+                
+                {additionalDays && !['na', 'n/a'].includes(additionalDays.toLowerCase()) && (
+                    <p className="text-xs sm:text-sm text-yellow-400 mb-3"><strong>Extra Days:</strong> {additionalDays}</p>
+                )}
 
-            <div className="bg-gray-900/70 p-3 rounded-md">
-                <p className="text-gray-300 font-semibold mb-1">Items for Sale:</p>
-                <p className="text-gray-400 text-sm">{items}</p>
+                <div className="bg-gray-900/70 p-3 rounded-md mt-auto">
+                    <p className="text-gray-300 font-semibold mb-1 text-sm">Items for Sale:</p>
+                    <p className="text-gray-400 text-xs sm:text-sm">{items}</p>
+                </div>
             </div>
         </div>
     );
 };
 
 const App = () => {
-    // State for Firebase instances and user information
+    // State for Firebase
     const [db, setDb] = useState(null);
     const [auth, setAuth] = useState(null);
     const [userId, setUserId] = useState(null);
 
-    // State for application data
+    // State for App Data
     const [completedLocations, setCompletedLocations] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [filter, setFilter] = useState('all'); // 'all', 'open', 'not_visited'
 
     // --- Firebase Initialization ---
     useEffect(() => {
@@ -157,7 +186,6 @@ const App = () => {
     // --- Authentication ---
     useEffect(() => {
         if (!auth) return;
-
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 setUserId(user.uid);
@@ -171,7 +199,6 @@ const App = () => {
                     }
                 } catch (error) {
                     console.error("Error signing in:", error);
-                    setIsLoading(false);
                 }
             }
         });
@@ -181,17 +208,12 @@ const App = () => {
     // --- Data Fetching and Real-time Updates ---
     useEffect(() => {
         if (!db || !userId) return;
-
         const docRef = doc(db, 'artifacts', appId, 'users', userId, 'rummage-checklist', 'completed');
-        
         setIsLoading(true);
         const unsubscribe = onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
-                const data = docSnap.data();
-                setCompletedLocations(data.completed || []);
+                setCompletedLocations(docSnap.data().completed || []);
             } else {
-                // If the document doesn't exist, it means it's a new user.
-                // No need to do anything, completedLocations is already an empty array.
                 console.log("No saved data found for user. Starting fresh.");
             }
             setIsLoading(false);
@@ -199,71 +221,85 @@ const App = () => {
             console.error("Error listening to document:", error);
             setIsLoading(false);
         });
-
         return () => unsubscribe();
     }, [db, userId]);
-
+    
     // --- Data Saving ---
     const handleToggleComplete = useCallback(async (locationId) => {
-        if (!db || !userId) {
-            console.log("Not saving, Firebase not ready.");
-            // Allow local state update even if offline
-            setCompletedLocations(prev =>
-                prev.includes(locationId)
-                    ? prev.filter(id => id !== locationId)
-                    : [...prev, locationId]
-            );
-            return;
-        }
-
         const newCompleted = completedLocations.includes(locationId)
             ? completedLocations.filter(id => id !== locationId)
             : [...completedLocations, locationId];
+        
+        setCompletedLocations(newCompleted); // Optimistic update
 
-        // Optimistically update the UI
-        setCompletedLocations(newCompleted);
+        if (!db || !userId) {
+            console.log("Firebase not ready. State updated locally.");
+            return;
+        }
 
         try {
             const docRef = doc(db, 'artifacts', appId, 'users', userId, 'rummage-checklist', 'completed');
             await setDoc(docRef, { completed: newCompleted });
         } catch (error) {
             console.error("Error saving completed locations:", error);
-            // Revert optimistic update on error
-            setCompletedLocations(completedLocations); 
+            setCompletedLocations(completedLocations); // Revert on error
         }
     }, [db, userId, completedLocations]);
+
+    // --- Filtering Logic ---
+    const filteredSales = useMemo(() => {
+        switch (filter) {
+            case 'open':
+                return rummageSalesData.filter(sale => isSaleOpenToday(sale));
+            case 'not_visited':
+                return rummageSalesData.filter(sale => !completedLocations.includes(sale.id));
+            case 'all':
+            default:
+                return rummageSalesData;
+        }
+    }, [filter, completedLocations]);
 
     const completedCount = completedLocations.length;
     const totalCount = rummageSalesData.length;
 
+    const FilterButton = ({ type, text }) => (
+        <button
+            onClick={() => setFilter(type)}
+            className={`px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 ${filter === type ? 'bg-green-500 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}`}
+        >
+            {text}
+        </button>
+    );
+
     return (
-        <div className="bg-gray-900 min-h-screen text-gray-200 font-sans p-4 sm:p-6 lg:p-8">
-            <style>
-                {`
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-                body { font-family: 'Inter', sans-serif; }
-                `}
-            </style>
+        <div className="bg-gray-900 min-h-screen text-gray-200 font-sans p-4">
+            <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap'); body { font-family: 'Inter', sans-serif; }`}</style>
             
-            <header className="text-center mb-8">
-                <h1 className="text-4xl sm:text-5xl font-bold text-white mb-2">
-                    Hartford Rummage Sale Checklist
+            <header className="text-center mb-6">
+                <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
+                    Hartford Rummage Checklist
                 </h1>
-                <p className="text-lg text-gray-400">
-                    Your personal guide to the 2025 city-wide sales.
+                <p className="text-base text-gray-400">
+                    Your guide to the 2025 city-wide sales.
                 </p>
-                <div className="mt-4 text-xl font-semibold text-green-400">
-                   {isLoading ? 'Loading progress...' : `${completedCount} / ${totalCount} Visited`}
+                <div className="mt-4 text-lg font-semibold text-green-400">
+                   {isLoading ? 'Loading...' : `${completedCount} / ${totalCount} Visited`}
                 </div>
             </header>
+
+            <div className="flex justify-center items-center gap-2 mb-6 flex-wrap">
+                <FilterButton type="all" text="All Sales" />
+                <FilterButton type="open" text="Open Today" />
+                <FilterButton type="not_visited" text="Not Visited" />
+            </div>
 
             {isLoading && (
                  <div className="text-center text-xl text-gray-400">Loading your checklist...</div>
             )}
             
             {!isLoading && (
-                 <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {rummageSalesData.map(location => (
+                 <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {filteredSales.map(location => (
                         <LocationCard
                             key={location.id}
                             location={location}
@@ -271,10 +307,9 @@ const App = () => {
                             onToggleComplete={handleToggleComplete}
                         />
                     ))}
-                </main>
+                 </main>
             )}
-             <footer className="text-center mt-12 text-gray-500 text-sm">
-                <p>App created to help you conquer the rummage sales!</p>
+             <footer className="text-center mt-12 text-gray-500 text-xs">
                 <p>Your progress is saved automatically.</p>
              </footer>
         </div>
