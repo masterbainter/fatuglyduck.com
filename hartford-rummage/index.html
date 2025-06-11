@@ -72,7 +72,7 @@
         </main>
         
         <footer class="text-center mt-12 text-gray-500 text-xs">
-            <p>Your progress is saved automatically.</p>
+            <p>Your progress is saved automatically to this device.</p>
         </footer>
     </div>
 
@@ -81,7 +81,6 @@
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
 
@@ -150,11 +149,7 @@
             { id: 61, address: "1106 N Vandemark Ave", days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
 
-        // --- Firebase Configuration & App State ---
-        
-        // *******************************************************************
-        // ****************** PASTE YOUR FIREBASE CONFIG HERE ****************
-        // *******************************************************************
+        // --- Firebase Configuration ---
         const firebaseConfig = {
           apiKey: "AIzaSyBp3vJ3R4xFtG7UHfv7CbSUl-bZE-5ik0E",
           authDomain: "hartford-rummage2025-fe0f3.firebaseapp.com",
@@ -165,11 +160,8 @@
           appId: "1:520958147494:web:96a455852f231f35a3ad67",
           measurementId: "G-50YZMDWQH8"
         };
-        // *******************************************************************
-        // *******************************************************************
         
-        const appId = firebaseConfig.projectId;
-        let db, auth, rtdb, userId;
+        // --- App State ---
         let completedLocations = [];
         let currentFilter = 'all';
 
@@ -242,45 +234,49 @@
             progressCounter.textContent = `${completedLocations.length} / ${rummageSalesData.length} Visited`;
         }
 
-        async function handleToggleComplete(locationId) {
+        function handleToggleComplete(locationId) {
             const newCompleted = completedLocations.includes(locationId)
                 ? completedLocations.filter(id => id !== locationId)
                 : [...completedLocations, locationId];
             completedLocations = newCompleted;
+            
+            // Save to browser's local storage
+            localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(newCompleted));
+            
             renderSales();
-            if (!db || !userId) return;
-            try {
-                const docRef = doc(db, 'artifacts', appId, 'users', userId, 'rummage-checklist', 'completed');
-                await setDoc(docRef, { completed: newCompleted });
-            } catch (error) {
-                console.error("Error saving completed locations:", error);
-            }
         }
         
-        // --- Presence System Logic ---
-        function setupPresenceSystem(uid) {
-            const userStatusDatabaseRef = ref(rtdb, `/artifacts/${appId}/public/presence/users/${uid}`);
-            const connectedRef = ref(rtdb, '.info/connected');
-            const allUsersRef = ref(rtdb, `/artifacts/${appId}/public/presence/users`);
+        // --- Presence System Logic (Requires Firebase) ---
+        function setupPresenceSystem(auth) {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    const rtdb = getDatabase();
+                    const appId = firebaseConfig.projectId;
+                    const uid = user.uid;
+                    const userStatusDatabaseRef = ref(rtdb, `/artifacts/${appId}/public/presence/users/${uid}`);
+                    const connectedRef = ref(rtdb, '.info/connected');
+                    const allUsersRef = ref(rtdb, `/artifacts/${appId}/public/presence/users`);
 
-            onValue(connectedRef, (snap) => {
-                if (snap.val() === true) {
-                    set(userStatusDatabaseRef, true);
-                    onDisconnect(userStatusDatabaseRef).remove();
+                    onValue(connectedRef, (snap) => {
+                        if (snap.val() === true) {
+                            set(userStatusDatabaseRef, true);
+                            onDisconnect(userStatusDatabaseRef).remove();
+                        }
+                    });
+                    
+                    onValue(allUsersRef, (snap) => {
+                        const count = snap.size; 
+                        visitorCounter.innerHTML = `
+                            <span class="flex items-center justify-center">
+                                <span class="relative flex h-3 w-3 mr-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+                                </span>
+                                ${count} Live Visitor${count === 1 ? '' : 's'}
+                            </span>
+                        `;
+                    });
                 }
-            });
-            
-            onValue(allUsersRef, (snap) => {
-                const count = snap.size; 
-                visitorCounter.innerHTML = `
-                    <span class="flex items-center justify-center">
-                        <span class="relative flex h-3 w-3 mr-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
-                        </span>
-                        ${count} Live Visitor${count === 1 ? '' : 's'}
-                    </span>
-                `;
             });
         }
 
@@ -303,44 +299,34 @@
         });
 
         // --- Initialization ---
-        async function main() {
-            // Check if config is the placeholder
-            if (!firebaseConfig.apiKey) {
-                console.error("Firebase config is not filled out. This app cannot connect to Firebase.");
-                loadingIndicator.textContent = "Configuration error. App is offline.";
-                visitorCounter.textContent = "Offline";
-                renderSales(); // Render sales list in offline mode
-                return;
+        function main() {
+            // Load checklist from local storage first
+            try {
+                const savedChecklist = localStorage.getItem('hartfordRummageChecklist2025');
+                if (savedChecklist) {
+                    completedLocations = JSON.parse(savedChecklist);
+                }
+            } catch (e) {
+                console.error("Could not parse saved checklist", e);
+                completedLocations = [];
             }
-            
+            renderSales();
+
+            // Then, initialize Firebase for the live visitor counter
             try {
                 const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                rtdb = getDatabase(app); 
-                
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        const docRef = doc(db, 'artifacts', appId, 'users', userId, 'rummage-checklist', 'completed');
-                        onSnapshot(docRef, (docSnap) => {
-                            completedLocations = docSnap.exists() ? docSnap.data().completed || [] : [];
-                            renderSales();
-                        }, (error) => {
-                             console.error("Error listening to Firestore:", error);
-                             renderSales();
-                        });
-                        setupPresenceSystem(userId);
-                    } else {
-                        signInAnonymously(auth).catch(err => console.error("Anonymous sign-in failed:", err));
-                    }
+                const auth = getAuth(app);
+                setupPresenceSystem(auth);
+                signInAnonymously(auth).catch(err => {
+                    console.error("Anonymous sign-in for visitor counter failed:", err);
+                    visitorCounter.textContent = "Visitor count disabled";
                 });
             } catch (error) {
-                console.error("Initialization failed:", error);
-                loadingIndicator.textContent = "Initialization failed. Check console.";
-                visitorCounter.textContent = "Error";
+                console.error("Firebase Initialization for visitor counter failed:", error);
+                visitorCounter.textContent = "Offline";
             }
         }
+        
         main();
     </script>
 </body>
