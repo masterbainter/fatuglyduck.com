@@ -80,7 +80,7 @@
     <script type="module">
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         // Import Realtime Database modules for presence
         import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
@@ -290,7 +290,7 @@
 
         // --- Initialization ---
         async function main() {
-             if (Object.keys(firebaseConfig).length === 0) {
+            if (Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey) {
                 console.error("Firebase config not found. Running in offline mode.");
                 loadingIndicator.textContent = "Could not connect to database. Running in offline mode.";
                 visitorCounter.textContent = "Offline";
@@ -303,7 +303,6 @@
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
-                // The databaseURL from the config will be used automatically
                 rtdb = getDatabase(app); 
                 
                 onAuthStateChanged(auth, (user) => {
@@ -319,7 +318,6 @@
                         });
                         setupPresenceSystem(userId);
                     } else {
-                        // Using anonymous sign-in by default
                         signInAnonymously(auth).catch(err => console.error("Anonymous sign-in failed:", err));
                     }
                 });
