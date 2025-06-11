@@ -294,7 +294,8 @@
                     const app = initializeApp(firebaseConfig);
                     db = getFirestore(app);
                     auth = getAuth(app);
-                    rtdb = getDatabase(app); // Initialize Realtime Database
+                    // FIX: Pass the specific database URL to getDatabase
+                    rtdb = getDatabase(app, "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com/");
                 } else {
                     console.log("Firebase config not found. Running in offline mode.");
                     renderSales();
