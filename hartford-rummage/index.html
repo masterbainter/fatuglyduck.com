@@ -154,6 +154,7 @@
         // --- Firebase Configuration & App State ---
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-rummage-app';
+        
         let db, auth, rtdb, userId;
         let completedLocations = [];
         let currentFilter = 'all';
@@ -242,7 +243,7 @@
             }
         }
         
-        // --- New Presence System Logic ---
+        // --- Presence System Logic ---
         function setupPresenceSystem(uid) {
             const userStatusDatabaseRef = ref(rtdb, `/artifacts/${appId}/public/presence/users/${uid}`);
             const connectedRef = ref(rtdb, '.info/connected');
@@ -289,23 +290,25 @@
 
         // --- Initialization ---
         async function main() {
+             if (Object.keys(firebaseConfig).length === 0) {
+                console.error("Firebase config not found. Running in offline mode.");
+                loadingIndicator.textContent = "Could not connect to database. Running in offline mode.";
+                visitorCounter.textContent = "Offline";
+                // Render the sales list without any saved data
+                renderSales();
+                return;
+            }
+
             try {
-                if (Object.keys(firebaseConfig).length > 0) {
-                    const app = initializeApp(firebaseConfig);
-                    db = getFirestore(app);
-                    auth = getAuth(app);
-                    // FIX: Pass the specific database URL to getDatabase
-                    rtdb = getDatabase(app, "https://hartford-rummage2025-fe0f3-default-rtdb.firebaseio.com/");
-                } else {
-                    console.log("Firebase config not found. Running in offline mode.");
-                    renderSales();
-                    return;
-                }
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                // The databaseURL from the config will be used automatically
+                rtdb = getDatabase(app); 
+                
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         userId = user.uid;
-                        
-                        // Setup Firestore listener for checklist
                         const docRef = doc(db, 'artifacts', appId, 'users', userId, 'rummage-checklist', 'completed');
                         onSnapshot(docRef, (docSnap) => {
                             completedLocations = docSnap.exists() ? docSnap.data().completed || [] : [];
@@ -314,22 +317,16 @@
                              console.error("Error listening to Firestore:", error);
                              renderSales();
                         });
-                        
-                        // Setup Realtime Database listener for presence
                         setupPresenceSystem(userId);
-
                     } else {
-                        const authToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-                        if (authToken) {
-                            signInWithCustomToken(auth, authToken).catch(err => console.error("Custom token sign-in failed:", err));
-                        } else {
-                            signInAnonymously(auth).catch(err => console.error("Anonymous sign-in failed:", err));
-                        }
+                        // Using anonymous sign-in by default
+                        signInAnonymously(auth).catch(err => console.error("Anonymous sign-in failed:", err));
                     }
                 });
             } catch (error) {
                 console.error("Initialization failed:", error);
-                renderSales();
+                loadingIndicator.textContent = "Initialization failed. Check console.";
+                visitorCounter.textContent = "Error";
             }
         }
         main();
