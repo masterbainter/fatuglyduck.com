@@ -20,6 +20,13 @@
         .achievement-icon { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4)); }
         .achievement-card { opacity: 0.3; filter: grayscale(80%); }
         .achievement-card.unlocked { opacity: 1; filter: grayscale(0%); }
+        #toast-notification {
+            transform: translateY(200%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #toast-notification.show {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -77,6 +84,11 @@
             <button id="close-modal-btn" class="bg-green-500 text-white font-bold py-2 px-6 rounded-full hover:bg-green-600 transition-colors">Awesome!</button>
         </div>
     </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-red-500 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg">
+        <!-- Toast message here -->
+    </div>
 
 
     <!-- Firebase and App Logic -->
@@ -85,69 +97,18 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
-        // --- Data ---
+        // --- Data with Geolocation ---
         const rummageSalesData = [
-            { id: 1, address: "301 w 7th st", days: "Friday, Saturday", thursday: "N/a", friday: "8 am", saturday: "8 am", additionalDays: "N/a", items: "Porcelain Dolls, kids clothes, kids toys, household items, men's camo clothing" },
-            { id: 2, address: "512 S. Main Ave, Hartford", days: "Thursday, Friday, Saturday", thursday: "1 PM", friday: "8 AM", saturday: "8 AM", additionalDays: "N/A", items: "Antique dishes & items, household items, TV's, outdoor decor, kitchen gadgets, photo & scrapbook albums, many more items too numerous to list" },
-            { id: 3, address: "804 Par Tee Dr. Hartford SD 57033", days: "Thursday, Friday, Saturday", thursday: "4pm", friday: "8:30am", saturday: "8:00 AM", additionalDays: "NA", items: "Adult clothing, teen clothing, boys clothing sz8-10, lots of miscellaneous- home decor, toys etc" },
-            { id: 4, address: "817 Ruud ln 26", days: "Thursday, Friday, Saturday", thursday: "8am", friday: "8am", saturday: "8am", additionalDays: "Wednesday 3pm-8pm", items: "Fishing/ice fishing equipment, Tools, Namebrand shoes/clothes, A little bit of everything" },
-            { id: 5, address: "203 Mary Ln", days: "Thursday, Friday, Saturday", thursday: "12-8", friday: "12-8", saturday: "8-12", additionalDays: "NA", items: "Multi family, many household items, women and men’s clothing, and home decor" },
-            { id: 6, address: "46514 Kloxin Drive Hartford SD", days: "Thursday, Friday", thursday: "8:00am - 5:00pm", friday: "8:00am - 5:00pm", saturday: "N/A", additionalDays: "N/A", items: "Clothing, krumkake iron, 4 counter stools, toys, lamp, misc." },
-            { id: 7, address: "408 S Western Ave (St.George Catholic Church)", days: "Friday, Saturday", thursday: "N/A", friday: "8:00 am", saturday: "8:00 am", additionalDays: "N/A", items: "Baby items, childrens clothing, furnature, glassware, antiques adult and teenage clothing." },
-            { id: 8, address: "26126 462nd Ave, Hartford", days: "Thursday, Friday, Saturday", thursday: "10-5", friday: "10-6", saturday: "10-2", additionalDays: "NA", items: "NEIGHBOR COUNTRY RUMMAGE - worth the 1.25 gravel drive! 2 Couches, Outdoor furniture, Dewalt Scroll Saw + Stand, Name Brand Kitchen items, Large baby items (swing, pac n play, bumbo seat, pumps), Tan garage door (9'W x 8'H), Men, women, and baby clothing and coats, lots more." },
-            { id: 9, address: "810 Ruud Lane garage #8", days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Name brand men’s, women’s clothes and shoes, household items, twin mattress/box spring and frame, end tables, coffee table, lamps, plastic storage shelves, toys, lots of miscellaneous. Good prices, something for everyone." },
-            { id: 10, address: "506 W Opal Ln", days: "Thursday, Friday, Saturday", thursday: "3PM", friday: "8AM", saturday: "8AM", additionalDays: "N/A", items: "LOTS of clothes! Girls NB - 7/8, Womens XL - 3X, Men's XL - 3X. Priced to sell! Toys Galore! Small to Big. Bigger items: Bumper cars, electric car, scooters, toy organizer, book shelf, kitchen, wagon, bikes" },
-            { id: 11, address: "208 Elm Rd", days: "Thursday, Friday, Saturday", thursday: "8 am", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Tools,house items,fishing ,clothing" },
-            { id: 12, address: "511 N Main Ave", days: "Friday, Saturday", thursday: "N/A", friday: "8:00am", saturday: "8:00am", additionalDays: "N/A", items: "Poker table w/ cards and chips, metal wall art poker decor, girl toys for all ages, pack-n-play & other baby items, shoes, other misc items" },
-            { id: 13, address: "704 Turtle Creek", days: "Thursday, Friday, Saturday", thursday: "5:00pm", friday: "12:00pm", saturday: "8:00am", additionalDays: "N/A", items: "Girls NB-4T, Boy NB-2T, Toys, Home Decor, Desk, Entry Table, Kitchen Items, Women’s Dresses" },
-            { id: 14, address: "501 Ironwood Dr", days: "Thursday, Friday, Saturday", thursday: "5pm-8pm", friday: "8am-8pm", saturday: "8am-noon", additionalDays: "N/A", items: "College/starter home items, Men’s L-XXL name brand clothing, Home decor, Small kitchen appliances" },
-            { id: 15, address: "310 N Colton Rd", days: "Thursday, Friday, Saturday", thursday: "4-7pm", friday: "1-6pm", saturday: "10am-12pm", additionalDays: "PM for early sales", items: "Boys clothes (all sizes), sports equipment, Christmas items. Home decor" },
-            { id: 16, address: "305 West 4th Street", days: "Thursday, Friday, Saturday", thursday: "10 am", friday: "8 am", saturday: "8 am", additionalDays: "NA", items: "Power Tools, household, painting contractor supplies , 5th wheel camper hitch, furniture, Minnkota trolling motor , fishing poles" },
-            { id: 17, address: "102 Kalvin Dr", days: "Thursday, Friday, Saturday", thursday: "0800", friday: "0800", saturday: "0800", additionalDays: "Possibly open Wednesday evening!", items: "Clothes of ALL Gender/Sizes, TONS of womens business casual clothes, Western novels, Home decor, shoes, GUARANTEED to be the BIGGEST and BEST rummage in HARTFORD." },
-            { id: 18, address: "1007 Duck Circle", days: "Thursday, Friday, Saturday", thursday: "9", friday: "9", saturday: "9", additionalDays: "N/A", items: "Couch, loveseat, large glass display cabinet, generator, canning supplies, sewing machines" },
-            { id: 19, address: "900 Ruud lane unit 2", days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "NA", items: "Limited parking. WWII US army military items, combat helmets, US army stretcher, old military bayonets" },
-            { id: 20, address: "508 S Main Ave", days: "Thursday, Friday, Saturday", thursday: "8 am - 7 pm", friday: "8 am - 7 pm", saturday: "8 am-noon", additionalDays: "Na", items: "Boys and girls clothing, kids toys, home decor" },
-            { id: 21, address: "306 east 6th street", days: "Friday, Saturday", thursday: "n/A", friday: "8:00 am", saturday: "8:00 am", additionalDays: "N/A", items: "Back pack, snow blower, pressure washer, 10’x20’ easy up, ice cream maker" },
-            { id: 22, address: "26391 463rd Ave Hartford sd", days: "Friday, Saturday", thursday: "NA", friday: "12:00", saturday: "9:00", additionalDays: "Possible? 11:00", items: "Mass fishing gear, anchors, stands, dressers, trane furnaces & AC units" },
-            { id: 23, address: "409 S Tessa Ave", days: "Thursday, Friday, Saturday", thursday: "830", friday: "830", saturday: "830", additionalDays: "Wednesday 4pm", items: "Multi-family sale! Women's Boutique clothes size M to XL, patio furniture, Kitchenaid mixer, legos, boys bike, pokemon cards! Something for everyone!" },
-            { id: 24, address: "813 Trojan Ave", days: "Thursday, Friday, Saturday", thursday: "9am", friday: "9am", saturday: "9am", additionalDays: "Na", items: "Home decor, name brand xl men’s clothing, Harley Davidson clothing, electronics, women’s clothing, jewelry and so much more" },
-            { id: 25, address: "45967 263rd Street Hartford SD 57033", days: "Thursday, Friday", thursday: "9 am", friday: "9 am", saturday: "NA", additionalDays: "NA", items: "Moving Sale: Furniture, Outdoor furniture, Grill, Thirty-One Bags, Wagon, Bikes, Pokemon Cards, come take a look!!" },
-            { id: 26, address: "504 Shamrock Drive", days: "Friday, Saturday", thursday: "5PM", friday: "8 Am", saturday: "8 Am", additionalDays: "N/A", items: "Down sizing. Especially garage items" },
-            { id: 27, address: "26163 461st Ave. (sw of Hartford)", days: "Friday, Saturday", thursday: "n/a", friday: "8-6", saturday: "8-6", additionalDays: "n/a", items: "Retired daycare. Play n packs, trikes, jungle gyms, activity saucers, high chairs, BB hoops, toys, crafts, much more." },
-            { id: 28, address: "508 Crystal Drive", days: "Friday, Saturday", thursday: "N/A", friday: "9-5", saturday: "8-5", additionalDays: "N/A", items: "Stove/Oven, New crib, new Bluey toddler bed, Dryer, lots of boys gently used toys. Kitchen table and chairs. Fridge. Many more items added daily!" },
-            { id: 29, address: "508 Connie Circle. Hartford, Sd", days: "Thursday, Friday, Saturday", thursday: "8am", friday: "8am", saturday: "8am", additionalDays: "n/a", items: "Post moving sale, 3+ family. Clothes, kitchen, etc...Something for everyone." },
-            { id: 30, address: "46506 SD Hwy 38", days: "Friday, Saturday", thursday: "N/A", friday: "4:00pm", saturday: "8:00am", additionalDays: "N/A", items: "Portable fish house, Old Duck Decoys, Vintage jars & Canning equip, Loads of Puzzles, DVD Movies, Cedar Chest, Turkey Fryer, Gun Cabinet Swedish Death Cleaning..ALL Must GO!" },
-            { id: 31, address: "26126 462nd Ave, Hartford, SD", days: "Thursday, Friday, Saturday", thursday: "10-4", friday: "10-4", saturday: "10-2", additionalDays: "NA", items: "Couches, queen size bed frame, baby and kids clothes, large baby items, final inventory from Prairie Boutique (brand new women’s clothing), ice shack, left handed golf clubs, more." },
-            { id: 32, address: "703 N Mundt Ave. #3", days: "Thursday, Friday, Saturday", thursday: "4pm-7pm", friday: "8am-7pm?", saturday: "8am-3pm?", additionalDays: "N/A", items: "Kids' Clothes/Jackets (Sizes 4-14), Medium to Plus Sized Adult Clothes/Scrubs/Jeans (Rock Revival, Silvers, Miss Me), Jewelry, Home Decor, Beats Flex Wireless Earphones, Books & DVDs, Pet Items (Auto Food Feeder), & Misc." },
-            { id: 33, address: "509 Patrick Ave, Hartford", days: "Thursday, Friday, Saturday", thursday: "5pm - 8pm", friday: "8am - 7pm", saturday: "8am - 2pm?", additionalDays: "N/A", items: "child's desk, child's rocker, Strider bike (like new), Radio Flyer tricycle, Budweiser beer steins, patio swing" },
-            { id: 34, address: "301 West Opal Lane Unit C", days: "Thursday, Friday", thursday: "3:30 pm", friday: "8:00", saturday: "Na", additionalDays: "Na", items: "Clothes, table and chairs, desk, kitchen items , mirrors, bedding" },
-            { id: 35, address: "200 N Colton Rd. Hartford, S.D.", days: "Thursday, Friday, Saturday", thursday: "8:00 am", friday: "8:00 am", saturday: "8:00 am", additionalDays: "NA", items: "fishing equipment, vintage toys, matchbox cars, household items, bicycles,vintage household and much more misc." },
-            { id: 36, address: "401 E. 6th St.", days: "Friday, Saturday", thursday: "N/A", friday: "8:00 AM", saturday: "8: AM", additionalDays: "N/A", items: "Girls Clothes 18 mos-3T; Toys, Baby Items, Household Items, Men's and Women's Clothing Size S-XL, Snowblower, mower. Make Offer on Saturday!" },
-            { id: 37, address: "103 E 1st Street Hartford SD 57035", days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Men’s & women’s Clothing, small appliances. Toys. Misc" },
-            { id: 38, address: "205 Kalvin Dr", days: "Thursday, Friday, Saturday", thursday: "8:00 AM", friday: "8:00AM", saturday: "8:00AM", additionalDays: "N/A", items: "Womens clothes 3x/yard & garden/canning/embroidery supplies/small appliances/decor/office chairs/furniture" },
-            { id: 39, address: "101 W Opal Ln Hartford, SD 57033", days: "Thursday, Friday, Saturday", thursday: "4pm", friday: "9am", saturday: "8am", additionalDays: "n/a", items: "Toys, books, Barbie’s, dollhouse, home decor" },
-            { id: 40, address: "401 E 6th St", days: "Friday, Saturday", thursday: "N/A", friday: "9:00 am", saturday: "9:00 am", additionalDays: "N/A", items: "Children/adult Clothing, Children Toys, Utility Trailer, Snow Blower, Misc" },
-            { id: 41, address: "206 S. Main Ave", days: "Friday, Saturday", thursday: "N/A", friday: "8", saturday: "8", additionalDays: "N/A", items: "Live Band & DJ equipment. Lights, PA, amps, instruments & accessories, CDs. Tools (hand, power & yard). Other household items" },
-            { id: 42, address: "207 W 5th St Unit 106", days: "Thursday, Friday", thursday: "3:00 pm", friday: "8:00 am", saturday: "N/A", additionalDays: "N/A", items: "Women’s Clothing XS-3X, men’s clothing M-L, books, furniture, much miscellaneous, Tri-Valley clothing, Tri-Valley bleacher chairs" },
-            { id: 43, address: "100 E 9th lot37", days: "Friday, Saturday", thursday: "NA", friday: "10:00", saturday: "10", additionalDays: "Na", items: "Power tools, miterbox w/ stand, misc concrete finishing tools, lots of small tools, 24\" bike" },
-            { id: 44, address: "502 N vandemark ave", days: "Friday, Saturday", thursday: "N/a", friday: "8am-8pm", saturday: "8am-8pm", additionalDays: "n/a", items: "3 family rummage must see!! Water tables, girl clothes 24mo-women plus sized & boys clothes 6mo-8yr most clothes under $2, shoes/boots, autographed minnesota viking jerseys, coffee kitchen shelf, TV entertainment set, entry table, bucktail fishing gigs" },
-            { id: 45, address: "903 Nordic Cir Hartford SD", days: "Thursday, Friday, Saturday", thursday: "4:00 pm", friday: "10 am", saturday: "10 am", additionalDays: "Na", items: "Free Furniture, new boutique items, women’s clothing, boys L/XL clothing, sporting equipment, etc. Cash, Venmo or Credit/Debit Cards accepted." },
-            { id: 46, address: "508 Kia Drive", days: "Thursday, Friday, Saturday", thursday: "8am to 6pm", friday: "8am to 6pm", saturday: "8am to 12pm", additionalDays: "N/A", items: "HUGE Rummage Sale!!! Men's, women's & maternity clothes. Baby items: girl clothes size Newborn to 12 Months, baby bottles, car seat covers, activity mat, stroller, walker and toys. Radio Flyer wagon new in box, Radio Flyer used tricycle. Leaf blower, Chest freezer. Purses. DVDs. Household & seasonal decor including Ninja pressure cooker, canning jars various sizes, curtains, misc." },
-            { id: 47, address: "506 N Mundt Ave", days: "Thursday, Friday, Saturday", thursday: "9", friday: "9", saturday: "9", additionalDays: "N/A", items: "Home Decor, Kids Clothing, Radio Flyer Trike and Wagon, Kids Toys/Puzzles/Books, Coleman Campstove, Lantern, Cooler, Tent, Camping Pots and Pans" },
-            { id: 48, address: "209 w 7th", days: "Thursday, Friday, Saturday", thursday: "Thursday 5-8", friday: "12-8", saturday: "8-4", additionalDays: "N/A", items: "Household stuff, counter top conventional oven, scrubs, vintage furniture, kids bikes, blankets, strollers , lamps, xbox & PlayStation games , TVs" },
-            { id: 49, address: "500 S Feyder Ave", days: "Thursday, Friday, Saturday", thursday: "4", friday: "10", saturday: "9", additionalDays: "N/A", items: "Baby Boy clothing, toys, furniture, handmade wood paintings." },
-            { id: 50, address: "405 Mulligan Cir", days: "Friday, Saturday", thursday: "N/A", friday: "9am", saturday: "9am", additionalDays: "N/A", items: "Lots of kids clothes, boys 0m-YM, Girls 0m-4T, couch, baby crib, toys and books, Men’s and Women’s brand name clothing, stroller, walker, baby bouncer, shoes of all sizes, home decor, housewares and knick knacks, coach purses, Therabody Red Light face mask." },
-            { id: 51, address: "520 Kia Drive", days: "Saturday", thursday: "N/A", friday: "N/A", saturday: "8:00 am", additionalDays: "N\\A", items: "House decor, clothing, furniture, pet items" },
-            { id: 52, address: "108 N. Oaks Ave.", days: "Thursday, Friday, Saturday", thursday: "7am", friday: "7am", saturday: "7am", additionalDays: "N/A", items: "China (including Limoges and Homer Laughlin), 2015 21” iMac, bookshelf, wire baker’s rack, Marvel wall art, purses/bags, toys, craft supplies, fabric. All shoes and clothes $1 or less! Open until 6pm every night!" },
-            { id: 53, address: "910 Par Tee Dr", days: "Thursday, Friday", thursday: "9:00", friday: "9:00", saturday: "N/A", additionalDays: "N/A", items: "Multi-Family. Area rugs, name brand women and men’s clothing, household items, some baby clothing/items. Clean and organized rummage." },
-            { id: 54, address: "208 N Kingsbury Ave", days: "Friday, Saturday", thursday: "N/A", friday: "9:00 AM", saturday: "8:30 AM", additionalDays: "N/A", items: "Baby items: pack-n-play; high chair; travel stroller; Lots of toys- Little Peoples; home decor items; Christmas decor (new in boxes); silverware great for camping or crafting; sewing machine; Clothes- Boys 2T-4T and women’s variety of sizes; Plenty more for Everyone!" },
-            { id: 55, address: "504 N. Oaks Ave.", days: "Thursday, Friday", thursday: "Noon", friday: "9 AM", saturday: "NA", additionalDays: "NA", items: "Inteck Queen size Inflatable Bed, Hostas and Hybrid white Iris, Outdoor/ camper rug, Motorcycle Rain suit ( medium). Misc." },
-            { id: 56, address: "306 W Ramona Street", days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", additionalDays: "N/A", items: "Furniture, clothing, household items, sporting goods, plants, boys and girls clothing, decor, moving sale, multi family!" },
-            { id: 57, address: "805 N. Sagehorn Drive, Hartford SD", days: "Thursday, Friday, Saturday", thursday: "8 am", friday: "8 am", saturday: "8 am", additionalDays: "n/a", items: "Large 7 Family Rummage. Kids, College/Dorm, Vintage records, Outdoor/adventure, Teacher supplies, Furniture, Planters, Clothing, Household, Decor and more." },
-            { id: 58, address: "306 W Ramona St", days: "Friday, Saturday", thursday: "N/A", friday: "9:00 AM", saturday: "8:00 AM", additionalDays: "N/A", items: "Furniture, Hunting, Fishing, Motorcycle, Adult & Children clothing, & home decor" },
-            { id: 59, address: "46050 259th st Hartford, SD", days: "Thursday, Friday, Saturday", thursday: "7:30am", friday: "7:30am", saturday: "7:30am", additionalDays: "na", items: "hunting stuff, lots of guy stuff, breyer horses, scrubs xs-xl, men and women's clothes, collectables, china and crystal bowls, Nikken Health Magnets" },
-            { id: 60, address: "507 S Feyder", days: "Thursday, Friday, Saturday", thursday: "4-7 (depending on whether)", friday: "8-7", saturday: "8-4", additionalDays: "N/A", items: "Baby furniture/items - Dressers & Bedroom sets - Saddle bags for horses - Misc household and electronic items - Misc tools" },
-            { id: 61, address: "1106 N Vandemark Ave", days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
+            { id: 1, address: "301 w 7th st", lat: 43.6230, lng: -96.9452, days: "Friday, Saturday", thursday: "N/a", friday: "8 am", saturday: "8 am", items: "Porcelain Dolls, kids clothes, kids toys, household items, men's camo clothing" },
+            { id: 2, address: "512 S. Main Ave, Hartford", lat: 43.6190, lng: -96.9439, days: "Thursday, Friday, Saturday", thursday: "1 PM", friday: "8 AM", saturday: "8 AM", items: "Antique dishes & items, household items, TV's, outdoor decor, kitchen gadgets, photo & scrapbook albums, many more items too numerous to list" },
+            { id: 3, address: "804 Par Tee Dr. Hartford SD 57033", lat: 43.6268, lng: -96.9587, days: "Thursday, Friday, Saturday", thursday: "4pm", friday: "8:30am", saturday: "8:00 AM", items: "Adult clothing, teen clothing, boys clothing sz8-10, lots of miscellaneous- home decor, toys etc" },
+            { id: 4, address: "817 Ruud ln 26", lat: 43.6289, lng: -96.9535, days: "Thursday, Friday, Saturday", thursday: "8am", friday: "8am", saturday: "8am", additionalDays: "Wednesday 3pm-8pm", items: "Fishing/ice fishing equipment, Tools, Namebrand shoes/clothes, A little bit of everything" },
+            { id: 5, address: "203 Mary Ln", lat: 43.6253, lng: -96.9379, days: "Thursday, Friday, Saturday", thursday: "12-8", friday: "12-8", saturday: "8-12", items: "Multi family, many household items, women and men’s clothing, and home decor" },
+            { id: 6, address: "46514 Kloxin Drive Hartford SD", lat: 43.6214, lng: -96.9213, days: "Thursday, Friday", thursday: "8:00am - 5:00pm", friday: "8:00am - 5:00pm", saturday: "N/A", items: "Clothing, krumkake iron, 4 counter stools, toys, lamp, misc." },
+            { id: 7, address: "408 S Western Ave (St.George Catholic Church)", lat: 43.6201, lng: -96.9482, days: "Friday, Saturday", thursday: "N/A", friday: "8:00 am", saturday: "8:00 am", items: "Baby items, childrens clothing, furnature, glassware, antiques adult and teenage clothing." },
+            { id: 8, address: "26126 462nd Ave, Hartford", lat: 43.6429, lng: -96.9555, days: "Thursday, Friday, Saturday", thursday: "10-5", friday: "10-6", saturday: "10-2", items: "NEIGHBOR COUNTRY RUMMAGE - worth the 1.25 gravel drive! 2 Couches, Outdoor furniture, Dewalt Scroll Saw + Stand, Name Brand Kitchen items, Large baby items (swing, pac n play, bumbo seat, pumps), Tan garage door (9'W x 8'H), Men, women, and baby clothing and coats, lots more." },
+            { id: 9, address: "810 Ruud Lane garage #8", lat: 43.6289, lng: -96.9535, days: "Friday, Saturday", thursday: "N/A", friday: "8am", saturday: "8am", items: "Name brand men’s, women’s clothes and shoes, household items, twin mattress/box spring and frame, end tables, coffee table, lamps, plastic storage shelves, toys, lots of miscellaneous. Good prices, something for everyone." },
+            { id: 10, address: "506 W Opal Ln", lat: 43.6320, lng: -96.9490, days: "Thursday, Friday, Saturday", thursday: "3PM", friday: "8AM", saturday: "8AM", items: "LOTS of clothes! Girls NB - 7/8, Womens XL - 3X, Men's XL - 3X. Priced to sell! Toys Galore! Small to Big. Bigger items: Bumper cars, electric car, scooters, toy organizer, book shelf, kitchen, wagon, bikes" },
         ];
 
         // --- Firebase Configuration ---
@@ -172,6 +133,7 @@
 
         // --- App State ---
         let completedLocations = [];
+        let verifiedLocations = []; // For achievements
         let unlockedAchievements = [];
         let currentFilter = 'all';
 
@@ -184,16 +146,41 @@
         const achievementsContainer = document.getElementById('achievements-container');
         const modal = document.getElementById('achievement-modal');
         const closeModalBtn = document.getElementById('close-modal-btn');
+        const toast = document.getElementById('toast-notification');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
             const dayMap = { 0: 'sunday', 1: 'monday', 2: 'tuesday', 3: 'wednesday', 4: 'thursday', 5: 'friday', 6: 'saturday' };
             const today = new Date();
             const todayName = dayMap[today.getDay()];
-            const saleDays = sale.days.toLowerCase();
+            const saleDays = (sale.days || '').toLowerCase();
             const additional = (sale.additionalDays || '').toLowerCase();
             return saleDays.includes(todayName) || additional.includes(todayName);
         };
+        
+        function getDistanceInMeters(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // metres
+            const φ1 = lat1 * Math.PI/180;
+            const φ2 = lat2 * Math.PI/180;
+            const Δφ = (lat2-lat1) * Math.PI/180;
+            const Δλ = (lon2-lon1) * Math.PI/180;
+
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+            return R * c; // in metres
+        }
+        
+        function showToast(message, isError = false) {
+            toast.textContent = message;
+            toast.className = `fixed bottom-5 left-1/2 -translate-x-1/2 text-white text-sm font-bold py-2 px-4 rounded-full shadow-lg ${isError ? 'bg-red-500' : 'bg-blue-500'}`;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
 
         // --- Achievements Logic ---
         function renderAchievements() {
@@ -211,30 +198,22 @@
         }
 
         function showAchievementModal(achievement) {
-            document.getElementById('modal-achievement-icon').textContent = achievement.icon;
-            document.getElementById('modal-achievement-name').textContent = achievement.name;
-            document.getElementById('modal-achievement-message').textContent = achievement.message;
-            modal.classList.add('show');
-            // Animate in
-            setTimeout(() => {
-                const modalContent = modal.querySelector('.transform');
-                modalContent.classList.remove('scale-95', 'opacity-0');
-                modalContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
+             document.getElementById('modal-achievement-icon').textContent = achievement.icon;
+             document.getElementById('modal-achievement-name').textContent = achievement.name;
+             document.getElementById('modal-achievement-message').textContent = achievement.message;
+             modal.classList.add('show');
+             setTimeout(() => modal.querySelector('.transform').classList.remove('scale-95', 'opacity-0'), 10);
         }
 
         function hideAchievementModal() {
-            const modalContent = modal.querySelector('.transform');
-            modalContent.classList.remove('scale-100', 'opacity-100');
-            modalContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.remove('show');
-            }, 200);
+             modal.querySelector('.transform').classList.add('scale-95', 'opacity-0');
+             setTimeout(() => modal.classList.remove('show'), 200);
         }
 
-        function checkAchievements(count) {
+        function checkAchievements() {
+            const verifiedCount = verifiedLocations.length;
             const newlyUnlocked = achievements.find(ach => 
-                count >= ach.threshold && !unlockedAchievements.includes(ach.id)
+                verifiedCount >= ach.threshold && !unlockedAchievements.includes(ach.id)
             );
 
             if (newlyUnlocked) {
@@ -248,12 +227,9 @@
         // --- Core Application Logic ---
         function renderSales() {
             const filteredSales = rummageSalesData.filter(sale => {
-                const isCompleted = completedLocations.includes(sale.id);
-                switch (currentFilter) {
-                    case 'open': return isSaleOpenToday(sale);
-                    case 'not_visited': return !isCompleted;
-                    default: return true;
-                }
+                if (currentFilter === 'not_visited') return !completedLocations.includes(sale.id);
+                if (currentFilter === 'open') return isSaleOpenToday(sale);
+                return true;
             });
             salesContainer.innerHTML = '';
             loadingIndicator.style.display = 'none';
@@ -292,24 +268,52 @@
         }
 
         function handleToggleComplete(locationId) {
-            const wasCompleted = completedLocations.includes(locationId);
-            const newCompleted = wasCompleted
-                ? completedLocations.filter(id => id !== locationId)
-                : [...completedLocations, locationId];
-            completedLocations = newCompleted;
-            
-            localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(newCompleted));
-            
+            // First, visually check it off immediately for good UX
+            if (!completedLocations.includes(locationId)) {
+                completedLocations.push(locationId);
+            } else {
+                 // Un-checking doesn't need verification
+                completedLocations = completedLocations.filter(id => id !== locationId);
+                verifiedLocations = verifiedLocations.filter(id => id !== locationId);
+                localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
+                localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
+                renderSales();
+                return;
+            }
+            localStorage.setItem('hartfordRummageChecklist2025', JSON.stringify(completedLocations));
             renderSales();
 
-            // Only check for achievements if a new item was checked off
-            if (!wasCompleted) {
-                 checkAchievements(newCompleted.length);
-            }
+            // Then, try to verify for achievement
+            const sale = rummageSalesData.find(s => s.id === locationId);
+            navigator.geolocation.getCurrentPosition(
+                (position) => { // Success callback
+                    const distance = getDistanceInMeters(
+                        position.coords.latitude,
+                        position.coords.longitude,
+                        sale.lat,
+                        sale.lng
+                    );
+
+                    // Allow about half a mile radius for verification
+                    if (distance < 805) { 
+                        if (!verifiedLocations.includes(locationId)) {
+                             verifiedLocations.push(locationId);
+                             localStorage.setItem('hartfordRummageVerified2025', JSON.stringify(verifiedLocations));
+                             showToast("Visit Verified!", false);
+                             checkAchievements();
+                        }
+                    } else {
+                        showToast("Too far away to verify for award.", true);
+                    }
+                },
+                (error) => { // Error callback
+                    showToast("Could not get location. Visit not verified for award.", true);
+                }
+            );
         }
         
         function setupPresenceSystem(auth) {
-            onAuthStateChanged(auth, (user) => {
+             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     const rtdb = getDatabase();
                     const appId = firebaseConfig.projectId;
@@ -319,23 +323,12 @@
                     const allUsersRef = ref(rtdb, `/artifacts/${appId}/public/presence/users`);
 
                     onValue(connectedRef, (snap) => {
-                        if (snap.val() === true) {
-                            set(userStatusDatabaseRef, true);
-                            onDisconnect(userStatusDatabaseRef).remove();
-                        }
+                        if (snap.val() === true) { set(userStatusDatabaseRef, true); onDisconnect(userStatusDatabaseRef).remove(); }
                     });
                     
                     onValue(allUsersRef, (snap) => {
                         const count = snap.size; 
-                        visitorCounter.innerHTML = `
-                            <span class="flex items-center justify-center">
-                                <span class="relative flex h-3 w-3 mr-2">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
-                                </span>
-                                ${count} Live Visitor${count === 1 ? '' : 's'}
-                            </span>
-                        `;
+                        visitorCounter.innerHTML = `<span class="flex items-center justify-center"><span class="relative flex h-3 w-3 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span></span>${count} Live Visitor${count === 1 ? '' : 's'}</span>`;
                     });
                 }
             });
@@ -359,22 +352,19 @@
             }
         });
         closeModalBtn.addEventListener('click', hideAchievementModal);
-        modal.addEventListener('click', (e) => {
-             if (e.target === modal) {
-                 hideAchievementModal();
-             }
-        });
+        modal.addEventListener('click', (e) => { if (e.target === modal) hideAchievementModal(); });
 
         // --- Initialization ---
         function main() {
             try {
                 const savedChecklist = localStorage.getItem('hartfordRummageChecklist2025');
                 if (savedChecklist) completedLocations = JSON.parse(savedChecklist);
+                const savedVerified = localStorage.getItem('hartfordRummageVerified2025');
+                if (savedVerified) verifiedLocations = JSON.parse(savedVerified);
                 const savedAchievements = localStorage.getItem('hartfordRummageAchievements2025');
                 if (savedAchievements) unlockedAchievements = JSON.parse(savedAchievements);
-            } catch (e) {
-                console.error("Could not parse saved data", e);
-            }
+            } catch (e) { console.error("Could not parse saved data", e); }
+            
             renderSales();
             renderAchievements();
 
