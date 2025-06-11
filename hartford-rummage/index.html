@@ -33,8 +33,14 @@
             <p class="text-base text-gray-400">
                 Your guide to the 2025 city-wide sales.
             </p>
-            <div id="progress-counter" class="mt-4 text-lg font-semibold text-green-400">
-                Loading...
+            <div class="mt-4 space-y-1">
+                <div id="progress-counter" class="text-lg font-semibold text-green-400">
+                    Loading...
+                </div>
+                <!-- New visitor counter element -->
+                <div id="visitor-counter" class="text-sm font-medium text-cyan-400">
+                    <span class="animate-pulse">Connecting...</span>
+                </div>
             </div>
         </header>
 
@@ -70,6 +76,9 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        // Import Realtime Database modules for presence
+        import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
 
         // --- Data ---
         const rummageSalesData = [
@@ -139,7 +148,7 @@
         // --- Firebase Configuration & App State ---
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-rummage-app';
-        let db, auth, userId;
+        let db, auth, rtdb, userId;
         let completedLocations = [];
         let currentFilter = 'all';
 
@@ -148,6 +157,7 @@
         const loadingIndicator = document.getElementById('loading-indicator');
         const progressCounter = document.getElementById('progress-counter');
         const filterContainer = document.getElementById('filter-container');
+        const visitorCounter = document.getElementById('visitor-counter');
 
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -161,11 +171,7 @@
         
         // --- Core Application Logic ---
 
-        /**
-         * Renders the list of rummage sales based on the current filter and completion status.
-         */
         function renderSales() {
-            // Filter the sales data based on the selected filter
             const filteredSales = rummageSalesData.filter(sale => {
                 const isCompleted = completedLocations.includes(sale.id);
                 switch (currentFilter) {
@@ -178,22 +184,13 @@
                         return true;
                 }
             });
-
-            // Clear the existing sales container
             salesContainer.innerHTML = '';
-            
-            // Hide loading indicator
             loadingIndicator.style.display = 'none';
-
-            // Generate and append a card for each sale
             filteredSales.forEach(sale => {
                 const isCompleted = completedLocations.includes(sale.id);
                 const isOpen = isSaleOpenToday(sale);
-
-                // Create the card element
                 const card = document.createElement('div');
                 card.className = `relative bg-gray-800 border border-gray-700 rounded-lg p-4 transition-all duration-300 flex flex-col ${isCompleted ? 'opacity-50' : 'opacity-100'}`;
-                
                 card.innerHTML = `
                     <div class="absolute top-3 right-3">
                         <button data-id="${sale.id}" class="toggle-complete w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 z-10 ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-700 hover:bg-green-600 text-gray-400'}" aria-label="Mark ${sale.address} as visited">
@@ -214,66 +211,74 @@
                             <p class="text-gray-300 font-semibold mb-1 text-sm">Items for Sale:</p>
                             <p class="text-gray-400 text-xs sm:text-sm">${sale.items}</p>
                         </div>
-                    </div>
-                `;
+                    </div>`;
                 salesContainer.appendChild(card);
             });
-            
             updateProgressCounter();
         }
 
-        /**
-         * Updates the progress counter in the header.
-         */
         function updateProgressCounter() {
             progressCounter.textContent = `${completedLocations.length} / ${rummageSalesData.length} Visited`;
         }
 
-        /**
-         * Toggles the completion status of a location and saves it to Firebase.
-         */
         async function handleToggleComplete(locationId) {
             const newCompleted = completedLocations.includes(locationId)
                 ? completedLocations.filter(id => id !== locationId)
                 : [...completedLocations, locationId];
-            
-            completedLocations = newCompleted; // Optimistic update for UI responsiveness
-            renderSales(); // Re-render to reflect the change immediately
-
-            if (!db || !userId) {
-                console.log("Firebase not ready. State updated locally.");
-                return;
-            }
-
+            completedLocations = newCompleted;
+            renderSales();
+            if (!db || !userId) return;
             try {
                 const docRef = doc(db, 'artifacts', appId, 'users', userId, 'rummage-checklist', 'completed');
                 await setDoc(docRef, { completed: newCompleted });
             } catch (error) {
                 console.error("Error saving completed locations:", error);
-                // In a real app, you might want to revert the state here.
             }
         }
         
+        // --- New Presence System Logic ---
+        function setupPresenceSystem(uid) {
+            const userStatusDatabaseRef = ref(rtdb, `/artifacts/${appId}/public/presence/users/${uid}`);
+            const connectedRef = ref(rtdb, '.info/connected');
+            const allUsersRef = ref(rtdb, `/artifacts/${appId}/public/presence/users`);
+
+            onValue(connectedRef, (snap) => {
+                if (snap.val() === true) {
+                    set(userStatusDatabaseRef, true);
+                    onDisconnect(userStatusDatabaseRef).remove();
+                }
+            });
+            
+            onValue(allUsersRef, (snap) => {
+                // FIX: Use snap.size for v9 SDK instead of snap.numChildren()
+                const count = snap.size; 
+                visitorCounter.innerHTML = `
+                    <span class="flex items-center justify-center">
+                        <span class="relative flex h-3 w-3 mr-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+                        </span>
+                        ${count} Live Visitor${count === 1 ? '' : 's'}
+                    </span>
+                `;
+            });
+        }
+
         // --- Event Listeners ---
         filterContainer.addEventListener('click', (e) => {
             if (e.target.matches('.filter-btn')) {
                 const filterType = e.target.dataset.filter;
                 if (filterType === currentFilter) return;
-
-                // Update active button style
                 filterContainer.querySelector('.active').classList.remove('active');
                 e.target.classList.add('active');
-                
                 currentFilter = filterType;
                 renderSales();
             }
         });
-
         salesContainer.addEventListener('click', (e) => {
             const button = e.target.closest('.toggle-complete');
             if (button) {
-                const locationId = parseInt(button.dataset.id, 10);
-                handleToggleComplete(locationId);
+                handleToggleComplete(parseInt(button.dataset.id, 10));
             }
         });
 
@@ -284,32 +289,30 @@
                     const app = initializeApp(firebaseConfig);
                     db = getFirestore(app);
                     auth = getAuth(app);
+                    rtdb = getDatabase(app); // Initialize Realtime Database
                 } else {
                     console.log("Firebase config not found. Running in offline mode.");
-                    renderSales(); // Render with empty completed list
+                    renderSales();
                     return;
                 }
-
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         userId = user.uid;
-                        // User is signed in, now listen for data changes.
+                        
+                        // Setup Firestore listener for checklist
                         const docRef = doc(db, 'artifacts', appId, 'users', userId, 'rummage-checklist', 'completed');
                         onSnapshot(docRef, (docSnap) => {
-                            if (docSnap.exists()) {
-                                completedLocations = docSnap.data().completed || [];
-                            } else {
-                                console.log("No saved data found for this user.");
-                                completedLocations = [];
-                            }
-                            renderSales(); // Initial render or re-render on data change
+                            completedLocations = docSnap.exists() ? docSnap.data().completed || [] : [];
+                            renderSales();
                         }, (error) => {
                              console.error("Error listening to Firestore:", error);
-                             renderSales(); // Render even if there's an error
+                             renderSales();
                         });
+                        
+                        // Setup Realtime Database listener for presence
+                        setupPresenceSystem(userId);
 
                     } else {
-                        // User is signed out, try to sign in.
                         const authToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
                         if (authToken) {
                             signInWithCustomToken(auth, authToken).catch(err => console.error("Custom token sign-in failed:", err));
@@ -318,15 +321,12 @@
                         }
                     }
                 });
-
             } catch (error) {
                 console.error("Initialization failed:", error);
-                renderSales(); // Render a non-functional version if Firebase fails
+                renderSales();
             }
         }
-
         main();
-
     </script>
 </body>
 </html>
