@@ -61,6 +61,8 @@
             <button data-filter="all" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600 active">All Sales</button>
             <button data-filter="open" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Open Today</button>
             <button data-filter="not_visited" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-700 text-gray-300 hover:bg-gray-600">Not Visited</button>
+            <button id="sort-by-distance-btn" class="px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-blue-600 text-white hover:bg-blue-500">Sort by Nearest</button>
+            <button id="reset-sort-btn" class="hidden px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 bg-gray-600 text-white hover:bg-gray-500">Reset Sort</button>
         </div>
         
         <div id="loading-indicator" class="text-center text-xl text-gray-400">Loading your checklist...</div>
@@ -161,6 +163,8 @@
             { id: 60, address: "507 S Feyder", lat: 43.6190, lng: -96.9530, days: "Thursday, Friday, Saturday", thursday: "4-7 (depending on whether)", friday: "8-7", saturday: "8-4", additionalDays: "N/A", items: "Baby furniture/items - Dressers & Bedroom sets - Saddle bags for horses - Misc household and electronic items - Misc tools" },
             { id: 61, address: "1106 N Vandemark Ave", lat: 43.6280, lng: -96.9470, days: "Friday, Saturday", thursday: "N/A", friday: "8 am", saturday: "8 am", additionalDays: "N/A", items: "Variety of refurbished furniture. Household items. Some women’s and" }
         ];
+        
+        const originalOrderSalesData = [...rummageSalesData];
 
         // --- Firebase Configuration ---
         const firebaseConfig = {
@@ -187,6 +191,7 @@
         let verifiedLocations = []; // For achievements
         let unlockedAchievements = [];
         let currentFilter = 'all';
+        let currentSalesData = [...originalOrderSalesData];
 
         // --- DOM Elements ---
         const salesContainer = document.getElementById('sales-container');
@@ -198,6 +203,8 @@
         const modal = document.getElementById('achievement-modal');
         const closeModalBtn = document.getElementById('close-modal-btn');
         const toast = document.getElementById('toast-notification');
+        const sortByDistanceBtn = document.getElementById('sort-by-distance-btn');
+        const resetSortBtn = document.getElementById('reset-sort-btn');
         
         // --- Helper Functions ---
         const isSaleOpenToday = (sale) => {
@@ -277,7 +284,7 @@
         
         // --- Core Application Logic ---
         function renderSales() {
-            const filteredSales = rummageSalesData.filter(sale => {
+            const filteredSales = currentSalesData.filter(sale => {
                 if (currentFilter === 'not_visited') return !completedLocations.includes(sale.id);
                 if (currentFilter === 'open') return isSaleOpenToday(sale);
                 return true;
@@ -315,7 +322,7 @@
         }
 
         function updateProgressCounter() {
-            progressCounter.textContent = `${completedLocations.length} / ${rummageSalesData.length} Visited`;
+            progressCounter.textContent = `${completedLocations.length} / ${originalOrderSalesData.length} Visited`;
         }
 
         function handleToggleComplete(locationId) {
@@ -389,6 +396,40 @@
                 renderSales();
             }
         });
+        
+        sortByDistanceBtn.addEventListener('click', () => {
+            showToast("Finding your location to sort...", false);
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const sortedData = [...originalOrderSalesData];
+                    sortedData.forEach(sale => {
+                        if(sale.lat && sale.lng) {
+                            sale.distance = getDistanceInMeters(position.coords.latitude, position.coords.longitude, sale.lat, sale.lng);
+                        } else {
+                            sale.distance = Infinity; // Put sales without location data at the end
+                        }
+                    });
+                    sortedData.sort((a,b) => a.distance - b.distance);
+                    currentSalesData = sortedData;
+                    renderSales();
+                    showToast("Sales sorted by nearest!", false);
+                    sortByDistanceBtn.classList.add('hidden');
+                    resetSortBtn.classList.remove('hidden');
+                },
+                (error) => {
+                    showToast("Could not get your location to sort.", true);
+                }
+            );
+        });
+
+        resetSortBtn.addEventListener('click', () => {
+            currentSalesData = [...originalOrderSalesData];
+            renderSales();
+            showToast("Sort has been reset.", false);
+            sortByDistanceBtn.classList.remove('hidden');
+            resetSortBtn.classList.add('hidden');
+        });
+
         salesContainer.addEventListener('click', (e) => {
             const button = e.target.closest('.toggle-complete');
             if (button) {
