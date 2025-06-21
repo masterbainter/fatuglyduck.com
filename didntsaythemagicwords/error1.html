@@ -1,1 +1,57 @@
-test.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied</title>
+    <!-- Using Google Fonts for a clean, modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Using Tailwind CSS for rapid and responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles can go here if needed, but we'll primarily use Tailwind */
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <!-- Main container for the error message -->
+    <div class="bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-10 max-w-2xl w-full text-center">
+        
+        <!-- The star of the show: The Jurassic Park GIF -->
+        <img 
+            src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExazVnbGpiYjg5ZGh2aGJsZXVuOGN3azIwNnpqZmlkZ2g5NDhidjBhbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/owRSsSHHoVYFa/giphy.gif" 
+            alt="Dennis Nedry from Jurassic Park wagging his finger and saying no."
+            class="rounded-lg w-full max-w-md mx-auto mb-6 border-4 border-yellow-500"
+            onerror="this.onerror=null;this.src='https://placehold.co/600x400/1f2937/e5e7eb?text=GIF+Not+Found';">
+        
+        <!-- Main heading -->
+        <h1 class="text-4xl md:text-5xl font-bold text-red-600 uppercase tracking-wider mb-2">
+            Access Denied
+        </h1>
+        
+        <!-- The famous quote -->
+        <p class="text-xl md:text-2xl text-yellow-400 mb-6">
+            "Ah, ah, ah! You didn't say the magic word!"
+        </p>
+        
+        <!-- Informative text for the user -->
+        <p class="text-gray-300 mb-8">
+            It looks like you don't have the required permissions to enter this restricted area. 
+            If you believe this is an error, please contact your system administrator.
+        </p>
+        
+        <!-- Action button to go back -->
+        <a href="javascript:history.back()" 
+           class="inline-block bg-yellow-500 text-gray-900 font-bold py-3 px-8 rounded-lg text-lg hover:bg-yellow-400 transition-transform duration-200 ease-in-out transform hover:scale-105">
+            Return to Safety
+        </a>
+
+    </div>
+
+</body>
+</html>
