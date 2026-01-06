@@ -90,7 +90,7 @@
         </nav>
         <div class="p-4 bg-earth-300 dark:bg-earth-800 text-xs text-earth-600 dark:text-earth-400">
             <p>Interactive Source Report</p>
-            <p class="mt-1">Examining historical bias</p>
+            <p class="mt-1">Historical accounts from 1700-1900</p>
         </div>
     </aside>
 
@@ -132,18 +132,7 @@
         content: {
             overview: {
                 title: "Understanding Settler Perspectives",
-                intro: "This report examines historical accounts written by settlers, captives, military personnel, and journalists about Lakota culture and society. These sources shaped American public opinion and policy but were heavily biased, often exaggerated, and designed to justify expansion and military action.",
-                warning: {
-                    title: "Critical Context",
-                    text: "The accounts presented here reflect the prejudices, fears, and political motivations of their authors. They do not represent accurate or balanced portrayals of Lakota culture. Many details were exaggerated or fabricated to sensationalize, justify violence, or sell publications to Eastern audiences."
-                },
-                biasFactors: [
-                    { factor: "Political Motivation", desc: "Accounts often justified land seizure, treaty violations, and military campaigns against Indigenous peoples." },
-                    { factor: "Cultural Supremacy", desc: "Euro-American writers measured all societies against their own standards, viewing differences as inferiority." },
-                    { factor: "Economic Incentive", desc: "Captivity narratives and sensational accounts sold newspapers and books—exaggeration meant profit." },
-                    { factor: "Trauma Response", desc: "Genuine suffering colored perceptions, making balanced observation difficult or impossible." },
-                    { factor: "Religious Framework", desc: "Christian observers viewed Indigenous spirituality as paganism or devil worship, distorting descriptions." }
-                ],
+                intro: "This report examines historical accounts written by settlers, captives, military personnel, and journalists about Lakota culture and society. These sources shaped American public opinion and policy during the 18th and 19th centuries.",
                 stats: [
                     { label: 'Captivity Narratives', value: '50+', sub: 'Published 1680-1900' },
                     { label: 'Peak Publication', value: '1860s', sub: 'During/after wars' },
@@ -533,16 +522,6 @@
                 `).join('')}
             </div>
 
-            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Sources of Bias in Settler Accounts</h3>
-            <div class="space-y-4 mb-8">
-                ${content.biasFactors.map(item => `
-                    <div class="bg-white dark:bg-earth-800 p-5 rounded-lg border-l-4 border-amber-600">
-                        <h4 class="font-bold text-earth-800 dark:text-earth-100">${item.factor}</h4>
-                        <p class="text-earth-600 dark:text-earth-400 mt-1">${item.desc}</p>
-                    </div>
-                `).join('')}
-            </div>
-
             <div class="bg-white dark:bg-earth-800 p-6 rounded-lg border border-earth-200 dark:border-earth-700">
                 <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.chart.title}</h3>
                 <p class="text-sm text-earth-500 dark:text-earth-400 mb-4">${content.chart.desc}</p>
@@ -562,11 +541,7 @@
                             <span class="text-xs text-earth-500 dark:text-earth-400">${acc.source}</span>
                         </div>
                         <h4 class="font-bold text-earth-800 dark:text-earth-100 mb-2">${acc.author}</h4>
-                        <p class="text-earth-600 dark:text-earth-400 mb-3">${acc.content}</p>
-                        <div class="bg-rose-50 dark:bg-rose-900/20 p-3 rounded border-l-2 border-rose-400">
-                            <span class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase">Critical Context:</span>
-                            <span class="text-sm text-rose-700 dark:text-rose-300 ml-2">${acc.bias}</span>
-                        </div>
+                        <p class="text-earth-600 dark:text-earth-400">${acc.content}</p>
                     </div>
                 `).join('')}
             </div>
@@ -667,11 +642,7 @@
                             <span class="text-xs text-earth-500">${acc.year}</span>
                         </div>
                         <p class="text-xs text-earth-500 dark:text-earth-400 mb-2 italic">${acc.source}</p>
-                        <p class="text-earth-600 dark:text-earth-400 text-sm mb-3">${acc.content}</p>
-                        <div class="bg-rose-50 dark:bg-rose-900/20 p-2 rounded text-xs">
-                            <span class="font-bold text-rose-600 dark:text-rose-400">Bias:</span>
-                            <span class="text-rose-700 dark:text-rose-300 ml-1">${acc.bias}</span>
-                        </div>
+                        <p class="text-earth-600 dark:text-earth-400 text-sm">${acc.content}</p>
                     </div>
                 `).join('')}
             </div>
@@ -703,10 +674,6 @@
                         </li>
                     `).join('')}
                 </ul>
-                <div class="bg-rose-50 dark:bg-rose-900/20 p-3 rounded">
-                    <span class="text-xs font-bold text-rose-600 dark:text-rose-400">Bias:</span>
-                    <span class="text-sm text-rose-700 dark:text-rose-300 ml-2">${content.accounts[0].bias}</span>
-                </div>
             </div>
 
             <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Battle of Little Bighorn (1876)</h3>
@@ -765,11 +732,7 @@
                         </div>
                         <p class="text-xs text-earth-500 italic mb-2">${acc.source}</p>
                         <p class="text-earth-600 dark:text-earth-400 text-sm mb-2">${acc.content}</p>
-                        <div class="bg-rose-50 dark:bg-rose-900/20 p-2 rounded text-xs">
-                            <span class="font-bold text-rose-600 dark:text-rose-400">Bias:</span>
-                            <span class="text-rose-700 dark:text-rose-300 ml-1">${acc.bias}</span>
                         </div>
-                    </div>
                 `).join('')}
             </div>
 
