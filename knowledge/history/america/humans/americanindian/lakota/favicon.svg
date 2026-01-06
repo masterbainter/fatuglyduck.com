@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#78350F"/>
+  <g fill="#F5F5F0">
+    <!-- Bison body -->
+    <ellipse cx="16" cy="18" rx="9" ry="6"/>
+    <!-- Bison hump -->
+    <ellipse cx="11" cy="13" rx="5" ry="4"/>
+    <!-- Bison head -->
+    <circle cx="7" cy="16" r="4"/>
+    <!-- Horn left -->
+    <path d="M5 13 Q3 10 5 9" stroke="#F5F5F0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Horn right -->
+    <path d="M9 13 Q11 10 9 9" stroke="#F5F5F0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Legs -->
+    <rect x="10" y="22" width="2" height="4" rx="1"/>
+    <rect x="14" y="22" width="2" height="4" rx="1"/>
+    <rect x="18" y="22" width="2" height="4" rx="1"/>
+    <rect x="22" y="22" width="2" height="4" rx="1"/>
+    <!-- Tail -->
+    <path d="M25 18 Q27 20 26 23" stroke="#F5F5F0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- Eye -->
+  <circle cx="6" cy="15" r="0.8" fill="#78350F"/>
+</svg>
