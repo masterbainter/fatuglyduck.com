@@ -1,18 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Lakota: Migration, Expansion & Resilience (1400-1950)</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        earth: {
+                            50: '#FAF7F5',
+                            100: '#F5F5F0',
+                            200: '#E7E5E4',
+                            300: '#D6D3D1',
+                            400: '#A8A29E',
+                            500: '#78716C',
+                            600: '#57534E',
+                            700: '#44403C',
+                            800: '#292524',
+                            900: '#1C1917',
+                            950: '#0F0E0D'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap');
 
         body {
             font-family: 'Work Sans', sans-serif;
-            background-color: #F5F5F0; /* Stone-100 equivalent */
-            color: #292524; /* Stone-800 */
         }
         h1, h2, h3, h4 {
             font-family: 'Libre Baskerville', serif;
@@ -20,8 +42,8 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 800px; /* Max width for readability */
-            height: 350px; /* Base height */
+            max-width: 800px;
+            height: 350px;
             max-height: 450px;
             margin-left: auto;
             margin-right: auto;
@@ -31,7 +53,7 @@
                 height: 400px;
             }
         }
-        /* Custom Scrollbar for cards */
+        /* Custom Scrollbar - Light Mode */
         .custom-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -42,17 +64,28 @@
             background-color: #A8A29E;
             border-radius: 20px;
         }
+        /* Custom Scrollbar - Dark Mode */
+        .dark .custom-scroll::-webkit-scrollbar-track {
+            background: #292524;
+        }
+        .dark .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #57534E;
+        }
+        /* Active Tab Styling */
         .active-tab {
-            background-color: #78350F; /* Amber-900 */
+            background-color: #78350F;
             color: white;
-            border-left: 4px solid #B45309; /* Amber-700 */
+            border-left: 4px solid #B45309;
         }
         .inactive-tab {
             background-color: transparent;
-            color: #57534E; /* Stone-600 */
         }
-        .inactive-tab:hover {
-            background-color: #E7E5E4; /* Stone-200 */
+        /* Theme Toggle Button */
+        .theme-toggle {
+            transition: transform 0.3s ease;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
         }
     </style>
     <!-- Chosen Palette: "Earth and Plains" - Warm Stone/Beige backgrounds (#F5F5F0), Deep Earth Brown (#78350F) for primary actions, Muted Clay Red (#9F1239) for conflict/alerts, and Sage/Sky accents. -->
@@ -83,45 +116,58 @@
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
-<body class="h-screen flex overflow-hidden">
+<body class="h-screen flex overflow-hidden bg-earth-100 text-earth-800 dark:bg-earth-950 dark:text-earth-200 transition-colors duration-300">
 
     <!-- Sidebar Navigation -->
-    <aside class="w-64 flex-shrink-0 bg-stone-200 border-r border-stone-300 flex flex-col hidden md:flex">
-        <div class="p-6 border-b border-stone-300">
-            <h1 class="text-2xl font-bold text-stone-800">Lakota History</h1>
-            <p class="text-xs text-stone-600 mt-1 uppercase tracking-widest">1400 — 1950</p>
+    <aside class="w-64 flex-shrink-0 bg-earth-200 dark:bg-earth-900 border-r border-earth-300 dark:border-earth-700 flex flex-col hidden md:flex">
+        <div class="p-6 border-b border-earth-300 dark:border-earth-700 flex justify-between items-start">
+            <div>
+                <h1 class="text-2xl font-bold text-earth-800 dark:text-earth-100">Lakota History</h1>
+                <p class="text-xs text-earth-600 dark:text-earth-400 mt-1 uppercase tracking-widest">1400 — 1950</p>
+            </div>
+            <!-- Theme Toggle -->
+            <button onclick="toggleTheme()" class="theme-toggle p-2 rounded-full bg-earth-300 dark:bg-earth-700 hover:bg-earth-400 dark:hover:bg-earth-600 transition-colors" title="Toggle dark/light mode">
+                <span class="dark:hidden text-amber-700">☀</span>
+                <span class="hidden dark:inline text-amber-300">☾</span>
+            </button>
         </div>
         <nav class="flex-1 overflow-y-auto py-4">
             <ul class="space-y-1" id="nav-list">
                 <!-- Nav items generated by JS -->
             </ul>
         </nav>
-        <div class="p-4 bg-stone-300 text-xs text-stone-600">
+        <div class="p-4 bg-earth-300 dark:bg-earth-800 text-xs text-earth-600 dark:text-earth-400">
             <p>Interactive Source Report</p>
             <p class="mt-1">Generated for historical analysis.</p>
         </div>
     </aside>
 
     <!-- Mobile Header -->
-    <div class="md:hidden fixed top-0 w-full bg-stone-200 z-50 border-b border-stone-300 flex justify-between items-center p-4">
-        <h1 class="text-lg font-bold text-stone-800">Lakota History</h1>
-        <button id="mobile-menu-btn" class="text-stone-800 focus:outline-none">
-            ☰ Menu
-        </button>
+    <div class="md:hidden fixed top-0 w-full bg-earth-200 dark:bg-earth-900 z-50 border-b border-earth-300 dark:border-earth-700 flex justify-between items-center p-4 transition-colors duration-300">
+        <h1 class="text-lg font-bold text-earth-800 dark:text-earth-100">Lakota History</h1>
+        <div class="flex items-center gap-3">
+            <button onclick="toggleTheme()" class="theme-toggle p-2 rounded-full bg-earth-300 dark:bg-earth-700" title="Toggle theme">
+                <span class="dark:hidden text-amber-700">☀</span>
+                <span class="hidden dark:inline text-amber-300">☾</span>
+            </button>
+            <button id="mobile-menu-btn" class="text-earth-800 dark:text-earth-100 focus:outline-none">
+                ☰ Menu
+            </button>
+        </div>
     </div>
 
     <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="fixed inset-0 bg-stone-800 bg-opacity-90 z-40 hidden flex flex-col justify-center items-center">
-        <button id="close-menu-btn" class="absolute top-4 right-4 text-white text-xl">✕ Close</button>
+    <div id="mobile-menu" class="fixed inset-0 bg-earth-900 bg-opacity-95 z-40 hidden flex flex-col justify-center items-center">
+        <button id="close-menu-btn" class="absolute top-4 right-4 text-earth-100 text-xl">✕ Close</button>
         <nav class="text-center">
-            <ul class="space-y-6 text-white text-lg" id="mobile-nav-list">
+            <ul class="space-y-6 text-earth-100 text-lg" id="mobile-nav-list">
                 <!-- Mobile Nav Items -->
             </ul>
         </nav>
     </div>
 
     <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto bg-[#F5F5F0] relative pt-16 md:pt-0" id="main-content">
+    <main class="flex-1 overflow-y-auto bg-earth-100 dark:bg-earth-950 relative pt-16 md:pt-0 transition-colors duration-300" id="main-content">
         <!-- Content injected here via JS -->
     </main>
 
@@ -306,7 +352,7 @@
             <li>
                 <button 
                     onclick="loadTab('${tab.id}')"
-                    class="w-full text-left px-6 py-3 font-medium transition-colors duration-200 flex items-center gap-3 ${appData.currentTab === tab.id ? 'active-tab' : 'inactive-tab'}"
+                    class="w-full text-left px-6 py-3 font-medium transition-colors duration-200 flex items-center gap-3 ${appData.currentTab === tab.id ? 'active-tab' : 'inactive-tab text-earth-600 dark:text-earth-400 hover:bg-earth-300 dark:hover:bg-earth-800'}"
                     id="nav-btn-${tab.id}"
                 >
                     <span class="text-lg">${tab.icon}</span>
@@ -335,9 +381,9 @@
         // Header Section
         innerHTML += `
             <div class="max-w-5xl mx-auto p-6 md:p-10 fade-in">
-                <header class="mb-8 border-b border-stone-300 pb-6">
-                    <h2 class="text-3xl md:text-4xl font-bold text-stone-900 mb-4 tracking-tight">${content.title}</h2>
-                    <p class="text-lg text-stone-700 leading-relaxed max-w-3xl">${content.intro}</p>
+                <header class="mb-8 border-b border-earth-300 dark:border-earth-700 pb-6">
+                    <h2 class="text-3xl md:text-4xl font-bold text-earth-900 dark:text-earth-50 mb-4 tracking-tight">${content.title}</h2>
+                    <p class="text-lg text-earth-700 dark:text-earth-300 leading-relaxed max-w-3xl">${content.intro}</p>
                 </header>
         `;
 
@@ -373,38 +419,62 @@
 
     function renderOverview(content) {
         return `
+            <figure class="mb-10 rounded-lg overflow-hidden shadow-lg">
+                <img
+                    src="lakota-history-01.jpg"
+                    alt="Hide painting depicting Lakota migration westward - a caravan of people on horseback traveling from woodland to plains under a rainbow"
+                    class="w-full h-auto"
+                    loading="lazy"
+                >
+                <figcaption class="bg-[#78350F] text-amber-100 px-4 py-3 text-sm italic text-center">
+                    Hide painting: The westward migration of the Lakota from the Great Lakes woodlands to the Northern Plains
+                </figcaption>
+            </figure>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 ${content.stats.map(stat => `
-                    <div class="bg-white p-6 rounded shadow-sm border border-stone-200 text-center">
-                        <div class="text-stone-500 text-sm uppercase tracking-wide mb-1">${stat.label}</div>
-                        <div class="text-3xl font-bold text-[#78350F]">${stat.value}</div>
-                        <div class="text-xs text-stone-400 mt-1">${stat.sub}</div>
+                    <div class="bg-white dark:bg-earth-800 p-6 rounded shadow-sm border border-earth-200 dark:border-earth-700 text-center">
+                        <div class="text-earth-500 dark:text-earth-400 text-sm uppercase tracking-wide mb-1">${stat.label}</div>
+                        <div class="text-3xl font-bold text-[#78350F] dark:text-amber-500">${stat.value}</div>
+                        <div class="text-xs text-earth-400 dark:text-earth-500 mt-1">${stat.sub}</div>
                     </div>
                 `).join('')}
             </div>
 
-            <div class="bg-white p-6 rounded shadow-sm border border-stone-200 mb-8">
-                <h3 class="text-xl font-bold mb-2">${content.charts[0].title}</h3>
-                <p class="text-sm text-stone-500 mb-6">${content.charts[0].desc}</p>
+            <div class="bg-white dark:bg-earth-800 p-6 rounded shadow-sm border border-earth-200 dark:border-earth-700 mb-8">
+                <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.charts[0].title}</h3>
+                <p class="text-sm text-earth-500 dark:text-earth-400 mb-6">${content.charts[0].desc}</p>
                 <div class="chart-container">
                     <canvas id="${content.charts[0].id}"></canvas>
                 </div>
             </div>
-            
-            <div class="bg-stone-200 p-6 rounded border-l-4 border-[#78350F]">
-                <h3 class="font-bold text-lg mb-2">Analysis: Migration as Survival</h3>
-                <p class="text-stone-700">The Lakota story is one of rapid adaptation. Within 150 years, they completely reinvented their economy (from gathering to hunting), their military tactics (foot to horse), and their geographical home. This flexibility was their greatest strength until the total resource destruction of the 1880s.</p>
+
+            <div class="bg-earth-200 dark:bg-earth-800 p-6 rounded border-l-4 border-[#78350F]">
+                <h3 class="font-bold text-lg mb-2 dark:text-earth-100">Analysis: Migration as Survival</h3>
+                <p class="text-earth-700 dark:text-earth-300">The Lakota story is one of rapid adaptation. Within 150 years, they completely reinvented their economy (from gathering to hunting), their military tactics (foot to horse), and their geographical home. This flexibility was their greatest strength until the total resource destruction of the 1880s.</p>
             </div>
         `;
     }
 
     function renderOrigins(content) {
         return `
+            <figure class="mb-10 rounded-lg overflow-hidden shadow-lg">
+                <img
+                    src="lakota-history-03.jpg"
+                    alt="Hide painting showing mounted warriors in battle - depicting the inter-tribal conflicts that shaped Lakota migration"
+                    class="w-full h-auto"
+                    loading="lazy"
+                >
+                <figcaption class="bg-[#78350F] text-amber-100 px-4 py-3 text-sm italic text-center">
+                    Hide painting: Warfare between tribes was a driving force in the Lakota's westward movement
+                </figcaption>
+            </figure>
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div>
-                    <div class="bg-white p-6 rounded shadow-sm border border-stone-200 mb-6">
-                        <h3 class="text-xl font-bold mb-2">${content.chart.title}</h3>
-                        <p class="text-sm text-stone-500 mb-6">${content.chart.desc}</p>
+                    <div class="bg-white dark:bg-earth-800 p-6 rounded shadow-sm border border-earth-200 dark:border-earth-700 mb-6">
+                        <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.chart.title}</h3>
+                        <p class="text-sm text-earth-500 dark:text-earth-400 mb-6">${content.chart.desc}</p>
                         <div class="chart-container">
                             <canvas id="${content.chart.id}"></canvas>
                         </div>
@@ -412,9 +482,9 @@
                 </div>
                 <div class="space-y-6">
                     ${content.details.map(d => `
-                        <div class="bg-white p-6 rounded shadow-sm border-l-4 border-sky-600">
-                            <h3 class="text-lg font-bold mb-2 text-stone-900">${d.title}</h3>
-                            <p class="text-stone-700 leading-relaxed">${d.text}</p>
+                        <div class="bg-white dark:bg-earth-800 p-6 rounded shadow-sm border-l-4 border-sky-600 dark:border-sky-500">
+                            <h3 class="text-lg font-bold mb-2 text-earth-900 dark:text-earth-100">${d.title}</h3>
+                            <p class="text-earth-700 dark:text-earth-300 leading-relaxed">${d.text}</p>
                         </div>
                     `).join('')}
                 </div>
@@ -424,30 +494,42 @@
 
     function renderExpansion(content) {
         return `
+            <figure class="mb-10 rounded-lg overflow-hidden shadow-lg">
+                <img
+                    src="lakota-history-02.jpg"
+                    alt="Hide painting of a Lakota warrior on horseback hunting bison with a spear - representing the horse culture and buffalo economy"
+                    class="w-full h-auto"
+                    loading="lazy"
+                >
+                <figcaption class="bg-[#78350F] text-amber-100 px-4 py-3 text-sm italic text-center">
+                    Hide painting: A mounted Lakota warrior hunting bison — the horse transformed the Lakota into the dominant power of the Northern Plains
+                </figcaption>
+            </figure>
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white p-6 rounded shadow-sm border border-stone-200">
-                     <h3 class="text-xl font-bold mb-2">${content.chart.title}</h3>
-                    <p class="text-sm text-stone-500 mb-6">${content.chart.desc}</p>
+                <div class="bg-white dark:bg-earth-800 p-6 rounded shadow-sm border border-earth-200 dark:border-earth-700">
+                     <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.chart.title}</h3>
+                    <p class="text-sm text-earth-500 dark:text-earth-400 mb-6">${content.chart.desc}</p>
                     <div class="chart-container">
                         <canvas id="${content.chart.id}"></canvas>
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold mb-4">The Rivalry Matrix</h3>
+                    <h3 class="text-xl font-bold mb-4 dark:text-earth-100">The Rivalry Matrix</h3>
                     <div class="grid grid-cols-1 gap-4 h-full overflow-y-auto custom-scroll max-h-[450px]">
                         ${content.rivals.map(r => `
-                            <div class="p-4 rounded border ${r.color} transition hover:shadow-md cursor-default">
+                            <div class="p-4 rounded border ${r.color} dark:bg-earth-800 dark:border-earth-600 transition hover:shadow-md cursor-default">
                                 <div class="flex justify-between items-center mb-2">
-                                    <h4 class="font-bold text-lg">${r.name}</h4>
-                                    <span class="text-xs font-bold uppercase tracking-wider px-2 py-1 bg-white bg-opacity-50 rounded">${r.status}</span>
+                                    <h4 class="font-bold text-lg dark:text-earth-100">${r.name}</h4>
+                                    <span class="text-xs font-bold uppercase tracking-wider px-2 py-1 bg-white dark:bg-earth-700 bg-opacity-50 rounded dark:text-earth-200">${r.status}</span>
                                 </div>
-                                <p class="text-sm text-stone-800">${r.desc}</p>
+                                <p class="text-sm text-earth-800 dark:text-earth-300">${r.desc}</p>
                             </div>
                         `).join('')}
                     </div>
                 </div>
             </div>
-            <div class="p-4 bg-stone-100 rounded text-center text-sm text-stone-500 italic">
+            <div class="p-4 bg-earth-200 dark:bg-earth-800 rounded text-center text-sm text-earth-600 dark:text-earth-400 italic">
                 "The Lakota did not merely wander onto the plains; they conquered them."
             </div>
         `;
@@ -455,22 +537,34 @@
 
     function renderSettlers(content) {
         return `
+            <figure class="mb-10 rounded-lg overflow-hidden shadow-lg">
+                <img
+                    src="lakota-history-04.jpg"
+                    alt="Hide painting showing a steam locomotive on railroad tracks with piles of bison skulls beside the rails - symbolizing the deliberate destruction of the buffalo herds"
+                    class="w-full h-auto"
+                    loading="lazy"
+                >
+                <figcaption class="bg-[#78350F] text-amber-100 px-4 py-3 text-sm italic text-center">
+                    Hide painting: The railroad and the deliberate destruction of the buffalo — a strategy to starve the Plains tribes into submission
+                </figcaption>
+            </figure>
+
             <div class="mb-10">
-                <h3 class="text-xl font-bold mb-6">Timeline of Conflict</h3>
-                <div class="relative border-l-2 border-stone-300 ml-4 space-y-8">
+                <h3 class="text-xl font-bold mb-6 dark:text-earth-100">Timeline of Conflict</h3>
+                <div class="relative border-l-2 border-earth-300 dark:border-earth-600 ml-4 space-y-8">
                     ${content.timeline.map(t => `
                         <div class="relative pl-8">
-                            <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#9F1239] border-2 border-white"></div>
-                            <div class="font-bold text-[#9F1239]">${t.year}</div>
-                            <h4 class="font-bold text-stone-900">${t.event}</h4>
-                            <p class="text-stone-600 mt-1">${t.desc}</p>
+                            <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#9F1239] border-2 border-white dark:border-earth-900"></div>
+                            <div class="font-bold text-[#9F1239] dark:text-rose-400">${t.year}</div>
+                            <h4 class="font-bold text-earth-900 dark:text-earth-100">${t.event}</h4>
+                            <p class="text-earth-600 dark:text-earth-400 mt-1">${t.desc}</p>
                         </div>
                     `).join('')}
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded shadow-sm border border-stone-200">
-                <h3 class="text-xl font-bold mb-2">${content.chart.title}</h3>
+            <div class="bg-white dark:bg-earth-800 p-6 rounded shadow-sm border border-earth-200 dark:border-earth-700">
+                <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.chart.title}</h3>
                 <div class="chart-container">
                     <canvas id="${content.chart.id}"></canvas>
                 </div>
@@ -480,20 +574,32 @@
 
     function renderReservation(content) {
         return `
+            <figure class="mb-10 rounded-lg overflow-hidden shadow-lg">
+                <img
+                    src="lakota-history-05.jpg"
+                    alt="Hide painting depicting reservation life - log cabins within fenced areas, Native people in traditional clothing, and a church or school building in the distance on the sparse plains"
+                    class="w-full h-auto"
+                    loading="lazy"
+                >
+                <figcaption class="bg-[#78350F] text-amber-100 px-4 py-3 text-sm italic text-center">
+                    Hide painting: Reservation life — confinement to small plots, forced housing changes, and the church/school representing assimilation policies
+                </figcaption>
+            </figure>
+
             <div class="flex flex-col-reverse lg:flex-row gap-8">
                 <div class="flex-1 space-y-4">
-                    <h3 class="text-xl font-bold mb-4">Impact of Federal Policy</h3>
+                    <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Impact of Federal Policy</h3>
                     ${content.policies.map(p => `
-                        <div class="p-5 bg-white border border-stone-200 rounded shadow-sm">
-                            <h4 class="font-bold text-stone-800 mb-1">${p.name}</h4>
-                            <p class="text-stone-600">${p.impact}</p>
+                        <div class="p-5 bg-white dark:bg-earth-800 border border-earth-200 dark:border-earth-700 rounded shadow-sm">
+                            <h4 class="font-bold text-earth-800 dark:text-earth-100 mb-1">${p.name}</h4>
+                            <p class="text-earth-600 dark:text-earth-400">${p.impact}</p>
                         </div>
                     `).join('')}
                 </div>
                 <div class="flex-1">
-                    <div class="bg-white p-6 rounded shadow-sm border border-stone-200 h-full flex flex-col items-center justify-center">
-                         <h3 class="text-xl font-bold mb-2 text-center">${content.chart.title}</h3>
-                         <p class="text-sm text-stone-500 mb-6 text-center">${content.chart.desc}</p>
+                    <div class="bg-white dark:bg-earth-800 p-6 rounded shadow-sm border border-earth-200 dark:border-earth-700 h-full flex flex-col items-center justify-center">
+                         <h3 class="text-xl font-bold mb-2 text-center dark:text-earth-100">${content.chart.title}</h3>
+                         <p class="text-sm text-earth-500 dark:text-earth-400 mb-6 text-center">${content.chart.desc}</p>
                         <div class="chart-container">
                             <canvas id="${content.chart.id}"></canvas>
                         </div>
@@ -506,9 +612,24 @@
     // --- Chart Logic ---
     let activeCharts = {};
 
+    function isDarkMode() {
+        return document.documentElement.classList.contains('dark');
+    }
+
+    function getChartColors() {
+        const dark = isDarkMode();
+        return {
+            text: dark ? '#E7E5E4' : '#292524',
+            grid: dark ? '#44403C' : '#E7E5E4',
+            tooltip: dark ? '#1C1917' : '#292524',
+            legendText: dark ? '#D6D3D1' : '#57534E'
+        };
+    }
+
     function initChart(config) {
         const ctx = document.getElementById(config.id).getContext('2d');
-        
+        const colors = getChartColors();
+
         // Destroy existing if ID matches
         if (activeCharts[config.id]) {
             activeCharts[config.id].destroy();
@@ -520,12 +641,25 @@
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: { font: { family: "'Work Sans', sans-serif" } }
+                    labels: {
+                        font: { family: "'Work Sans', sans-serif" },
+                        color: colors.legendText
+                    }
                 },
                 tooltip: {
-                    backgroundColor: '#292524',
+                    backgroundColor: colors.tooltip,
                     titleFont: { family: "'Work Sans', sans-serif" },
                     bodyFont: { family: "'Work Sans', sans-serif" }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid }
+                },
+                y: {
+                    ticks: { color: colors.text },
+                    grid: { color: colors.grid }
                 }
             }
         };
@@ -536,13 +670,17 @@
             specificOptions = {
                 scales: {
                     x: {
-                        title: { display: true, text: 'Year' },
+                        title: { display: true, text: 'Year', color: colors.text },
                         min: 1550,
-                        max: 1800
+                        max: 1800,
+                        ticks: { color: colors.text },
+                        grid: { color: colors.grid }
                     },
                     y: {
-                        title: { display: true, text: 'Longitude (West ->)' },
-                        reverse: true // To show West as "Progress" if desired, or just standard map coords
+                        title: { display: true, text: 'Longitude (West ->)', color: colors.text },
+                        reverse: true,
+                        ticks: { color: colors.text },
+                        grid: { color: colors.grid }
                     }
                 }
             };
@@ -555,17 +693,25 @@
                         type: 'linear',
                         display: true,
                         position: 'left',
-                        title: { display: true, text: 'Lakota Pop (Thousands)' }
+                        title: { display: true, text: 'Lakota Pop (Thousands)', color: colors.text },
+                        ticks: { color: colors.text },
+                        grid: { color: colors.grid }
                     },
                     y1: {
                         type: 'linear',
                         display: true,
                         position: 'right',
-                        title: { display: true, text: 'Horses per Family' },
+                        title: { display: true, text: 'Horses per Family', color: colors.text },
+                        ticks: { color: colors.text },
                         grid: { drawOnChartArea: false }
                     }
                 }
             }
+        }
+
+        if (config.type === 'doughnut') {
+            // Doughnut charts don't use scales
+            delete commonOptions.scales;
         }
 
         activeCharts[config.id] = new Chart(ctx, {
@@ -588,6 +734,42 @@
             menu.classList.add('hidden');
         });
     }
+
+    // Theme Toggle
+    function toggleTheme() {
+        const html = document.documentElement;
+        const isDark = html.classList.contains('dark');
+
+        if (isDark) {
+            html.classList.remove('dark');
+            html.classList.add('light');
+            localStorage.setItem('theme', 'light');
+        } else {
+            html.classList.remove('light');
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+
+        // Reload current tab to reinitialize charts with new colors
+        loadTab(appData.currentTab);
+    }
+
+    // Initialize theme from localStorage or system preference
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const html = document.documentElement;
+
+        if (savedTheme) {
+            html.classList.remove('light', 'dark');
+            html.classList.add(savedTheme);
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            html.classList.remove('light');
+            html.classList.add('dark');
+        }
+    }
+
+    // Call initTheme immediately
+    initTheme();
 
 </script>
 </body>
