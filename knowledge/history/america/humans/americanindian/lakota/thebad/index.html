@@ -3,858 +3,984 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brutal Perspectives on Lakota Punishment and Culture (1700-1900)</title>
-    <meta name="description" content="Historical settler and outsider perspectives on Lakota punishment and culture from 1700-1900. An examination of biased accounts used to justify expansionism.">
+    <title>Settler Perspectives on Lakota Culture (1700-1900)</title>
+    <meta name="description" content="A chronological examination of settler accounts and captivity narratives about the Lakota people from 1700-1900, with sources and historical context.">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fatuglyduck.com/knowledge/history/america/humans/americanindian/lakota/thebad/">
-    <meta property="og:title" content="Brutal Perspectives on Lakota Punishment and Culture (1700-1900)">
-    <meta property="og:description" content="Historical settler and outsider perspectives on Lakota culture - examining biased accounts from captivity narratives and military reports.">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Brutal Perspectives on Lakota Punishment and Culture (1700-1900)">
-    <meta name="twitter:description" content="Historical settler perspectives on Lakota culture - examining biased accounts from 1700-1900.">
+    <meta property="og:title" content="Settler Perspectives on Lakota Culture (1700-1900)">
+    <meta property="og:description" content="Chronological examination of settler accounts and captivity narratives - with sources and historical context.">
 
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        earth: {
+                            50: '#FAF7F5',
+                            100: '#F5F5F0',
+                            200: '#E7E5E4',
+                            300: '#D6D3D1',
+                            400: '#A8A29E',
+                            500: '#78716C',
+                            600: '#57534E',
+                            700: '#44403C',
+                            800: '#292524',
+                            900: '#1C1917',
+                            950: '#0F0E0D'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap');
 
-        :root {
-            --bg-primary: #F5F5F0;
-            --bg-secondary: #E7E5E4;
-            --bg-card: #ffffff;
-            --text-primary: #292524;
-            --text-secondary: #57534E;
-            --text-muted: #78716C;
-            --accent: #78350F;
-            --accent-light: #B45309;
-            --border: #D6D3D1;
-            --warning: #9F1239;
-        }
-
-        .dark {
-            --bg-primary: #0F0E0D;
-            --bg-secondary: #1C1917;
-            --bg-card: #292524;
-            --text-primary: #E7E5E4;
-            --text-secondary: #D6D3D1;
-            --text-muted: #A8A29E;
-            --accent: #D97706;
-            --accent-light: #F59E0B;
-            --border: #44403C;
-            --warning: #FB7185;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.7;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Libre Baskerville', Georgia, serif;
-        }
-
-        /* Header */
-        .header {
-            background-color: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .menu-btn {
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-
-        .site-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .theme-toggle {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            transition: transform 0.2s;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        .light .moon-icon { display: none; }
-        .dark .sun-icon { display: none; }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 14, 13, 0.95);
-            z-index: 200;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        .mobile-menu.active {
-            display: flex;
-        }
-
-        .mobile-menu a {
-            color: #E7E5E4;
-            text-decoration: none;
-            font-size: 1.5rem;
-            padding: 0.5rem 1rem;
-        }
-
-        .close-menu {
-            position: absolute;
-            top: 1rem;
-            right: 1.5rem;
-            background: none;
-            border: none;
-            color: #E7E5E4;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Main Content */
-        .main-content {
-            max-width: 850px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem 4rem;
-        }
-
-        /* Report Header */
-        .report-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .report-label {
-            display: inline-block;
-            background: var(--accent);
-            color: #fff;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 1rem;
-        }
-
-        .report-header h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-            line-height: 1.3;
-        }
-
-        .report-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .report-meta {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-style: italic;
-        }
-
-        /* Warning Box */
-        .warning-box {
-            background: rgba(159, 18, 57, 0.1);
-            border-left: 4px solid var(--warning);
-            padding: 1.25rem;
-            margin-bottom: 2.5rem;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .dark .warning-box {
-            background: rgba(251, 113, 133, 0.1);
-        }
-
-        .warning-box h4 {
-            color: var(--warning);
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-        }
-
-        .warning-box p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        /* Sections */
-        .section {
-            margin-bottom: 3rem;
-        }
-
-        .section-divider {
-            text-align: center;
-            color: var(--text-muted);
-            margin: 2.5rem 0;
-            font-size: 0.9rem;
-            letter-spacing: 0.5em;
-        }
-
-        .section h2 {
-            font-size: 1.5rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .dark .section h2 {
-            color: var(--accent-light);
-        }
-
-        .section h3 {
-            font-size: 1.2rem;
-            color: var(--text-primary);
-            margin: 1.5rem 0 0.75rem;
-        }
-
-        .section p {
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
-        }
-
-        .section p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Highlighted Terms */
-        .term {
-            font-style: italic;
-            color: var(--accent);
-        }
-
-        .dark .term {
-            color: var(--accent-light);
-        }
-
-        /* Quote Blocks */
-        .quote-block {
-            background: var(--bg-card);
-            border-left: 4px solid var(--accent);
-            padding: 1.25rem;
-            margin: 1.5rem 0;
-            border-radius: 0 8px 8px 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .quote-block p {
-            font-style: italic;
-            color: var(--text-primary);
-        }
-
-        .quote-attribution {
-            margin-top: 0.75rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-style: normal;
-        }
-
-        /* Lists */
-        .section ul {
-            margin: 1rem 0 1rem 1.5rem;
-            color: var(--text-secondary);
-        }
-
-        .section li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Cards */
-        .info-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .info-card h4 {
-            color: var(--accent);
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-        }
-
-        .dark .info-card h4 {
-            color: var(--accent-light);
-        }
-
-        /* Chart Containers */
-        .chart-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .chart-card h4 {
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .chart-card .chart-desc {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
+        body { font-family: 'Work Sans', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Libre Baskerville', serif; }
 
         .chart-container {
             position: relative;
             width: 100%;
-            height: 300px;
-        }
-
-        @media (max-width: 768px) {
-            .chart-container {
-                height: 250px;
-            }
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            padding: 2rem 1.5rem;
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 850px;
+            max-width: 800px;
+            height: 350px;
             margin: 0 auto;
         }
-
-        .footer p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
+        @media (min-width: 768px) {
+            .chart-container { height: 400px; }
         }
 
-        .footer a {
-            color: var(--accent);
-            text-decoration: none;
+        .active-tab {
+            background-color: #78350F;
+            color: white;
+            border-left: 4px solid #B45309;
         }
+        .inactive-tab { background-color: transparent; }
 
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .dark .footer a {
-            color: var(--accent-light);
-        }
-
-        /* Back Link */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        .dark .back-link {
-            color: var(--accent-light);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .report-header h1 {
-                font-size: 1.6rem;
-            }
-
-            .section h2 {
-                font-size: 1.3rem;
-            }
-
-            .main-content {
-                padding: 1.5rem 1rem 3rem;
-            }
-        }
-
-        @media (min-width: 769px) {
-            .menu-btn {
-                display: none;
-            }
-        }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #E7E5E4; }
+        .custom-scroll::-webkit-scrollbar-thumb { background-color: #A8A29E; border-radius: 20px; }
+        .dark .custom-scroll::-webkit-scrollbar-track { background: #292524; }
+        .dark .custom-scroll::-webkit-scrollbar-thumb { background-color: #57534E; }
     </style>
 </head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-left">
-            <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
-            <a href="../" class="site-title">Lakota History</a>
-        </div>
-        <div class="header-right">
-            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-                <span class="sun-icon">☀</span>
-                <span class="moon-icon">☾</span>
+<body class="h-screen flex overflow-hidden bg-earth-100 text-earth-800 dark:bg-earth-950 dark:text-earth-200 transition-colors duration-300">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 flex-shrink-0 bg-earth-200 dark:bg-earth-900 border-r border-earth-300 dark:border-earth-700 flex flex-col hidden md:flex">
+        <div class="p-6 border-b border-earth-300 dark:border-earth-700 flex justify-between items-start">
+            <div>
+                <a href="../" class="text-sm text-earth-500 dark:text-earth-400 hover:underline">← Lakota History</a>
+                <h1 class="text-xl font-bold text-earth-800 dark:text-earth-100 mt-2">Settler Accounts</h1>
+                <p class="text-xs text-earth-600 dark:text-earth-400 mt-1 uppercase tracking-widest">1700 — 1900</p>
+            </div>
+            <button onclick="toggleTheme()" class="p-2 rounded-full bg-earth-300 dark:bg-earth-700 hover:bg-earth-400 dark:hover:bg-earth-600 transition-colors" title="Toggle theme">
+                <span class="dark:hidden text-amber-700">☀</span>
+                <span class="hidden dark:inline text-amber-300">☾</span>
             </button>
         </div>
-    </header>
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1" id="nav-list"></ul>
+        </nav>
+        <div class="p-4 bg-earth-300 dark:bg-earth-800 text-xs text-earth-600 dark:text-earth-400">
+            <p>Interactive Source Report</p>
+            <p class="mt-1">Examining historical bias</p>
+        </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <div class="md:hidden fixed top-0 w-full bg-earth-200 dark:bg-earth-900 z-50 border-b border-earth-300 dark:border-earth-700 flex justify-between items-center p-4">
+        <h1 class="text-lg font-bold text-earth-800 dark:text-earth-100">Settler Accounts</h1>
+        <div class="flex items-center gap-3">
+            <button onclick="toggleTheme()" class="p-2 rounded-full bg-earth-300 dark:bg-earth-700" title="Toggle theme">
+                <span class="dark:hidden text-amber-700">☀</span>
+                <span class="hidden dark:inline text-amber-300">☾</span>
+            </button>
+            <button id="mobile-menu-btn" class="text-earth-800 dark:text-earth-100">☰ Menu</button>
+        </div>
+    </div>
 
     <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <button class="close-menu" onclick="toggleMenu()">✕ Close</button>
-        <a href="../">Main Overview</a>
-        <a href="../#sources">Sources</a>
-        <a href="#">Settler Perspectives</a>
+    <div id="mobile-menu" class="fixed inset-0 bg-earth-900 bg-opacity-95 z-40 hidden flex flex-col justify-center items-center">
+        <button id="close-menu-btn" class="absolute top-4 right-4 text-earth-100 text-xl">✕ Close</button>
+        <nav class="text-center">
+            <ul class="space-y-6 text-earth-100 text-lg" id="mobile-nav-list"></ul>
+        </nav>
     </div>
 
     <!-- Main Content -->
-    <main class="main-content">
-        <a href="../" class="back-link">← Back to Lakota History</a>
+    <main class="flex-1 overflow-y-auto bg-earth-100 dark:bg-earth-950 relative pt-16 md:pt-0" id="main-content"></main>
 
-        <!-- Report Header -->
-        <div class="report-header">
-            <span class="report-label">Interactive Source Report</span>
-            <h1>Brutal Perspectives on Lakota Punishment and Culture</h1>
-            <p class="report-subtitle">Settler and Outsider Perspectives (1700-1900)</p>
-            <p class="report-meta">Generated for historical analysis</p>
-        </div>
-
-        <!-- Warning Box -->
-        <div class="warning-box">
-            <h4>Historical Context Notice</h4>
-            <p>The following content reflects biased settler perspectives from the 18th and 19th centuries. These accounts were often exaggerated or fabricated to justify expansionism, dehumanize Indigenous peoples, and sensationalize experiences for Eastern audiences. They do not represent accurate or balanced portrayals of Lakota culture.</p>
-        </div>
-
-        <!-- Introduction Section -->
-        <section class="section">
-            <h2>Introduction to Lakota Culture</h2>
-            <p>Settlers, explorers, and captives who encountered the Lakota (often referred to as Teton Sioux or Western Sioux) during the 18th and 19th centuries frequently portrayed their culture as inherently savage, warlike, and devoid of civilized mercy, emphasizing nomadic lifestyles that revolved around relentless raiding, buffalo hunting, and intertribal warfare.</p>
-
-            <p>These accounts, often written to justify expansionism or sensationalize experiences for Eastern audiences, depicted Lakota society as a brutal hierarchy where strength and vengeance dominated, with men exalted as fierce warriors who measured honor through <span class="term">"counting coup"</span> on enemies—touching them in battle without killing—or by taking scalps as trophies of dominance and spiritual power.</p>
-
-            <div class="info-card">
-                <h4>Settler Portrayal of Gender Roles</h4>
-                <p>Women were described as drudges, burdened with endless labor like tanning hides, erecting tipis, and gathering food in harsh plains conditions, while polygamy was condemned as immoral and exploitative, reducing females to property traded or captured in raids.</p>
-            </div>
-
-            <p>Spiritual practices, such as the <span class="term">Sun Dance</span> ritual involving self-inflicted wounds like piercing flesh with skewers and tearing free, were reviled as barbaric self-torture, pagan idolatry that invoked visions through pain rather than Christian piety.</p>
-
-            <p>Overall, non-Lakota observers framed Lakota culture as primitive and bloodthirsty, a nomadic existence that clashed with settler ideals of settled agriculture and law, often exaggerating violence to portray them as obstacles to manifest destiny.</p>
-
-            <!-- Timeline Chart -->
-            <div class="chart-card">
-                <h4>Timeline of Key Events & Accounts (1700-1900)</h4>
-                <p class="chart-desc">Major conflicts, captivity events, and publication dates of settler narratives</p>
-                <div class="chart-container">
-                    <canvas id="timelineChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <div class="section-divider">— — — — — — — — — —</div>
-
-        <!-- Punishments Section -->
-        <section class="section">
-            <h2>Punishments in Lakota Society</h2>
-            <p>Punishments within Lakota society, as recounted by outsiders, were seen as arbitrary and cruel, lacking formal courts or jails, instead relying on shaming, banishment, or violent retribution enforced by warrior societies like the <span class="term">akicita</span> (police-like groups).</p>
-
-            <h3>Internal Justice</h3>
-            <p>For internal crimes such as adultery or cowardice, offenders might face public humiliation, whipping, or destruction of property, but settlers highlighted extreme cases where traitors or thieves were maimed or killed without trial, viewing this as evidence of lawless tyranny.</p>
-
-            <h3>Treatment of Enemies</h3>
-            <p>In warfare, the treatment of enemies was depicted with particular horror: captives, especially men, were subjected to ritualized torture to demonstrate bravery and extract vengeance for fallen kin.</p>
-
-            <div class="quote-block">
-                <p>Accounts described prisoners being staked out on anthills, slowly burned with hot irons or fire-brands, scalped while alive, or forced to run a gauntlet of club-wielding warriors, all while crowds jeered and women participated in the mutilation to honor their roles in avenging losses.</p>
-                <p class="quote-attribution">— Composite of settler accounts, 1800s</p>
-            </div>
-
-            <p>These rituals were portrayed as sadistic spectacles, sometimes lasting days, where the victim's endurance was mockingly admired before a final killing blow, reinforcing settler narratives of inherent cruelty.</p>
-        </section>
-
-        <div class="section-divider">— — — — — — — — — —</div>
-
-        <!-- Fanny Kelly Section -->
-        <section class="section">
-            <h2>Fanny Kelly's Captivity Account</h2>
-            <p>Fanny Kelly, captured by Oglala Lakota in 1864 during a wagon train attack, provided one of the most vivid settler perspectives in her 1871 memoir, describing the initial massacre as a frenzy of whooping warriors slaughtering men, women, and children without quarter, dashing infants against rocks and stripping bodies for scalps and valuables.</p>
-
-            <div class="info-card">
-                <h4>Life in Captivity</h4>
-                <p>As a captive, she was enslaved, forced into grueling labor, and punished for resistance with beatings, bindings, and threats of burning alive; one episode involved her being tormented with fire-brands and condemned to death by a chief for perceived insolence, only spared through intervention.</p>
-            </div>
-
-            <p>Kelly depicted Lakota culture as a chaotic mix of hospitality and terror, with polygamous chiefs treating women as chattel, constant raids for horses and captives, and a diet of raw organs from fresh kills that she found revolting.</p>
-
-            <p>She also encountered another captive, Mary Boyeau, who had endured years of hardship since the 1862 Dakota War, highlighting the Lakota's practice of adopting or enslaving survivors while discarding the weak.</p>
-        </section>
-
-        <div class="section-divider">— — — — — — — — — —</div>
-
-        <!-- 1862 Dakota War Section -->
-        <section class="section">
-            <h2>1862 Dakota War Accounts</h2>
-            <p>During the 1862 Dakota War (involving Eastern Dakota, kin to the Lakota), settler accounts amplified horrors to fuel calls for extermination.</p>
-
-            <p>Captives like Mary Schwandt described warriors raping women repeatedly, mutilating bodies with knives, and torturing prisoners through slow dismemberment or burying them alive up to their necks for target practice.</p>
-
-            <div class="quote-block">
-                <p>Newspapers sensationalized widespread rape, infant killings, and ritual mutilations, portraying the uprising as unprovoked savagery against innocent farmers, with over 400 settlers killed in ambushes characterized as bloodbaths of tomahawking and scalping.</p>
-                <p class="quote-attribution">— Contemporary newspaper accounts, 1862</p>
-            </div>
-
-            <p>These narratives framed Lakota-related groups as demonic, with no regard for age or gender, using torture not just for revenge but to terrorize intruders, though some captives noted adoptions where children were integrated into families—still viewed by settlers as forced assimilation into barbarism.</p>
-
-            <!-- 1862 Impact Chart -->
-            <div class="chart-card">
-                <h4>1862 Dakota War: Reported Casualties</h4>
-                <p class="chart-desc">Settler-reported death tolls used to justify military response</p>
-                <div class="chart-container">
-                    <canvas id="dakotaWarChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <div class="section-divider">— — — — — — — — — —</div>
-
-        <!-- Earlier and Later Accounts Section -->
-        <section class="section">
-            <h2>Earlier and Later Accounts</h2>
-
-            <h3>18th Century Perspectives</h3>
-            <p>Earlier 18th-century accounts from fur traders and explorers, like those in French and British journals, echoed similar views: Lakota as fierce horsemen who dominated the Plains through brutal raids on neighbors like the Pawnee, capturing women for slaves and torturing warriors in village ceremonies to assert supremacy.</p>
-
-            <h3>Late 19th Century Military Reports</h3>
-            <p>By the late 19th century, military reports from conflicts like the Battle of Little Bighorn reinforced this, describing Lakota fighters as fanatical, mutilating fallen soldiers' bodies in ritual vengeance, stripping them and embedding arrows postmortem as desecration.</p>
-
-            <div class="info-card">
-                <h4>The Narrative Purpose</h4>
-                <p>These portrayals, while often exaggerated for political gain, painted Lakota culture as a cycle of violence where punishment and warfare blurred into a way of life, contrasting sharply with settler self-image as bringers of order.</p>
-            </div>
-
-            <!-- Sources Breakdown Chart -->
-            <div class="chart-card">
-                <h4>Types of Settler Accounts (1700-1900)</h4>
-                <p class="chart-desc">Breakdown of source types that shaped public perception</p>
-                <div class="chart-container">
-                    <canvas id="sourcesChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <div class="section-divider">— — — — — — — — — —</div>
-
-        <!-- Context Section -->
-        <section class="section">
-            <h2>Understanding These Accounts</h2>
-            <p>It is essential to recognize that these settler perspectives represent a one-sided view of history, shaped by:</p>
-            <ul>
-                <li><strong>Political motivations</strong> — justifying land seizure and military campaigns</li>
-                <li><strong>Cultural bias</strong> — measuring Lakota society against Euro-American standards</li>
-                <li><strong>Sensationalism</strong> — selling books and newspapers to Eastern audiences</li>
-                <li><strong>Trauma</strong> — genuine suffering that colored perceptions</li>
-                <li><strong>Dehumanization</strong> — portraying Indigenous peoples as obstacles to "progress"</li>
-            </ul>
-            <p>For a more balanced understanding of Lakota history and culture, see the <a href="../">main Lakota History overview</a> and consult the <a href="../#sources">academic sources</a> listed there.</p>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <p>Interactive Source Report — Generated for historical analysis</p>
-            <p>Content derived from historical settler accounts and captivity narratives</p>
-            <p><a href="../">Return to Lakota History Main Page</a></p>
-        </div>
-    </footer>
-
-    <script>
-        // Theme Toggle
-        function toggleTheme() {
-            const html = document.documentElement;
-            const isDark = html.classList.contains('dark');
-
-            if (isDark) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        // Initialize theme
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const html = document.documentElement;
-
-            if (savedTheme) {
-                html.classList.remove('light', 'dark');
-                html.classList.add(savedTheme);
-            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                html.classList.remove('light');
-                html.classList.add('dark');
-            }
-        }
-
-        // Mobile Menu
-        function toggleMenu() {
-            document.getElementById('mobileMenu').classList.toggle('active');
-        }
-
-        // Initialize
-        initTheme();
-
-        // Chart color helper
-        function getChartColors() {
-            const isDark = document.documentElement.classList.contains('dark');
-            return {
-                text: isDark ? '#E7E5E4' : '#292524',
-                grid: isDark ? '#44403C' : '#E7E5E4',
-                accent: isDark ? '#D97706' : '#78350F',
-                accent2: isDark ? '#F59E0B' : '#B45309',
-                warning: isDark ? '#FB7185' : '#9F1239',
-                muted: isDark ? '#A8A29E' : '#78716C'
-            };
-        }
-
-        // Initialize Charts
-        let charts = {};
-
-        function initCharts() {
-            const colors = getChartColors();
-
-            // Destroy existing charts
-            Object.values(charts).forEach(chart => chart.destroy());
-            charts = {};
-
-            // Common options
-            const commonOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: colors.text,
-                            font: { family: "'Work Sans', sans-serif" }
-                        }
-                    }
+<script>
+    const appData = {
+        currentTab: 'overview',
+        tabs: [
+            { id: 'overview', label: 'Overview: Context & Caution', icon: '⚠' },
+            { id: 'early', label: '1700-1800: Early Encounters', icon: '◈' },
+            { id: 'expansion', label: '1800-1861: Expansion Era', icon: '⚔' },
+            { id: 'dakota1862', label: '1862: Dakota War', icon: '🔥' },
+            { id: 'captivity', label: '1864-1876: Captivity Era', icon: '⛓' },
+            { id: 'final', label: '1877-1890: Final Conflicts', icon: '☠' },
+            { id: 'sources', label: 'Sources & Bibliography', icon: '📚' }
+        ],
+        content: {
+            overview: {
+                title: "Understanding Settler Perspectives",
+                intro: "This report examines historical accounts written by settlers, captives, military personnel, and journalists about Lakota culture and society. These sources shaped American public opinion and policy but were heavily biased, often exaggerated, and designed to justify expansion and military action.",
+                warning: {
+                    title: "Critical Context",
+                    text: "The accounts presented here reflect the prejudices, fears, and political motivations of their authors. They do not represent accurate or balanced portrayals of Lakota culture. Many details were exaggerated or fabricated to sensationalize, justify violence, or sell publications to Eastern audiences."
+                },
+                biasFactors: [
+                    { factor: "Political Motivation", desc: "Accounts often justified land seizure, treaty violations, and military campaigns against Indigenous peoples." },
+                    { factor: "Cultural Supremacy", desc: "Euro-American writers measured all societies against their own standards, viewing differences as inferiority." },
+                    { factor: "Economic Incentive", desc: "Captivity narratives and sensational accounts sold newspapers and books—exaggeration meant profit." },
+                    { factor: "Trauma Response", desc: "Genuine suffering colored perceptions, making balanced observation difficult or impossible." },
+                    { factor: "Religious Framework", desc: "Christian observers viewed Indigenous spirituality as paganism or devil worship, distorting descriptions." }
+                ],
+                stats: [
+                    { label: 'Captivity Narratives', value: '50+', sub: 'Published 1680-1900' },
+                    { label: 'Peak Publication', value: '1860s', sub: 'During/after wars' },
+                    { label: 'Estimated Readership', value: 'Millions', sub: 'Most popular genre' }
+                ],
+                chart: {
+                    id: 'publicationsChart',
+                    type: 'line',
+                    title: 'Captivity Narrative Publications Over Time',
+                    desc: 'Publishing peaked during periods of conflict when public interest was highest'
                 }
-            };
-
-            // Timeline Chart
-            const timelineCtx = document.getElementById('timelineChart');
-            if (timelineCtx) {
-                charts.timeline = new Chart(timelineCtx, {
+            },
+            early: {
+                title: "1700-1800: Early Encounters",
+                intro: "The earliest European accounts of the Lakota came from French and British fur traders, Jesuit missionaries, and explorers. These observers encountered a powerful, expanding nation and documented their impressions through the lens of European colonial ambitions.",
+                accounts: [
+                    {
+                        year: "1743",
+                        author: "Pierre Gaultier de Varennes (La Vérendrye expedition)",
+                        source: "French expedition journals",
+                        content: "Early French traders described the 'Sioux of the West' as formidable warriors who controlled access to the Missouri River trade. They noted the Lakota's recent acquisition of horses and their growing dominance over neighboring tribes.",
+                        bias: "Framed Indigenous peoples as obstacles to French commercial interests"
+                    },
+                    {
+                        year: "1766",
+                        author: "Jonathan Carver",
+                        source: "Travels Through the Interior Parts of North America (1778)",
+                        content: "Carver spent time among Dakota bands and described their 'warlike disposition' and practice of taking scalps. He portrayed the Sun Dance as 'self-torture' and polygamy as evidence of moral deficiency.",
+                        bias: "Written to promote British colonial expansion; sensationalized for London audiences"
+                    },
+                    {
+                        year: "1795",
+                        author: "Jean Baptiste Truteau",
+                        source: "Missouri Company journals",
+                        content: "Truteau documented Lakota control of river trade, describing them as 'pirates of the Missouri' who extracted tribute from traders. He recorded their conflicts with the Arikara and Mandan.",
+                        bias: "Commercial perspective viewing Lakota as barriers to profit"
+                    }
+                ],
+                keyThemes: [
+                    "Portrayal as 'noble savages' or 'fierce warriors' depending on author's agenda",
+                    "Emphasis on warfare, scalping, and territorial aggression",
+                    "Condemnation of spiritual practices as 'heathen' or 'barbaric'",
+                    "Documentation of horse culture and buffalo hunting economy",
+                    "Descriptions of gender roles through European patriarchal lens"
+                ],
+                chart: {
+                    id: 'earlySourcesChart',
+                    type: 'doughnut',
+                    title: 'Types of Early Sources (1700-1800)',
+                    desc: 'Who was writing about the Lakota and why'
+                }
+            },
+            expansion: {
+                title: "1800-1861: Expansion Era Accounts",
+                intro: "As American expansion accelerated, encounters with the Lakota increased dramatically. The Lewis and Clark expedition, fur trade expansion, and early overland migration produced a flood of accounts that shaped Eastern perceptions.",
+                accounts: [
+                    {
+                        year: "1804-1806",
+                        author: "Meriwether Lewis & William Clark",
+                        source: "Expedition Journals",
+                        content: "The Corps of Discovery documented extensive observations of 'Teton Sioux,' describing a tense confrontation near present-day Pierre, SD. They noted Lakota military power and territorial control.",
+                        bias: "Official US government perspective; framed Lakota as potential obstacles to American expansion"
+                    },
+                    {
+                        year: "1832",
+                        author: "George Catlin",
+                        source: "Letters and Notes on the Manners, Customs, and Conditions of North American Indians",
+                        content: "Artist Catlin painted Lakota subjects and documented the Sun Dance, O-Kee-Pa ceremony, and daily life. While more sympathetic than many, he still framed Indigenous culture as 'vanishing.'",
+                        bias: "Romantic 'vanishing race' narrative; positioned himself as preserving doomed cultures"
+                    },
+                    {
+                        year: "1851",
+                        author: "Government Officials",
+                        source: "Fort Laramie Treaty Council Records",
+                        content: "Official records portrayed Lakota leaders as alternately cooperative or threatening. Negotiations were documented through interpreters with varying accuracy.",
+                        bias: "Government perspective seeking to secure territorial concessions"
+                    },
+                    {
+                        year: "1854",
+                        author: "Military Reports",
+                        source: "Grattan Massacre Accounts",
+                        content: "The destruction of Lt. Grattan's command over a cow dispute was portrayed as unprovoked savagery. Eastern newspapers called for military retaliation against 'murderous Sioux.'",
+                        bias: "Military justification for punitive expeditions; civilian deaths emphasized, provocations minimized"
+                    },
+                    {
+                        year: "1855",
+                        author: "General William S. Harney",
+                        source: "Battle of Ash Hollow Reports",
+                        content: "Harney's punitive expedition against the Brulé was portrayed as justified retaliation. The killing of 86 Lakota (including women and children) was celebrated in the press.",
+                        bias: "Military victory narrative; civilian casualties presented as 'warriors'"
+                    }
+                ],
+                timeline: [
+                    { year: '1804', event: 'Lewis & Clark Confrontation', casualties: '0', type: 'Diplomatic tension' },
+                    { year: '1823', event: 'Arikara War', casualties: '~50', type: 'US military involvement' },
+                    { year: '1851', event: 'First Fort Laramie Treaty', casualties: '0', type: 'Treaty signed' },
+                    { year: '1854', event: 'Grattan Fight', casualties: '31 US', type: 'Military defeat' },
+                    { year: '1855', event: 'Battle of Ash Hollow', casualties: '86 Lakota', type: 'Punitive expedition' },
+                    { year: '1857', event: 'Spirit Lake Massacre', casualties: '40 settlers', type: 'Dakota attack' }
+                ],
+                chart: {
+                    id: 'expansionChart',
+                    type: 'bar',
+                    title: 'Reported Conflicts 1800-1861',
+                    desc: 'Escalating violence as expansion intensified'
+                }
+            },
+            dakota1862: {
+                title: "1862: The Dakota War",
+                intro: "The Dakota War of 1862 produced the most extensive and inflammatory settler accounts. While involving the Eastern Dakota (Santee) rather than the Lakota proper, these narratives shaped perceptions of all Sioux peoples and justified decades of military campaigns.",
+                context: "The war erupted after years of treaty violations, late annuity payments, and starvation on the Minnesota reservations. When trader Andrew Myrick allegedly said 'let them eat grass,' tensions exploded into six weeks of warfare.",
+                accounts: [
+                    {
+                        year: "1862",
+                        author: "Mary Schwandt",
+                        source: "Captivity narrative (multiple versions 1862-1894)",
+                        content: "Captured at age 14 during the Lake Shetek attack, Schwandt described killings, captivity hardships, and witnessed violence. Her account was republished and embellished over decades.",
+                        bias: "Trauma narrative; later versions increasingly sensationalized for publication"
+                    },
+                    {
+                        year: "1862",
+                        author: "Sarah Wakefield",
+                        source: "Six Weeks in the Sioux Tepees (1863)",
+                        content: "Wakefield's account was controversial because she expressed gratitude to Chaska, the Dakota man who protected her. She was ostracized for suggesting any Dakota showed humanity.",
+                        bias: "Unusual sympathetic account; faced intense criticism for nuanced portrayal"
+                    },
+                    {
+                        year: "1862",
+                        author: "Minnesota Newspapers",
+                        source: "St. Paul Pioneer, Minneapolis Tribune, etc.",
+                        content: "Newspapers published graphic accounts of 'massacres,' calling for extermination of all Dakota people. Headlines screamed of scalping, mutilation, and rape.",
+                        bias: "Maximum sensationalism; many atrocity stories later proven exaggerated or fabricated"
+                    },
+                    {
+                        year: "1862",
+                        author: "Isaac Heard",
+                        source: "History of the Sioux War (1864)",
+                        content: "Heard documented the military trials that condemned 303 Dakota men to death. President Lincoln reduced this to 38—still the largest mass execution in US history.",
+                        bias: "Legal justification for executions; trials lasted average of 5 minutes each"
+                    }
+                ],
+                statistics: {
+                    settlerDeaths: { reported: '800+', verified: '~450-500', note: 'Initial reports greatly inflated' },
+                    dakotaExecuted: 38,
+                    dakotaImprisoned: 300,
+                    dakotaExiled: 1600,
+                    captivesTaken: 269,
+                    refugeesCreated: '~1500 Dakota'
+                },
+                chart: {
+                    id: 'dakotaWarChart',
+                    type: 'bar',
+                    title: '1862 Dakota War: Reported vs. Verified Figures',
+                    desc: 'Casualty figures were systematically inflated in contemporary accounts'
+                }
+            },
+            captivity: {
+                title: "1864-1876: The Captivity Era",
+                intro: "This period produced the most famous captivity narratives and coincided with major military conflicts. These accounts became bestsellers that shaped American views of the 'Indian menace' for generations.",
+                accounts: [
+                    {
+                        year: "1864 (Published 1871)",
+                        author: "Fanny Kelly",
+                        source: "Narrative of My Captivity Among the Sioux Indians",
+                        content: "Kelly, captured during a wagon train attack in Wyoming Territory, spent five months as a captive of Oglala Lakota. Her detailed account described the initial attack, her labor as a captive, threats of torture, and eventual ransom.",
+                        claims: [
+                            "Described initial massacre with infants 'dashed against rocks'",
+                            "Reported being threatened with burning alive for insolence",
+                            "Documented polygamy and treatment of women as 'chattel'",
+                            "Described diet of 'raw organs from fresh kills'",
+                            "Met Mary Boyeau, captive since 1862 Dakota War"
+                        ],
+                        bias: "Written for publication; romantic and horror elements enhanced for sales. Later scholars questioned some details."
+                    },
+                    {
+                        year: "1868",
+                        author: "Military Officers",
+                        source: "Red Cloud's War Reports",
+                        content: "The Fetterman Fight (1866) where 81 soldiers were killed produced extensive military documentation portraying Lakota as cunning enemies who mutilated the dead.",
+                        bias: "Military humiliation required explaining defeat; enemy portrayed as savage to preserve honor"
+                    },
+                    {
+                        year: "1874",
+                        author: "Custer Expedition",
+                        source: "Black Hills Reports",
+                        content: "Custer's expedition confirmed gold in the sacred Black Hills. Reports portrayed the Hills as 'unused' land that 'savages' had no right to withhold from 'civilization.'",
+                        bias: "Economic justification for violating 1868 Treaty; Indigenous land rights dismissed"
+                    },
+                    {
+                        year: "1876",
+                        author: "Newspaper Correspondents",
+                        source: "Little Bighorn Coverage",
+                        content: "The destruction of Custer's command produced a media firestorm. Reports described mutilation of bodies, though evidence suggests this was exaggerated or misunderstood.",
+                        bias: "National trauma demanded villains; Lakota/Cheyenne victory portrayed as 'massacre'"
+                    }
+                ],
+                littleBighorn: {
+                    usDeaths: 268,
+                    lakotaCheyenneDeaths: '~60-100',
+                    mutilationClaims: 'Extensive in initial reports',
+                    historicalReality: 'Some bodies showed wounds consistent with battle, not postmortem mutilation. Lakota accounts describe respectful treatment of dead enemies.'
+                },
+                chart: {
+                    id: 'captivityChart',
                     type: 'scatter',
-                    data: {
-                        datasets: [
-                            {
-                                label: 'Conflicts & Events',
-                                data: [
-                                    { x: 1750, y: 3, label: 'French trader journals' },
-                                    { x: 1862, y: 5, label: 'Dakota War' },
-                                    { x: 1864, y: 4, label: 'Kelly captured' },
-                                    { x: 1866, y: 4, label: "Red Cloud's War" },
-                                    { x: 1876, y: 5, label: 'Little Bighorn' },
-                                    { x: 1890, y: 5, label: 'Wounded Knee' }
-                                ],
-                                backgroundColor: colors.warning,
-                                pointRadius: 8,
-                                pointHoverRadius: 10
-                            },
-                            {
-                                label: 'Publications',
-                                data: [
-                                    { x: 1871, y: 2, label: 'Kelly memoir' },
-                                    { x: 1863, y: 2, label: 'Newspaper accounts' },
-                                    { x: 1877, y: 2, label: 'Military reports' }
-                                ],
-                                backgroundColor: colors.accent,
-                                pointRadius: 8,
-                                pointHoverRadius: 10
-                            }
+                    title: 'Timeline: Conflicts & Publications 1864-1876',
+                    desc: 'Events and their narrative responses'
+                }
+            },
+            final: {
+                title: "1877-1890: Final Conflicts & Aftermath",
+                intro: "Following Little Bighorn, the US military launched intensive campaigns to force all Lakota onto reservations. The final years produced accounts of 'mopping up' operations and culminated in the Wounded Knee Massacre.",
+                accounts: [
+                    {
+                        year: "1877",
+                        author: "Military Officials",
+                        source: "Surrender Documentation",
+                        content: "Crazy Horse and Sitting Bull's surrenders were documented in detail. Reports portrayed them alternately as 'noble foes' finally defeated or as 'murderous savages' brought to justice.",
+                        bias: "Victory narratives; Indigenous leaders' words often filtered through hostile interpreters"
+                    },
+                    {
+                        year: "1881",
+                        author: "Sitting Bull Interviews",
+                        source: "Newspaper Coverage",
+                        content: "After Sitting Bull's return from Canada, journalists interviewed him extensively. Coverage ranged from grudging respect to continued vilification as 'Custer's killer.'",
+                        bias: "Mixed coverage reflecting divided public opinion; often misquoted or mistranslated"
+                    },
+                    {
+                        year: "1890",
+                        author: "Military Reports & Journalists",
+                        source: "Wounded Knee Documentation",
+                        content: "The killing of approximately 250-300 Lakota men, women, and children at Wounded Knee was initially reported as a 'battle' against 'hostile' Ghost Dancers.",
+                        bias: "Military cover-up of massacre; 20 soldiers received Medal of Honor for participation"
+                    },
+                    {
+                        year: "1890-1891",
+                        author: "Various Journalists",
+                        source: "Post-Massacre Coverage",
+                        content: "Some journalists, including L. Frank Baum (later author of Wizard of Oz), called for complete extermination. Others began questioning the official 'battle' narrative.",
+                        bias: "Genocidal rhetoric vs. emerging reform journalism"
+                    }
+                ],
+                woundedKnee: {
+                    lakotaDeaths: '250-300',
+                    usDeaths: 25,
+                    medalsAwarded: 20,
+                    medalsRescinded: 0,
+                    officialDescription: 'Battle',
+                    historicalConsensus: 'Massacre'
+                },
+                aftermath: [
+                    "Wounded Knee marked the end of armed Lakota resistance",
+                    "Reservation confinement fully implemented",
+                    "Ghost Dance suppressed; traditional practices criminalized",
+                    "Assimilation policies intensified (Dawes Act, boarding schools)",
+                    "Public sentiment gradually shifted as reform movements grew"
+                ],
+                chart: {
+                    id: 'finalChart',
+                    type: 'line',
+                    title: 'Lakota Population & Territory 1877-1900',
+                    desc: 'The human cost of the final campaigns'
+                }
+            },
+            sources: {
+                title: "Sources & Bibliography",
+                intro: "The accounts examined in this report come from the following primary and secondary sources. Critical analysis of these sources is essential to understanding their biases and limitations.",
+                categories: [
+                    {
+                        name: "Primary Captivity Narratives",
+                        sources: [
+                            { author: "Kelly, Fanny", title: "Narrative of My Captivity Among the Sioux Indians", year: "1871", publisher: "Hartford: Mutual Publishing", note: "Most widely read Plains captivity narrative; reprinted numerous times" },
+                            { author: "Wakefield, Sarah F.", title: "Six Weeks in the Sioux Tepees: A Narrative of Indian Captivity", year: "1863", publisher: "Minneapolis", note: "Controversial for sympathetic portrayal of Dakota captor" },
+                            { author: "Schwandt, Mary", title: "Various published accounts", year: "1862-1894", publisher: "Multiple publishers", note: "Accounts evolved and became more sensational over time" },
+                            { author: "Heard, Isaac V.D.", title: "History of the Sioux War and Massacres of 1862 and 1863", year: "1864", publisher: "Harper & Brothers", note: "Legal recorder at Dakota trials" }
                         ]
                     },
-                    options: {
-                        ...commonOptions,
-                        scales: {
-                            x: {
-                                title: { display: true, text: 'Year', color: colors.text },
-                                min: 1700,
-                                max: 1900,
-                                ticks: { color: colors.text },
-                                grid: { color: colors.grid }
-                            },
-                            y: {
-                                title: { display: true, text: 'Impact/Severity', color: colors.text },
-                                min: 0,
-                                max: 6,
-                                ticks: {
-                                    color: colors.text,
-                                    callback: function(value) {
-                                        const labels = ['', 'Minor', 'Notable', 'Significant', 'Major', 'Severe'];
-                                        return labels[value] || '';
-                                    }
-                                },
-                                grid: { color: colors.grid }
-                            }
-                        },
-                        plugins: {
-                            ...commonOptions.plugins,
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return context.raw.label || context.dataset.label;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Dakota War Chart
-            const dakotaCtx = document.getElementById('dakotaWarChart');
-            if (dakotaCtx) {
-                charts.dakota = new Chart(dakotaCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Settler Deaths (Reported)', 'Dakota Executed', 'Dakota Imprisoned', 'Captives Taken'],
-                        datasets: [{
-                            label: '1862 Dakota War Figures',
-                            data: [400, 38, 300, 269],
-                            backgroundColor: [colors.warning, colors.accent, colors.accent2, colors.muted]
-                        }]
+                    {
+                        name: "Exploration & Travel Accounts",
+                        sources: [
+                            { author: "Carver, Jonathan", title: "Travels Through the Interior Parts of North America", year: "1778", publisher: "London", note: "Influential early account; shaped European perceptions" },
+                            { author: "Lewis, Meriwether & Clark, William", title: "Journals of the Lewis and Clark Expedition", year: "1804-1806", publisher: "Various editions", note: "First official US government documentation" },
+                            { author: "Catlin, George", title: "Letters and Notes on the Manners, Customs, and Conditions of North American Indians", year: "1841", publisher: "London", note: "Includes paintings and sympathetic if paternalistic observations" }
+                        ]
                     },
-                    options: {
-                        ...commonOptions,
-                        indexAxis: 'y',
-                        scales: {
-                            x: {
-                                title: { display: true, text: 'Number of People', color: colors.text },
-                                ticks: { color: colors.text },
-                                grid: { color: colors.grid }
-                            },
-                            y: {
-                                ticks: { color: colors.text },
-                                grid: { color: colors.grid }
-                            }
-                        },
-                        plugins: {
-                            ...commonOptions.plugins,
-                            legend: { display: false }
-                        }
-                    }
-                });
-            }
-
-            // Sources Chart
-            const sourcesCtx = document.getElementById('sourcesChart');
-            if (sourcesCtx) {
-                charts.sources = new Chart(sourcesCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Captivity Narratives', 'Newspaper Accounts', 'Military Reports', 'Trader Journals', 'Government Records'],
-                        datasets: [{
-                            data: [25, 35, 20, 10, 10],
-                            backgroundColor: [
-                                colors.warning,
-                                colors.accent,
-                                colors.accent2,
-                                colors.muted,
-                                '#57534E'
-                            ]
-                        }]
+                    {
+                        name: "Military & Government Records",
+                        sources: [
+                            { author: "War Department", title: "Annual Reports of the Commissioner of Indian Affairs", year: "1849-1900", publisher: "Government Printing Office", note: "Official policy documents and field reports" },
+                            { author: "Various Officers", title: "Reports on the Fetterman Fight, Battle of Little Bighorn, Wounded Knee", year: "1866-1890", publisher: "National Archives RG 94", note: "Primary military documentation" },
+                            { author: "Kappler, Charles J. (ed.)", title: "Indian Affairs: Laws and Treaties", year: "1904", publisher: "Government Printing Office", note: "Complete treaty texts" }
+                        ]
                     },
-                    options: {
-                        ...commonOptions,
-                        plugins: {
-                            ...commonOptions.plugins,
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    color: colors.text,
-                                    font: { family: "'Work Sans', sans-serif" },
-                                    padding: 15
-                                }
-                            }
-                        }
+                    {
+                        name: "Modern Critical Analysis",
+                        sources: [
+                            { author: "Derounian-Stodola, Kathryn Zabelle", title: "Women's Indian Captivity Narratives", year: "1998", publisher: "Penguin", note: "Critical anthology with scholarly introductions" },
+                            { author: "Namias, June", title: "White Captives: Gender and Ethnicity on the American Frontier", year: "1993", publisher: "University of North Carolina Press", note: "Analyzes captivity narratives as genre" },
+                            { author: "Utley, Robert M.", title: "The Lance and the Shield: The Life of Sitting Bull", year: "1993", publisher: "Henry Holt", note: "Balanced biography using multiple source types" },
+                            { author: "Ostler, Jeffrey", title: "The Lakotas and the Black Hills", year: "2010", publisher: "Viking", note: "Modern scholarship on Lakota perspective" },
+                            { author: "Anderson, Gary Clayton", title: "Kinsmen of Another Kind: Dakota-White Relations in the Upper Mississippi Valley, 1650-1862", year: "1984", publisher: "University of Nebraska Press", note: "Critical analysis of Dakota War sources" }
+                        ]
                     }
-                });
+                ],
+                methodology: "This report presents settler accounts as historical documents requiring critical analysis. Claims are presented as reported, not as verified fact. Where possible, modern scholarship is cited to provide context and correction."
             }
         }
+    };
 
-        // Initialize charts on load
-        document.addEventListener('DOMContentLoaded', initCharts);
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        renderNav();
+        loadTab(appData.currentTab);
+        setupMobileMenu();
+    });
 
-        // Store original toggle function and extend it
-        const originalToggleTheme = toggleTheme;
-        toggleTheme = function() {
-            originalToggleTheme();
-            setTimeout(initCharts, 100);
+    function renderNav() {
+        const navList = document.getElementById('nav-list');
+        const mobileNavList = document.getElementById('mobile-nav-list');
+
+        const html = appData.tabs.map(tab => `
+            <li>
+                <button
+                    onclick="loadTab('${tab.id}')"
+                    class="w-full text-left px-6 py-3 font-medium transition-colors duration-200 flex items-center gap-3 ${appData.currentTab === tab.id ? 'active-tab' : 'inactive-tab text-earth-600 dark:text-earth-400 hover:bg-earth-300 dark:hover:bg-earth-800'}"
+                    id="nav-btn-${tab.id}"
+                >
+                    <span class="text-lg">${tab.icon}</span>
+                    <span class="text-sm">${tab.label}</span>
+                </button>
+            </li>
+        `).join('');
+
+        navList.innerHTML = html;
+        mobileNavList.innerHTML = html.replace(/text-left/g, 'text-center').replace(/px-6/g, 'px-2');
+    }
+
+    function loadTab(tabId) {
+        appData.currentTab = tabId;
+        renderNav();
+        const content = appData.content[tabId];
+        const main = document.getElementById('main-content');
+        main.scrollTop = 0;
+
+        let innerHTML = `
+            <div class="max-w-5xl mx-auto p-6 md:p-10">
+                <header class="mb-8 border-b border-earth-300 dark:border-earth-700 pb-6">
+                    <h2 class="text-3xl md:text-4xl font-bold text-earth-900 dark:text-earth-50 mb-4">${content.title}</h2>
+                    <p class="text-lg text-earth-700 dark:text-earth-300 leading-relaxed">${content.intro}</p>
+                </header>
+        `;
+
+        if (tabId === 'overview') innerHTML += renderOverview(content);
+        else if (tabId === 'early') innerHTML += renderEarly(content);
+        else if (tabId === 'expansion') innerHTML += renderExpansion(content);
+        else if (tabId === 'dakota1862') innerHTML += renderDakota1862(content);
+        else if (tabId === 'captivity') innerHTML += renderCaptivity(content);
+        else if (tabId === 'final') innerHTML += renderFinal(content);
+        else if (tabId === 'sources') innerHTML += renderSources(content);
+
+        innerHTML += `</div>`;
+        main.innerHTML = innerHTML;
+
+        // Initialize charts after render
+        setTimeout(() => {
+            if (content.chart) initChart(content.chart);
+        }, 100);
+
+        document.getElementById('mobile-menu').classList.add('hidden');
+    }
+
+    function renderOverview(content) {
+        return `
+            <div class="bg-rose-100 dark:bg-rose-900/30 border-l-4 border-rose-600 p-6 rounded-r-lg mb-8">
+                <h3 class="font-bold text-rose-800 dark:text-rose-200 mb-2">${content.warning.title}</h3>
+                <p class="text-rose-700 dark:text-rose-300">${content.warning.text}</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                ${content.stats.map(stat => `
+                    <div class="bg-white dark:bg-earth-800 p-5 rounded-lg border border-earth-200 dark:border-earth-700 text-center">
+                        <div class="text-earth-500 dark:text-earth-400 text-sm uppercase tracking-wide mb-1">${stat.label}</div>
+                        <div class="text-2xl font-bold text-[#78350F] dark:text-amber-500">${stat.value}</div>
+                        <div class="text-xs text-earth-400 dark:text-earth-500 mt-1">${stat.sub}</div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Sources of Bias in Settler Accounts</h3>
+            <div class="space-y-4 mb-8">
+                ${content.biasFactors.map(item => `
+                    <div class="bg-white dark:bg-earth-800 p-5 rounded-lg border-l-4 border-amber-600">
+                        <h4 class="font-bold text-earth-800 dark:text-earth-100">${item.factor}</h4>
+                        <p class="text-earth-600 dark:text-earth-400 mt-1">${item.desc}</p>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="bg-white dark:bg-earth-800 p-6 rounded-lg border border-earth-200 dark:border-earth-700">
+                <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.chart.title}</h3>
+                <p class="text-sm text-earth-500 dark:text-earth-400 mb-4">${content.chart.desc}</p>
+                <div class="chart-container"><canvas id="${content.chart.id}"></canvas></div>
+            </div>
+        `;
+    }
+
+    function renderEarly(content) {
+        return `
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Key Accounts</h3>
+            <div class="space-y-6 mb-8">
+                ${content.accounts.map(acc => `
+                    <div class="bg-white dark:bg-earth-800 p-6 rounded-lg border border-earth-200 dark:border-earth-700">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 px-3 py-1 rounded text-sm font-bold">${acc.year}</span>
+                            <span class="text-xs text-earth-500 dark:text-earth-400">${acc.source}</span>
+                        </div>
+                        <h4 class="font-bold text-earth-800 dark:text-earth-100 mb-2">${acc.author}</h4>
+                        <p class="text-earth-600 dark:text-earth-400 mb-3">${acc.content}</p>
+                        <div class="bg-rose-50 dark:bg-rose-900/20 p-3 rounded border-l-2 border-rose-400">
+                            <span class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase">Bias:</span>
+                            <span class="text-sm text-rose-700 dark:text-rose-300 ml-2">${acc.bias}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Common Themes in Early Accounts</h3>
+            <ul class="space-y-2 mb-8">
+                ${content.keyThemes.map(theme => `
+                    <li class="flex items-start gap-3 text-earth-700 dark:text-earth-300">
+                        <span class="text-amber-600">•</span>
+                        <span>${theme}</span>
+                    </li>
+                `).join('')}
+            </ul>
+
+            <div class="bg-white dark:bg-earth-800 p-6 rounded-lg border border-earth-200 dark:border-earth-700">
+                <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.chart.title}</h3>
+                <p class="text-sm text-earth-500 dark:text-earth-400 mb-4">${content.chart.desc}</p>
+                <div class="chart-container"><canvas id="${content.chart.id}"></canvas></div>
+            </div>
+        `;
+    }
+
+    function renderExpansion(content) {
+        return `
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Timeline of Conflicts</h3>
+            <div class="relative border-l-2 border-earth-300 dark:border-earth-600 ml-4 mb-8 space-y-6">
+                ${content.timeline.map(t => `
+                    <div class="relative pl-8">
+                        <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-amber-600 border-2 border-white dark:border-earth-900"></div>
+                        <div class="font-bold text-amber-700 dark:text-amber-400">${t.year}</div>
+                        <h4 class="font-bold text-earth-900 dark:text-earth-100">${t.event}</h4>
+                        <p class="text-earth-600 dark:text-earth-400">${t.type} — Casualties: ${t.casualties}</p>
+                    </div>
+                `).join('')}
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Key Accounts</h3>
+            <div class="space-y-4 mb-8">
+                ${content.accounts.map(acc => `
+                    <div class="bg-white dark:bg-earth-800 p-5 rounded-lg border border-earth-200 dark:border-earth-700">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 px-2 py-1 rounded text-xs font-bold">${acc.year}</span>
+                        </div>
+                        <h4 class="font-bold text-earth-800 dark:text-earth-100">${acc.author}</h4>
+                        <p class="text-xs text-earth-500 dark:text-earth-400 mb-2">${acc.source}</p>
+                        <p class="text-earth-600 dark:text-earth-400 text-sm">${acc.content}</p>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="bg-white dark:bg-earth-800 p-6 rounded-lg border border-earth-200 dark:border-earth-700">
+                <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.chart.title}</h3>
+                <p class="text-sm text-earth-500 dark:text-earth-400 mb-4">${content.chart.desc}</p>
+                <div class="chart-container"><canvas id="${content.chart.id}"></canvas></div>
+            </div>
+        `;
+    }
+
+    function renderDakota1862(content) {
+        const stats = content.statistics;
+        return `
+            <div class="bg-amber-50 dark:bg-amber-900/20 p-5 rounded-lg border-l-4 border-amber-600 mb-8">
+                <h4 class="font-bold text-amber-800 dark:text-amber-200 mb-2">Context</h4>
+                <p class="text-amber-700 dark:text-amber-300">${content.context}</p>
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Reported Statistics</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-rose-100 dark:bg-rose-900/30 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-rose-700 dark:text-rose-300">${stats.settlerDeaths.reported}</div>
+                    <div class="text-xs text-rose-600 dark:text-rose-400">Settler Deaths (Reported)</div>
+                    <div class="text-xs text-rose-500 mt-1">Verified: ${stats.settlerDeaths.verified}</div>
+                </div>
+                <div class="bg-earth-200 dark:bg-earth-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-earth-800 dark:text-earth-100">${stats.dakotaExecuted}</div>
+                    <div class="text-xs text-earth-600 dark:text-earth-400">Dakota Executed</div>
+                </div>
+                <div class="bg-earth-200 dark:bg-earth-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-earth-800 dark:text-earth-100">${stats.dakotaImprisoned}</div>
+                    <div class="text-xs text-earth-600 dark:text-earth-400">Dakota Imprisoned</div>
+                </div>
+                <div class="bg-earth-200 dark:bg-earth-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-earth-800 dark:text-earth-100">${stats.dakotaExiled}</div>
+                    <div class="text-xs text-earth-600 dark:text-earth-400">Dakota Exiled</div>
+                </div>
+                <div class="bg-earth-200 dark:bg-earth-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-earth-800 dark:text-earth-100">${stats.captivesTaken}</div>
+                    <div class="text-xs text-earth-600 dark:text-earth-400">Captives Taken</div>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Key Accounts</h3>
+            <div class="space-y-4 mb-8">
+                ${content.accounts.map(acc => `
+                    <div class="bg-white dark:bg-earth-800 p-5 rounded-lg border border-earth-200 dark:border-earth-700">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold text-earth-800 dark:text-earth-100">${acc.author}</h4>
+                            <span class="text-xs text-earth-500">${acc.year}</span>
+                        </div>
+                        <p class="text-xs text-earth-500 dark:text-earth-400 mb-2 italic">${acc.source}</p>
+                        <p class="text-earth-600 dark:text-earth-400 text-sm mb-3">${acc.content}</p>
+                        <div class="bg-rose-50 dark:bg-rose-900/20 p-2 rounded text-xs">
+                            <span class="font-bold text-rose-600 dark:text-rose-400">Bias:</span>
+                            <span class="text-rose-700 dark:text-rose-300 ml-1">${acc.bias}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="bg-white dark:bg-earth-800 p-6 rounded-lg border border-earth-200 dark:border-earth-700">
+                <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.chart.title}</h3>
+                <p class="text-sm text-earth-500 dark:text-earth-400 mb-4">${content.chart.desc}</p>
+                <div class="chart-container"><canvas id="${content.chart.id}"></canvas></div>
+            </div>
+        `;
+    }
+
+    function renderCaptivity(content) {
+        const lb = content.littleBighorn;
+        return `
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Major Captivity Narrative: Fanny Kelly</h3>
+            <div class="bg-white dark:bg-earth-800 p-6 rounded-lg border border-earth-200 dark:border-earth-700 mb-8">
+                <div class="flex justify-between items-start mb-3">
+                    <span class="bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 px-3 py-1 rounded text-sm font-bold">${content.accounts[0].year}</span>
+                </div>
+                <h4 class="font-bold text-earth-800 dark:text-earth-100 mb-2">${content.accounts[0].author}</h4>
+                <p class="text-xs text-earth-500 italic mb-3">${content.accounts[0].source}</p>
+                <p class="text-earth-600 dark:text-earth-400 mb-4">${content.accounts[0].content}</p>
+                <h5 class="font-bold text-earth-700 dark:text-earth-300 mb-2">Key Claims:</h5>
+                <ul class="space-y-1 mb-4">
+                    ${content.accounts[0].claims.map(c => `
+                        <li class="text-sm text-earth-600 dark:text-earth-400 flex items-start gap-2">
+                            <span class="text-amber-600">•</span>${c}
+                        </li>
+                    `).join('')}
+                </ul>
+                <div class="bg-rose-50 dark:bg-rose-900/20 p-3 rounded">
+                    <span class="text-xs font-bold text-rose-600 dark:text-rose-400">Bias:</span>
+                    <span class="text-sm text-rose-700 dark:text-rose-300 ml-2">${content.accounts[0].bias}</span>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Battle of Little Bighorn (1876)</h3>
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-rose-100 dark:bg-rose-900/30 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-rose-700 dark:text-rose-300">${lb.usDeaths}</div>
+                    <div class="text-xs text-rose-600 dark:text-rose-400">US Deaths</div>
+                </div>
+                <div class="bg-earth-200 dark:bg-earth-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-earth-800 dark:text-earth-100">${lb.lakotaCheyenneDeaths}</div>
+                    <div class="text-xs text-earth-600 dark:text-earth-400">Lakota/Cheyenne Deaths</div>
+                </div>
+            </div>
+            <div class="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border-l-4 border-amber-600 mb-8">
+                <p class="text-sm text-amber-800 dark:text-amber-200"><strong>On Mutilation Claims:</strong> ${lb.historicalReality}</p>
+            </div>
+
+            <div class="bg-white dark:bg-earth-800 p-6 rounded-lg border border-earth-200 dark:border-earth-700">
+                <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.chart.title}</h3>
+                <p class="text-sm text-earth-500 dark:text-earth-400 mb-4">${content.chart.desc}</p>
+                <div class="chart-container"><canvas id="${content.chart.id}"></canvas></div>
+            </div>
+        `;
+    }
+
+    function renderFinal(content) {
+        const wk = content.woundedKnee;
+        return `
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Wounded Knee (December 29, 1890)</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-rose-100 dark:bg-rose-900/30 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-rose-700 dark:text-rose-300">${wk.lakotaDeaths}</div>
+                    <div class="text-xs text-rose-600 dark:text-rose-400">Lakota Killed</div>
+                </div>
+                <div class="bg-earth-200 dark:bg-earth-700 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-earth-800 dark:text-earth-100">${wk.usDeaths}</div>
+                    <div class="text-xs text-earth-600 dark:text-earth-400">US Soldiers Killed</div>
+                </div>
+                <div class="bg-amber-100 dark:bg-amber-900/30 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-amber-700 dark:text-amber-300">${wk.medalsAwarded}</div>
+                    <div class="text-xs text-amber-600 dark:text-amber-400">Medals of Honor</div>
+                </div>
+                <div class="bg-earth-200 dark:bg-earth-700 p-4 rounded-lg text-center">
+                    <div class="text-lg font-bold text-earth-800 dark:text-earth-100">"${wk.officialDescription}"</div>
+                    <div class="text-xs text-earth-600 dark:text-earth-400">vs "${wk.historicalConsensus}"</div>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Key Accounts</h3>
+            <div class="space-y-4 mb-8">
+                ${content.accounts.map(acc => `
+                    <div class="bg-white dark:bg-earth-800 p-5 rounded-lg border border-earth-200 dark:border-earth-700">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold text-earth-800 dark:text-earth-100">${acc.author}</h4>
+                            <span class="text-xs text-earth-500">${acc.year}</span>
+                        </div>
+                        <p class="text-xs text-earth-500 italic mb-2">${acc.source}</p>
+                        <p class="text-earth-600 dark:text-earth-400 text-sm mb-2">${acc.content}</p>
+                        <div class="bg-rose-50 dark:bg-rose-900/20 p-2 rounded text-xs">
+                            <span class="font-bold text-rose-600 dark:text-rose-400">Bias:</span>
+                            <span class="text-rose-700 dark:text-rose-300 ml-1">${acc.bias}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 dark:text-earth-100">Aftermath</h3>
+            <ul class="space-y-2 mb-8">
+                ${content.aftermath.map(item => `
+                    <li class="flex items-start gap-3 text-earth-700 dark:text-earth-300">
+                        <span class="text-amber-600">•</span>${item}
+                    </li>
+                `).join('')}
+            </ul>
+
+            <div class="bg-white dark:bg-earth-800 p-6 rounded-lg border border-earth-200 dark:border-earth-700">
+                <h3 class="text-xl font-bold mb-2 dark:text-earth-100">${content.chart.title}</h3>
+                <p class="text-sm text-earth-500 dark:text-earth-400 mb-4">${content.chart.desc}</p>
+                <div class="chart-container"><canvas id="${content.chart.id}"></canvas></div>
+            </div>
+        `;
+    }
+
+    function renderSources(content) {
+        return `
+            <div class="bg-amber-50 dark:bg-amber-900/20 p-5 rounded-lg border-l-4 border-amber-600 mb-8">
+                <h4 class="font-bold text-amber-800 dark:text-amber-200 mb-2">Methodology</h4>
+                <p class="text-amber-700 dark:text-amber-300 text-sm">${content.methodology}</p>
+            </div>
+
+            ${content.categories.map(cat => `
+                <div class="bg-white dark:bg-earth-800 p-6 rounded-lg border border-earth-200 dark:border-earth-700 mb-6">
+                    <h3 class="text-xl font-bold mb-4 text-earth-900 dark:text-earth-100 border-b border-earth-200 dark:border-earth-700 pb-2">${cat.name}</h3>
+                    <ul class="space-y-4">
+                        ${cat.sources.map(src => `
+                            <li class="pl-4 border-l-2 border-amber-600">
+                                <p class="font-medium text-earth-800 dark:text-earth-200">
+                                    ${src.author}. <em class="text-amber-700 dark:text-amber-400">${src.title}</em>.
+                                    ${src.publisher || ''} ${src.year}.
+                                </p>
+                                <p class="text-sm text-earth-600 dark:text-earth-400 mt-1">${src.note}</p>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `).join('')}
+
+            <div class="text-center mt-8">
+                <a href="../" class="inline-block bg-amber-700 hover:bg-amber-800 text-white px-6 py-3 rounded-lg transition-colors">
+                    ← Return to Main Lakota History
+                </a>
+            </div>
+        `;
+    }
+
+    // Chart initialization
+    let activeCharts = {};
+
+    function getChartColors() {
+        const dark = document.documentElement.classList.contains('dark');
+        return {
+            text: dark ? '#E7E5E4' : '#292524',
+            grid: dark ? '#44403C' : '#E7E5E4',
+            accent: dark ? '#D97706' : '#78350F',
+            accent2: dark ? '#F59E0B' : '#B45309',
+            warning: dark ? '#FB7185' : '#9F1239',
+            muted: dark ? '#A8A29E' : '#78716C'
         };
-    </script>
+    }
+
+    function initChart(config) {
+        const ctx = document.getElementById(config.id);
+        if (!ctx) return;
+
+        if (activeCharts[config.id]) activeCharts[config.id].destroy();
+
+        const colors = getChartColors();
+        const commonOpts = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { color: colors.text, font: { family: "'Work Sans'" } } }
+            }
+        };
+
+        let chartConfig = { options: commonOpts };
+
+        if (config.id === 'publicationsChart') {
+            chartConfig = {
+                type: 'line',
+                data: {
+                    labels: ['1680', '1700', '1720', '1740', '1760', '1780', '1800', '1820', '1840', '1860', '1880', '1900'],
+                    datasets: [{
+                        label: 'Captivity Narratives Published',
+                        data: [2, 3, 5, 4, 6, 8, 12, 15, 25, 45, 35, 20],
+                        borderColor: colors.accent,
+                        backgroundColor: colors.accent + '20',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: { ...commonOpts, scales: {
+                    x: { ticks: { color: colors.text }, grid: { color: colors.grid } },
+                    y: { ticks: { color: colors.text }, grid: { color: colors.grid }, title: { display: true, text: 'Publications', color: colors.text } }
+                }}
+            };
+        } else if (config.id === 'earlySourcesChart') {
+            chartConfig = {
+                type: 'doughnut',
+                data: {
+                    labels: ['Fur Traders', 'Missionaries', 'Military/Government', 'Explorers'],
+                    datasets: [{ data: [40, 25, 20, 15], backgroundColor: [colors.accent, colors.accent2, colors.warning, colors.muted] }]
+                },
+                options: { ...commonOpts, plugins: { ...commonOpts.plugins, legend: { position: 'bottom', labels: { color: colors.text, padding: 15 } } } }
+            };
+        } else if (config.id === 'expansionChart') {
+            chartConfig = {
+                type: 'bar',
+                data: {
+                    labels: ['1804', '1823', '1854', '1855', '1857'],
+                    datasets: [
+                        { label: 'US Casualties', data: [0, 15, 31, 4, 40], backgroundColor: colors.accent },
+                        { label: 'Indigenous Casualties', data: [0, 50, 0, 86, 12], backgroundColor: colors.warning }
+                    ]
+                },
+                options: { ...commonOpts, scales: {
+                    x: { ticks: { color: colors.text }, grid: { color: colors.grid } },
+                    y: { ticks: { color: colors.text }, grid: { color: colors.grid }, title: { display: true, text: 'Casualties', color: colors.text } }
+                }}
+            };
+        } else if (config.id === 'dakotaWarChart') {
+            chartConfig = {
+                type: 'bar',
+                data: {
+                    labels: ['Settler Deaths', 'Dakota Executed', 'Dakota Imprisoned', 'Dakota Exiled'],
+                    datasets: [
+                        { label: 'Reported', data: [800, 38, 300, 1600], backgroundColor: colors.warning + '80' },
+                        { label: 'Verified/Actual', data: [475, 38, 300, 1600], backgroundColor: colors.accent }
+                    ]
+                },
+                options: { ...commonOpts, indexAxis: 'y', scales: {
+                    x: { ticks: { color: colors.text }, grid: { color: colors.grid } },
+                    y: { ticks: { color: colors.text }, grid: { color: colors.grid } }
+                }}
+            };
+        } else if (config.id === 'captivityChart') {
+            chartConfig = {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        { label: 'Conflicts', data: [
+                            {x:1864,y:4},{x:1866,y:5},{x:1868,y:3},{x:1874,y:2},{x:1876,y:5}
+                        ], backgroundColor: colors.warning, pointRadius: 10 },
+                        { label: 'Publications', data: [
+                            {x:1871,y:2},{x:1874,y:2},{x:1877,y:3}
+                        ], backgroundColor: colors.accent, pointRadius: 10 }
+                    ]
+                },
+                options: { ...commonOpts, scales: {
+                    x: { min: 1862, max: 1880, ticks: { color: colors.text }, grid: { color: colors.grid }, title: { display: true, text: 'Year', color: colors.text } },
+                    y: { min: 0, max: 6, ticks: { color: colors.text, callback: v => ['','Low','Medium','High','Major','Severe'][v] || '' }, grid: { color: colors.grid }, title: { display: true, text: 'Impact', color: colors.text } }
+                }}
+            };
+        } else if (config.id === 'finalChart') {
+            chartConfig = {
+                type: 'line',
+                data: {
+                    labels: ['1877', '1880', '1883', '1886', '1889', '1890', '1895', '1900'],
+                    datasets: [
+                        { label: 'Lakota Population (thousands)', data: [25, 23, 20, 18, 17, 15, 16, 17], borderColor: colors.accent, yAxisID: 'y' },
+                        { label: 'Reservation Land (million acres)', data: [20, 18, 15, 12, 11, 10, 8, 6], borderColor: colors.warning, yAxisID: 'y1' }
+                    ]
+                },
+                options: { ...commonOpts, scales: {
+                    x: { ticks: { color: colors.text }, grid: { color: colors.grid } },
+                    y: { type: 'linear', position: 'left', ticks: { color: colors.text }, grid: { color: colors.grid }, title: { display: true, text: 'Population', color: colors.text } },
+                    y1: { type: 'linear', position: 'right', ticks: { color: colors.text }, grid: { drawOnChartArea: false }, title: { display: true, text: 'Land (M acres)', color: colors.text } }
+                }}
+            };
+        }
+
+        if (chartConfig.type) {
+            activeCharts[config.id] = new Chart(ctx, chartConfig);
+        }
+    }
+
+    // Theme & Mobile
+    function toggleTheme() {
+        const html = document.documentElement;
+        html.classList.toggle('dark');
+        html.classList.toggle('light');
+        localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        loadTab(appData.currentTab);
+    }
+
+    function initTheme() {
+        const saved = localStorage.getItem('theme');
+        if (saved) {
+            document.documentElement.classList.remove('light', 'dark');
+            document.documentElement.classList.add(saved);
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+        }
+    }
+
+    function setupMobileMenu() {
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.remove('hidden');
+        });
+        document.getElementById('close-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+    }
+</script>
 </body>
 </html>
