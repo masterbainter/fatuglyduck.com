@@ -18,6 +18,7 @@
     <meta name="twitter:description" content="Historical settler perspectives on Lakota culture - examining biased accounts from 1700-1900.">
 
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap');
@@ -335,6 +336,40 @@
             color: var(--accent-light);
         }
 
+        /* Chart Containers */
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .chart-card h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .chart-card .chart-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 250px;
+            }
+        }
+
         /* Footer */
         .footer {
             background: var(--bg-secondary);
@@ -464,6 +499,15 @@
             <p>Spiritual practices, such as the <span class="term">Sun Dance</span> ritual involving self-inflicted wounds like piercing flesh with skewers and tearing free, were reviled as barbaric self-torture, pagan idolatry that invoked visions through pain rather than Christian piety.</p>
 
             <p>Overall, non-Lakota observers framed Lakota culture as primitive and bloodthirsty, a nomadic existence that clashed with settler ideals of settled agriculture and law, often exaggerating violence to portray them as obstacles to manifest destiny.</p>
+
+            <!-- Timeline Chart -->
+            <div class="chart-card">
+                <h4>Timeline of Key Events & Accounts (1700-1900)</h4>
+                <p class="chart-desc">Major conflicts, captivity events, and publication dates of settler narratives</p>
+                <div class="chart-container">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </div>
         </section>
 
         <div class="section-divider">— — — — — — — — — —</div>
@@ -519,6 +563,15 @@
             </div>
 
             <p>These narratives framed Lakota-related groups as demonic, with no regard for age or gender, using torture not just for revenge but to terrorize intruders, though some captives noted adoptions where children were integrated into families—still viewed by settlers as forced assimilation into barbarism.</p>
+
+            <!-- 1862 Impact Chart -->
+            <div class="chart-card">
+                <h4>1862 Dakota War: Reported Casualties</h4>
+                <p class="chart-desc">Settler-reported death tolls used to justify military response</p>
+                <div class="chart-container">
+                    <canvas id="dakotaWarChart"></canvas>
+                </div>
+            </div>
         </section>
 
         <div class="section-divider">— — — — — — — — — —</div>
@@ -536,6 +589,15 @@
             <div class="info-card">
                 <h4>The Narrative Purpose</h4>
                 <p>These portrayals, while often exaggerated for political gain, painted Lakota culture as a cycle of violence where punishment and warfare blurred into a way of life, contrasting sharply with settler self-image as bringers of order.</p>
+            </div>
+
+            <!-- Sources Breakdown Chart -->
+            <div class="chart-card">
+                <h4>Types of Settler Accounts (1700-1900)</h4>
+                <p class="chart-desc">Breakdown of source types that shaped public perception</p>
+                <div class="chart-container">
+                    <canvas id="sourcesChart"></canvas>
+                </div>
             </div>
         </section>
 
@@ -603,6 +665,196 @@
 
         // Initialize
         initTheme();
+
+        // Chart color helper
+        function getChartColors() {
+            const isDark = document.documentElement.classList.contains('dark');
+            return {
+                text: isDark ? '#E7E5E4' : '#292524',
+                grid: isDark ? '#44403C' : '#E7E5E4',
+                accent: isDark ? '#D97706' : '#78350F',
+                accent2: isDark ? '#F59E0B' : '#B45309',
+                warning: isDark ? '#FB7185' : '#9F1239',
+                muted: isDark ? '#A8A29E' : '#78716C'
+            };
+        }
+
+        // Initialize Charts
+        let charts = {};
+
+        function initCharts() {
+            const colors = getChartColors();
+
+            // Destroy existing charts
+            Object.values(charts).forEach(chart => chart.destroy());
+            charts = {};
+
+            // Common options
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: colors.text,
+                            font: { family: "'Work Sans', sans-serif" }
+                        }
+                    }
+                }
+            };
+
+            // Timeline Chart
+            const timelineCtx = document.getElementById('timelineChart');
+            if (timelineCtx) {
+                charts.timeline = new Chart(timelineCtx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [
+                            {
+                                label: 'Conflicts & Events',
+                                data: [
+                                    { x: 1750, y: 3, label: 'French trader journals' },
+                                    { x: 1862, y: 5, label: 'Dakota War' },
+                                    { x: 1864, y: 4, label: 'Kelly captured' },
+                                    { x: 1866, y: 4, label: "Red Cloud's War" },
+                                    { x: 1876, y: 5, label: 'Little Bighorn' },
+                                    { x: 1890, y: 5, label: 'Wounded Knee' }
+                                ],
+                                backgroundColor: colors.warning,
+                                pointRadius: 8,
+                                pointHoverRadius: 10
+                            },
+                            {
+                                label: 'Publications',
+                                data: [
+                                    { x: 1871, y: 2, label: 'Kelly memoir' },
+                                    { x: 1863, y: 2, label: 'Newspaper accounts' },
+                                    { x: 1877, y: 2, label: 'Military reports' }
+                                ],
+                                backgroundColor: colors.accent,
+                                pointRadius: 8,
+                                pointHoverRadius: 10
+                            }
+                        ]
+                    },
+                    options: {
+                        ...commonOptions,
+                        scales: {
+                            x: {
+                                title: { display: true, text: 'Year', color: colors.text },
+                                min: 1700,
+                                max: 1900,
+                                ticks: { color: colors.text },
+                                grid: { color: colors.grid }
+                            },
+                            y: {
+                                title: { display: true, text: 'Impact/Severity', color: colors.text },
+                                min: 0,
+                                max: 6,
+                                ticks: {
+                                    color: colors.text,
+                                    callback: function(value) {
+                                        const labels = ['', 'Minor', 'Notable', 'Significant', 'Major', 'Severe'];
+                                        return labels[value] || '';
+                                    }
+                                },
+                                grid: { color: colors.grid }
+                            }
+                        },
+                        plugins: {
+                            ...commonOptions.plugins,
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.raw.label || context.dataset.label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Dakota War Chart
+            const dakotaCtx = document.getElementById('dakotaWarChart');
+            if (dakotaCtx) {
+                charts.dakota = new Chart(dakotaCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Settler Deaths (Reported)', 'Dakota Executed', 'Dakota Imprisoned', 'Captives Taken'],
+                        datasets: [{
+                            label: '1862 Dakota War Figures',
+                            data: [400, 38, 300, 269],
+                            backgroundColor: [colors.warning, colors.accent, colors.accent2, colors.muted]
+                        }]
+                    },
+                    options: {
+                        ...commonOptions,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                title: { display: true, text: 'Number of People', color: colors.text },
+                                ticks: { color: colors.text },
+                                grid: { color: colors.grid }
+                            },
+                            y: {
+                                ticks: { color: colors.text },
+                                grid: { color: colors.grid }
+                            }
+                        },
+                        plugins: {
+                            ...commonOptions.plugins,
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            // Sources Chart
+            const sourcesCtx = document.getElementById('sourcesChart');
+            if (sourcesCtx) {
+                charts.sources = new Chart(sourcesCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Captivity Narratives', 'Newspaper Accounts', 'Military Reports', 'Trader Journals', 'Government Records'],
+                        datasets: [{
+                            data: [25, 35, 20, 10, 10],
+                            backgroundColor: [
+                                colors.warning,
+                                colors.accent,
+                                colors.accent2,
+                                colors.muted,
+                                '#57534E'
+                            ]
+                        }]
+                    },
+                    options: {
+                        ...commonOptions,
+                        plugins: {
+                            ...commonOptions.plugins,
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: colors.text,
+                                    font: { family: "'Work Sans', sans-serif" },
+                                    padding: 15
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize charts on load
+        document.addEventListener('DOMContentLoaded', initCharts);
+
+        // Store original toggle function and extend it
+        const originalToggleTheme = toggleTheme;
+        toggleTheme = function() {
+            originalToggleTheme();
+            setTimeout(initCharts, 100);
+        };
     </script>
 </body>
 </html>
