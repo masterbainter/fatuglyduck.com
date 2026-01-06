@@ -180,7 +180,8 @@
             { id: 'origins', label: '1400-1700: Woodland Roots', icon: '◈' },
             { id: 'expansion', label: '1700-1850: Lords of the Plains', icon: '⚔' },
             { id: 'settlers', label: '1850-1890: Defense & Treaty', icon: '⚖' },
-            { id: 'reservation', label: '1890-1950: The Reservation Era', icon: '◬' }
+            { id: 'reservation', label: '1890-1950: The Reservation Era', icon: '◬' },
+            { id: 'sources', label: 'Sources & References', icon: '📚' }
         ],
         content: {
             overview: {
@@ -330,6 +331,48 @@
                         }]
                     }
                 }
+            },
+            sources: {
+                title: "Sources & References",
+                intro: "This historical overview draws from scholarly works, primary sources, and archival materials. The following sources were consulted in the preparation of this content.",
+                categories: [
+                    {
+                        name: "Primary Academic Sources",
+                        sources: [
+                            { author: "Ostler, Jeffrey", title: "The Lakotas and the Black Hills: The Struggle for Sacred Ground", publisher: "Viking Press", year: "2010", note: "Definitive account of Lakota claims to the Black Hills and treaty violations." },
+                            { author: "Utley, Robert M.", title: "The Lance and the Shield: The Life and Times of Sitting Bull", publisher: "Henry Holt and Company", year: "1993", note: "Biography providing context on Lakota leadership and resistance." },
+                            { author: "DeMallie, Raymond J.", title: "The Sixth Grandfather: Black Elk's Teachings Given to John G. Neihardt", publisher: "University of Nebraska Press", year: "1984", note: "Primary source material on Lakota spirituality and oral history." },
+                            { author: "White, Richard", title: "The Roots of Dependency: Subsistence, Environment, and Social Change among the Choctaws, Pawnees, and Navajos", publisher: "University of Nebraska Press", year: "1983", note: "Comparative analysis of Plains Indian economies and adaptations." },
+                            { author: "Calloway, Colin G.", title: "One Vast Winter Count: The Native American West before Lewis and Clark", publisher: "University of Nebraska Press", year: "2003", note: "Pre-contact and early contact period history of Plains tribes." }
+                        ]
+                    },
+                    {
+                        name: "General Histories",
+                        sources: [
+                            { author: "Brown, Dee", title: "Bury My Heart at Wounded Knee: An Indian History of the American West", publisher: "Holt, Rinehart & Winston", year: "1970", note: "Influential narrative history of Native American displacement." },
+                            { author: "Olson, James C.", title: "Red Cloud and the Sioux Problem", publisher: "University of Nebraska Press", year: "1965", note: "Detailed account of Red Cloud's War and treaty negotiations." },
+                            { author: "Hyde, George E.", title: "Red Cloud's Folk: A History of the Oglala Sioux Indians", publisher: "University of Oklahoma Press", year: "1937", note: "Early ethnographic history of the Oglala band." },
+                            { author: "Hassrick, Royal B.", title: "The Sioux: Life and Customs of a Warrior Society", publisher: "University of Oklahoma Press", year: "1964", note: "Comprehensive study of Lakota social organization and culture." }
+                        ]
+                    },
+                    {
+                        name: "Government & Archival Sources",
+                        sources: [
+                            { author: "National Archives", title: "Records of the Bureau of Indian Affairs (Record Group 75)", publisher: "U.S. National Archives", year: "Various", note: "Treaty documents, agency records, and correspondence." },
+                            { author: "Kappler, Charles J. (ed.)", title: "Indian Affairs: Laws and Treaties", publisher: "Government Printing Office", year: "1904", note: "Complete texts of Fort Laramie Treaties (1851, 1868) and related agreements." },
+                            { author: "U.S. Congress", title: "Report on the Condition of the Indian Tribes", publisher: "Government Printing Office", year: "1867", note: "Congressional investigation into Indian policy and conditions." }
+                        ]
+                    },
+                    {
+                        name: "Population & Environmental Data",
+                        sources: [
+                            { author: "Isenberg, Andrew C.", title: "The Destruction of the Bison: An Environmental History, 1750-1920", publisher: "Cambridge University Press", year: "2000", note: "Source for bison population estimates and decline data." },
+                            { author: "Thornton, Russell", title: "American Indian Holocaust and Survival: A Population History Since 1492", publisher: "University of Oklahoma Press", year: "1987", note: "Demographic data on Native American population changes." },
+                            { author: "Hämäläinen, Pekka", title: "Lakota America: A New History of Indigenous Power", publisher: "Yale University Press", year: "2019", note: "Recent scholarship on Lakota territorial expansion and political power." }
+                        ]
+                    }
+                ],
+                disclaimer: "Note: Population figures, territorial estimates, and timeline dates represent scholarly consensus where available. Some figures are approximations based on historical records and archaeological evidence. The Lakota people maintain their own oral histories and interpretations of these events."
             }
         }
     };
@@ -398,6 +441,8 @@
             innerHTML += renderSettlers(content);
         } else if (tabId === 'reservation') {
             innerHTML += renderReservation(content);
+        } else if (tabId === 'sources') {
+            innerHTML += renderSources(content);
         }
 
         innerHTML += `</div>`; // Close container
@@ -604,6 +649,46 @@
                             <canvas id="${content.chart.id}"></canvas>
                         </div>
                     </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderSources(content) {
+        return `
+            <div class="space-y-8">
+                ${content.categories.map(cat => `
+                    <div class="bg-white dark:bg-earth-800 p-6 rounded-lg shadow-sm border border-earth-200 dark:border-earth-700">
+                        <h3 class="text-xl font-bold mb-4 text-earth-900 dark:text-earth-100 border-b border-earth-200 dark:border-earth-700 pb-2">${cat.name}</h3>
+                        <ul class="space-y-4">
+                            ${cat.sources.map(src => `
+                                <li class="pl-4 border-l-2 border-[#78350F]">
+                                    <p class="font-medium text-earth-800 dark:text-earth-200">
+                                        ${src.author}. <em class="text-[#78350F] dark:text-amber-500">${src.title}</em>.
+                                        ${src.publisher}, ${src.year}.
+                                    </p>
+                                    <p class="text-sm text-earth-600 dark:text-earth-400 mt-1">${src.note}</p>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `).join('')}
+
+                <div class="bg-earth-200 dark:bg-earth-800 p-6 rounded-lg border-l-4 border-amber-600">
+                    <h4 class="font-bold text-earth-800 dark:text-earth-200 mb-2">Disclaimer</h4>
+                    <p class="text-earth-700 dark:text-earth-300 text-sm">${content.disclaimer}</p>
+                </div>
+
+                <div class="bg-white dark:bg-earth-800 p-6 rounded-lg shadow-sm border border-earth-200 dark:border-earth-700">
+                    <h3 class="text-xl font-bold mb-4 text-earth-900 dark:text-earth-100">Further Reading</h3>
+                    <p class="text-earth-700 dark:text-earth-300 mb-4">For those interested in learning more about Lakota history and culture, the following institutions maintain extensive collections:</p>
+                    <ul class="space-y-2 text-earth-600 dark:text-earth-400">
+                        <li>• <strong>Akta Lakota Museum & Cultural Center</strong> - Chamberlain, South Dakota</li>
+                        <li>• <strong>Oglala Lakota College Historical Center</strong> - Kyle, South Dakota</li>
+                        <li>• <strong>National Museum of the American Indian</strong> - Smithsonian Institution</li>
+                        <li>• <strong>Nebraska State Historical Society</strong> - Lincoln, Nebraska</li>
+                        <li>• <strong>South Dakota State Historical Society</strong> - Pierre, South Dakota</li>
+                    </ul>
                 </div>
             </div>
         `;
