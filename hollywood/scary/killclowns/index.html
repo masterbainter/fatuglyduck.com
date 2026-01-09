@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Killer Klowns from Outer Space - Fan Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-blue: #00ffff;
+            --neon-yellow: #f0f000;
+            --blood-red: #880000;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Creepster', cursive;
+            letter-spacing: 2px;
+        }
+
+        .hero-title {
+            font-family: 'Nosifer', cursive;
+            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+            color: #fff;
+        }
+
+        .neon-border {
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), inset 0 0 5px var(--neon-blue);
+        }
+
+        .timeline-card {
+            background: rgba(20, 20, 20, 0.8);
+            border-left: 4px solid var(--neon-pink);
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-card:hover {
+            transform: translateX(10px);
+            background: rgba(40, 40, 40, 0.9);
+        }
+
+        .character-card {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border-bottom: 3px solid var(--neon-yellow);
+        }
+
+        .death-list-item {
+            border-bottom: 1px solid #333;
+        }
+
+        .death-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .cotton-candy {
+            color: #ffb7ce;
+            text-shadow: 0 0 5px #ffb7ce;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-pink);
+            border-radius: 4px;
+        }
+
+        .glitch-effect:hover {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+<body class="p-0 m-0">
+
+    <!-- Hero Section -->
+    <header class="relative h-screen flex flex-col items-center justify-center text-center px-4 bg-black overflow-hidden">
+        <div class="absolute inset-0 opacity-40">
+            <!-- Simulated Starfield -->
+            <div id="stars" class="absolute inset-0"></div>
+        </div>
+        <h1 class="hero-title text-5xl md:text-8xl mb-4 z-10">KILLER KLOWNS</h1>
+        <p class="font-['Orbitron'] text-xl md:text-2xl text-cyan-400 z-10 tracking-widest uppercase">From Outer Space</p>
+        <div class="mt-12 z-10">
+            <a href="#timeline" class="neon-border px-8 py-3 rounded-full text-white font-bold tracking-widest hover:bg-cyan-900 transition-colors uppercase">Enter the Big Top</a>
+        </div>
+        
+        <!-- Decoration SVG (Tent) -->
+        <div class="absolute bottom-0 w-full flex justify-center opacity-20">
+            <svg width="400" height="200" viewBox="0 0 400 200">
+                <path d="M0 200 L200 0 L400 200 Z" fill="var(--blood-red)" />
+                <path d="M50 200 L200 0 L100 200 Z" fill="#fff" />
+                <path d="M300 200 L200 0 L350 200 Z" fill="#fff" />
+            </svg>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-20">
+        
+        <!-- Timeline Section -->
+        <section id="timeline" class="mb-32">
+            <h2 class="text-4xl text-pink-500 mb-12 text-center">Invasion Timeline</h2>
+            <div class="space-y-6">
+                <div class="timeline-card p-6 rounded-lg">
+                    <span class="text-cyan-400 font-['Orbitron'] text-sm">20:00 - THE DESCENT</span>
+                    <h3 class="text-2xl mt-1">Arrival in Crescent Cove</h3>
+                    <p class="text-gray-400 mt-2">A glowing meteor streaks across the sky, landing in the woods. Mike Tobacco and Debbie Stone go to investigate, expecting a comet but finding a glowing circus tent instead.</p>
+                </div>
+                <div class="timeline-card p-6 rounded-lg">
+                    <span class="text-cyan-400 font-['Orbitron'] text-sm">21:30 - THE FIRST HARVEST</span>
+                    <h3 class="text-2xl mt-1">The Farmers Trap</h3>
+                    <p class="text-gray-400 mt-2">Farmer Gene Greene is the first to encounter the visitors. Mistaking them for pranksters, he is quickly captured in a cocoon of glowing cotton candy.</p>
+                </div>
+                <div class="timeline-card p-6 rounded-lg">
+                    <span class="text-cyan-400 font-['Orbitron'] text-sm">23:00 - TOWN TERROR</span>
+                    <h3 class="text-2xl mt-1">Main Street Massacre</h3>
+                    <p class="text-gray-400 mt-2">The Klowns enter the town proper. Popcorn guns, balloon hounds, and shadow puppets are used to eliminate the local populace while the Terenzi brothers are busy with their ice cream truck.</p>
+                </div>
+                <div class="timeline-card p-6 rounded-lg">
+                    <span class="text-cyan-400 font-['Orbitron'] text-sm">01:00 - THE SHOWDOWN</span>
+                    <h3 class="text-2xl mt-1">Assault on the Big Top</h3>
+                    <p class="text-gray-400 mt-2">Dave Hanson leads the rescue mission into the Klown Ship to save Debbie. The true scale of the harvest is revealed: a warehouse full of cotton candy cocoons.</p>
+                </div>
+                <div class="timeline-card p-6 rounded-lg">
+                    <span class="text-cyan-400 font-['Orbitron'] text-sm">02:30 - FINALE</span>
+                    <h3 class="text-2xl mt-1">Klownzilla Awakens</h3>
+                    <p class="text-gray-400 mt-2">The massive Klownzilla is unleashed. Only the piercing of the red nose can stop the nightmare. The ship explodes, and the town is left in pieces.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Characters Section -->
+        <section id="characters" class="mb-32">
+            <h2 class="text-4xl text-yellow-500 mb-12 text-center">The Cast</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Mike -->
+                <div class="character-card p-8 rounded-xl text-center">
+                    <div class="w-24 h-24 bg-gray-800 rounded-full mx-auto mb-4 flex items-center justify-center border-2 border-pink-500">
+                         <span class="text-3xl text-pink-500">M</span>
+                    </div>
+                    <h3 class="text-2xl">Mike Tobacco</h3>
+                    <p class="text-cyan-400 text-sm mb-4">THE HERO</p>
+                    <p class="text-gray-400 text-sm">The first to see the ship. He spends the night trying to convince the cynical police that Crescent Cove is under attack by aliens.</p>
+                </div>
+                <!-- Dave -->
+                <div class="character-card p-8 rounded-xl text-center">
+                    <div class="w-24 h-24 bg-gray-800 rounded-full mx-auto mb-4 flex items-center justify-center border-2 border-blue-500">
+                         <span class="text-3xl text-blue-500">D</span>
+                    </div>
+                    <h3 class="text-2xl">Dave Hanson</h3>
+                    <p class="text-cyan-400 text-sm mb-4">THE SKEPTIC COP</p>
+                    <p class="text-gray-400 text-sm">A young deputy who initially laughs off the report until he sees the cotton candy cocoons for himself. Eventually saves the day.</p>
+                </div>
+                <!-- Curtis & Rich -->
+                <div class="character-card p-8 rounded-xl text-center">
+                    <div class="w-24 h-24 bg-gray-800 rounded-full mx-auto mb-4 flex items-center justify-center border-2 border-yellow-500">
+                         <span class="text-3xl text-yellow-500">T</span>
+                    </div>
+                    <h3 class="text-2xl">Terenzi Brothers</h3>
+                    <p class="text-cyan-400 text-sm mb-4">THE COMIC RELIEF</p>
+                    <p class="text-gray-400 text-sm">Owners of the "Jojo's Ice Cream" truck. Their loud PA system and absurd outfits make them the perfect distraction for the Klowns.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deaths Section -->
+        <section id="deaths" class="mb-32">
+            <h2 class="text-4xl text-red-600 mb-12 text-center">The Body Count</h2>
+            <div class="bg-zinc-900 rounded-lg overflow-hidden border border-red-900">
+                <table class="w-full text-left">
+                    <thead class="bg-red-900/20 uppercase text-xs tracking-tighter text-red-400">
+                        <tr>
+                            <th class="p-4">Victim</th>
+                            <th class="p-4">Cause of Death / Method</th>
+                            <th class="p-4">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="death-list-item">
+                            <td class="p-4 font-bold">Farmer Gene Greene</td>
+                            <td class="p-4">Cotton Candy Cocoon</td>
+                            <td class="p-4 italic">First casualty. Attempted to find his dog.</td>
+                        </tr>
+                        <tr class="death-list-item">
+                            <td class="p-4 font-bold">Old Man at Pharmacy</td>
+                            <td class="p-4">Fatal Joy Buzzer</td>
+                            <td class="p-4 italic">Shocked to death after shaking hands.</td>
+                        </tr>
+                        <tr class="death-list-item">
+                            <td class="p-4 font-bold">Biker Punk</td>
+                            <td class="p-4">Decapitation (Punch)</td>
+                            <td class="p-4 italic">Knocked his block off—literally.</td>
+                        </tr>
+                        <tr class="death-list-item">
+                            <td class="p-4 font-bold">Officer Curtis Mooney</td>
+                            <td class="p-4">Ventriliquist Death</td>
+                            <td class="p-4 italic">Used as a gruesome puppet after strangulation.</td>
+                        </tr>
+                        <tr class="death-list-item">
+                            <td class="p-4 font-bold">The Security Guard</td>
+                            <td class="p-4">Acid Pie Blast</td>
+                            <td class="p-4 italic">Melted by a cherry-flavored nightmare.</td>
+                        </tr>
+                        <tr class="death-list-item">
+                            <td class="p-4 font-bold">Various Teens</td>
+                            <td class="p-4">Shadow Puppet Devouring</td>
+                            <td class="p-4 italic">Shadow dinosaur ate their silhouettes.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-4 text-center text-xs text-gray-500 uppercase tracking-widest">Total Estimated Count: 30+ Crescent Cove Residents</p>
+        </section>
+
+        <!-- Footer Call to Action -->
+        <section class="text-center py-20 border-t border-zinc-800">
+            <h2 class="text-3xl mb-6 cotton-candy">Don't Worry, It's Just A Circus...</h2>
+            <div class="flex justify-center gap-4">
+                <div class="w-12 h-12 bg-pink-500 rounded-full animate-bounce"></div>
+                <div class="w-12 h-12 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                <div class="w-12 h-12 bg-yellow-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-black py-10 text-center text-gray-600 text-xs">
+        <p>© 1988 CRESCENT COVE MEMORIAL SOCIETY</p>
+        <p class="mt-2">"What are you gonna do with those pies, boys?"</p>
+    </footer>
+
+    <script>
+        // Generate simple starfield
+        window.onload = function() {
+            const starContainer = document.getElementById('stars');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 2 + 'px';
+                star.style.height = star.style.width;
+                star.style.backgroundColor = '#fff';
+                star.style.borderRadius = '50%';
+                star.style.opacity = Math.random();
+                starContainer.appendChild(star);
+            }
+        };
+    </script>
+</body>
+</html>
